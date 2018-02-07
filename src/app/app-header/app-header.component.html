@@ -1,0 +1,49 @@
+<mat-toolbar color="primary" class="mat-elevation-z5">
+  <mat-toolbar-row>
+    <span>HCP Dashboard</span>
+    <span class="example-spacer"></span>
+      <p fxHide fxShow.md><button mat-button routerLink="">Home</button></p>
+      <p fxHide fxShow.md><button mat-button routerLink="resources">Resources</button></p>
+      <p fxHide fxShow.md><button mat-button routerLink="calendar">Calendar</button></p>
+      <p fxHide fxShow.md><button mat-button routerLink="directory">Directory</button></p>
+      <p fxHide fxShow.md><button mat-button routerLink="map">Map</button></p>
+      <p fxHide fxShow.md><a mat-button href="https://hcp.appfolio.com/">Appfolio</a></p>
+      <!--<p fxHide fxShow.md><button mat-button routerLink="">Property</button></p>-->
+
+    <div fxHide.md>
+      <button mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+    </div>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item>
+        <mat-icon>home</mat-icon>
+        <span>Home</span>
+      </button>
+      <button mat-menu-item disabled>
+        <mat-icon>document</mat-icon>
+        <span>Resources</span>
+      </button>
+      <button mat-menu-item>
+        <mat-icon>calendar</mat-icon>
+        <span>Calendar</span>
+      </button>
+      <button mat-menu-item>
+        <mat-icon>directory</mat-icon>
+        <span>Directory</span>
+      </button>
+      <button mat-menu-item>
+        <mat-icon>map</mat-icon>
+        <span>Map</span>
+      </button>
+      <button mat-menu-item>
+        <mat-icon>dashboard</mat-icon>
+        <span>Dashboard</span>
+      </button>
+      <button mat-menu-item>
+        <mat-icon>property</mat-icon>
+        <span>Property</span>
+      </button>
+    </mat-menu>
+  </mat-toolbar-row>
+</mat-toolbar>

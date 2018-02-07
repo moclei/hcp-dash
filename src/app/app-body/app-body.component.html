@@ -1,0 +1,48 @@
+<mat-sidenav-container class="all-wrap sidenav-container" (backdropClick)="close()">
+  <mat-sidenav #sidenav
+               class="mat-elevation-z4"
+               [mode]="media.isActive('xs') ? 'over' : 'side'"
+               [opened]="!media.isActive('xs')">
+    <mat-list role="list">
+      <div class="sidenav-header">
+        <h4>Forms</h4>
+      </div>
+        <mat-divider></mat-divider>
+        <mat-list-item role="listitem">
+          <a mat-button href="https://docs.google.com/forms/d/e/1FAIpQLSe8XL1Oqq3A_0KfdFVJHuKVThjQYhli2TkY7kdAmPygq1bF5g/viewform?usp=sf_link">Thank You Visits</a>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+        <mat-list-item role="listitem">
+          <a mat-button href="https://docs.google.com/forms/d/e/1FAIpQLSe8XL1Oqq3A_0KfdFVJHuKVThjQYhli2TkY7kdAmPygq1bF5g/viewform?usp=sf_link">Service Agreements</a>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+        <mat-list-item role="listitem">
+          <p><a mat-button href="https://docs.google.com/forms/d/e/1FAIpQLScnLAApErjtQcrQ66x4eFO9JOrErj0i4Vq4m-SbyXuDYxXEWA/viewform?usp=sf_link">Speedy Approvals</a></p>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+        <mat-list-item role="listitem">
+          <p><a mat-button href="https://docs.google.com/forms/d/e/1FAIpQLSdarMH653FWdSU_RWzhov0z9DA-VyfjdxXT4V0Vl7RcZuxPaA/viewform?usp=sf_link">Request PTO</a></p>
+        </mat-list-item>
+
+    </mat-list>
+
+    <!--<p><button mat-button>Make Ready Builder</button></p>-->
+    <!--<p><button mat-button>Bedbug Requests</button></p>-->
+  </mat-sidenav>
+
+  <mat-sidenav-content >
+    <div class="content-container">
+
+    <router-outlet></router-outlet>
+
+
+    <mat-toolbar color="primary" id="btmFooter">
+      <mat-toolbar-row>
+        <span class="example-spacer"></span>
+        <span>Every Little Bit Matters</span>
+      </mat-toolbar-row>
+    </mat-toolbar>
+    </div>
+  </mat-sidenav-content>
+
+</mat-sidenav-container>
