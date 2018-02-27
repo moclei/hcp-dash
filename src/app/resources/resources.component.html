@@ -1,24 +1,54 @@
-<mat-card>
+<mat-card class="card-demo">
+  <mat-card-title>Resources</mat-card-title>
   <mat-card-content>
-    <h2 class="example-h2">Resources</h2>
     <mat-tab-group class="demo-tab-group">
+      <mat-tab *ngIf="this.isExecutive" label="Executive">
+        <div class="demo-tab-content">
+
+          <mat-list role="list">
+            <mat-list-item role="listitem">
+              <a target="_blank" href="https://script.google.com/a/hcptexas.com/macros/s/AKfycbx5Ry5bi55LNwIptPbVkoGiNDTon_7eRHulViL9kHoyoNhZDDE/exec">
+                PTO Approvals
+              </a>
+            </mat-list-item>
+            <mat-list-item role="listitem">
+              <a target="_blank" href="https://docs.google.com/spreadsheets/d/1NKoncwqO_T8MRbeaSYWFHvEl-OUSB5iwbwtuPthMH-g/edit#gid=2102650795">
+                Service Agreements
+              </a>
+            </mat-list-item>
+            <mat-list-item role="listitem">
+              <a target="_blank" href="https://docs.google.com/spreadsheets/d/1J3jCBsuHyijyI7dVIPSjCy-4E-7JoD4VQ9dAuEFgVZs/edit#gid=1636383335">
+                Thank You Visits
+              </a>
+            </mat-list-item>
+            <mat-list-item role="listitem">
+              <a target="_blank" href="https://docs.google.com/spreadsheets/d/1AWUhgd6lRvtd2mjiAf_iSZDbwOdGjO6vCCZBK2EKOL4/edit#gid=0">
+                Manager Reprimands
+              </a>
+            </mat-list-item>
+
+          </mat-list>
+        </div>
+      </mat-tab>
+
+
       <mat-tab label="Management">
         <div class="demo-tab-content">
 
           <mat-list role="list">
             <h4>Move In</h4>
             <mat-list-item role="listitem">
-              <a href="https://drive.google.com/a/hcptexas.com/file/d/0B3Aibrx1PA0dTUJPWjVQUDFYTTA5bnc1U2toTWxvQXNjQTBr/view?usp=sharing">
+              <a target="_blank" href="https://drive.google.com/a/hcptexas.com/file/d/0B3Aibrx1PA0dTUJPWjVQUDFYTTA5bnc1U2toTWxvQXNjQTBr/view?usp=sharing">
                 Move In Checklist - "Fix It Snappy"
               </a>
             </mat-list-item>
             <mat-list-item role="listitem">
-              <a href="https://docs.google.com/a/hcptexas.com/document/d/1F73cVjhOpVJ-P17KP4_HWn_i1aq4vrm6t8uqE-VQ3IQ/edit?usp=sharing">
+              <a target="_blank" href="https://docs.google.com/a/hcptexas.com/document/d/1F73cVjhOpVJ-P17KP4_HWn_i1aq4vrm6t8uqE-VQ3IQ/edit?usp=sharing">
                 Move In Leasing Bonus Form
               </a>
             </mat-list-item>
             <mat-list-item role="listitem">
-              <a href="https://docs.google.com/a/hcptexas.com/document/d/1D-xr4_K-WeCMm0VHY-P75CljcVWBvqVvgoV1x-UcHog/edit?usp=sharing">
+              <a target="_blank" href="https://docs.google.com/a/hcptexas.com/document/d/1D-xr4_K-WeCMm0VHY-P75CljcVWBvqVvgoV1x-UcHog/edit?usp=sharing">
                 Move In Setup Form
               </a>
             </mat-list-item>
@@ -26,7 +56,7 @@
 
             <h4>Move Out</h4>
             <mat-list-item role="listitem">
-              <a href="https://docs.google.com/a/hcptexas.com/document/d/1lJTFuZsGb9D2Wb4lmQ1W85WJLUpGWu2dky3Hdhw21Wc/edit?usp=sharing">Deposit Refund Checklist</a>
+              <a target="_blank" href="https://docs.google.com/a/hcptexas.com/document/d/1lJTFuZsGb9D2Wb4lmQ1W85WJLUpGWu2dky3Hdhw21Wc/edit?usp=sharing">Deposit Refund Checklist</a>
             </mat-list-item>
             <mat-list-item role="listitem">
               <span>Move Out Charges (To Be Added Soon)</span>
@@ -35,56 +65,56 @@
 
             <h4>Turnover</h4>
             <mat-list-item role="listitem">
-              <a href="https://docs.google.com/a/hcptexas.com/forms/d/e/1FAIpQLSdqDWO_uRAWCeaOfqGX6eOAUCaZWfdXKWqrARRKAo2Vj8X-Kg/viewform?usp=sf_link#responses">Service Agreement Form</a>
+              <a target="_blank" href="https://docs.google.com/a/hcptexas.com/forms/d/e/1FAIpQLSdqDWO_uRAWCeaOfqGX6eOAUCaZWfdXKWqrARRKAo2Vj8X-Kg/viewform?usp=sf_link#responses">Service Agreement Form</a>
             </mat-list-item>
             <mat-list-item role="listitem">
-              <a href="https://www.irs.gov/pub/irs-pdf/fw9.pdf?">W-9 Form</a>and<a href="https://drive.google.com/open?id=0B6xVQRWNwWicfmNIVDZHVS1mX3FnSGI0R0xwc21tTmRpaG1CbDkwOGs2RjhjYWFRZENXcjA" >Insurance Waiver Forms</a>
+              <a target="_blank" href="https://www.irs.gov/pub/irs-pdf/fw9.pdf?">W-9 Form</a>and<a href="https://drive.google.com/open?id=0B6xVQRWNwWicfmNIVDZHVS1mX3FnSGI0R0xwc21tTmRpaG1CbDkwOGs2RjhjYWFRZENXcjA" >Insurance Waiver Forms</a>
             </mat-list-item>
             <mat-list-item role="listitem">
-              <a href="https://docs.google.com/spreadsheets/d/18xdNBXJS5dVlTncA4WW2Qzs217vXIkBSEL0Qj6HnzA4/edit#gid=1804985901">Make-Ready Prices</a>
+              <a target="_blank" href="https://docs.google.com/spreadsheets/d/18xdNBXJS5dVlTncA4WW2Qzs217vXIkBSEL0Qj6HnzA4/edit#gid=1804985901">Make-Ready Prices</a>
             </mat-list-item>
             <mat-divider></mat-divider>
 
             <h4>Evictions</h4>
             <mat-list-item role="listitem">
-              <a href="https://docs.google.com/spreadsheets/d/1Kt9Dwug9IvHIfiOxJ8YIQV5a082lOG3Th7eVZcXs2mE/edit#gid=972608359">Eviction Request Spreadsheet</a>
+              <a target="_blank" href="https://docs.google.com/spreadsheets/d/1Kt9Dwug9IvHIfiOxJ8YIQV5a082lOG3Th7eVZcXs2mE/edit#gid=972608359">Eviction Request Spreadsheet</a>
             </mat-list-item>
             <mat-list-item role="listitem">
-              <a href="http://home.bexar.org/JP/docs/PETITION_EVICTION.pdf">Eviction Petition Form (Bexar County)</a>
+              <a target="_blank" href="http://home.bexar.org/JP/docs/PETITION_EVICTION.pdf">Eviction Petition Form (Bexar County)</a>
             </mat-list-item>
             <mat-list-item role="listitem">
-              <a href="http://www.jp.hctx.net/forms/2013%20APPROVED%20FINAL%20RULES%20-%20WEBSITE%20DOWNLOADABLE%20FORMS/EV-Petition%2003-03-2014.pdf">Eviction Petition Form (Harris County)</a>
+              <a target="_blank" href="http://www.jp.hctx.net/forms/2013%20APPROVED%20FINAL%20RULES%20-%20WEBSITE%20DOWNLOADABLE%20FORMS/EV-Petition%2003-03-2014.pdf">Eviction Petition Form (Harris County)</a>
             </mat-list-item>
             <mat-list-item role="listitem">
-              <a href="http://access.tarrantcounty.com/content/dam/main/justices-of-the-peace/Documents/Sworn_Complaint_for_Eviction_1-29-15.pdf">Eviction Petition Form (Tarrant County)</a>
+              <a target="_blank" href="http://access.tarrantcounty.com/content/dam/main/justices-of-the-peace/Documents/Sworn_Complaint_for_Eviction_1-29-15.pdf">Eviction Petition Form (Tarrant County)</a>
             </mat-list-item>
             <mat-divider></mat-divider>
 
             <h4>Purchases</h4>
             <mat-list-item role="listitem">
-              <a href="https://docs.google.com/spreadsheets/d/1xMekHN4jnVn2RFNNob5CJvXKskc5NNBt5qo31jYyYsI/edit#gid=0">Purchase Request Form
+              <a target="_blank" href="https://docs.google.com/spreadsheets/d/1xMekHN4jnVn2RFNNob5CJvXKskc5NNBt5qo31jYyYsI/edit#gid=0">Purchase Request Form
               </a>
             </mat-list-item>
             <mat-list-item role="listitem">
-              <a href="https://docs.google.com/spreadsheets/d/18xdNBXJS5dVlTncA4WW2Qzs217vXIkBSEL0Qj6HnzA4/edit#gid=1804985901">Materials List</a>
+              <a target="_blank" href="https://docs.google.com/spreadsheets/d/18xdNBXJS5dVlTncA4WW2Qzs217vXIkBSEL0Qj6HnzA4/edit#gid=1804985901">Materials List</a>
             </mat-list-item>
             <mat-divider></mat-divider>
 
             <h4>Housing Authority</h4>
             <mat-list-item role="listitem">
-              <a href="http://www.saha.org/section%208/pdf/01%20RTA.pdf">Request for Tenancy Approval (RTA)</a>
+              <a target="_blank" href="http://www.saha.org/section%208/pdf/01%20RTA.pdf">Request for Tenancy Approval (RTA)</a>
             </mat-list-item>
             <mat-list-item role="listitem">
-              <a href="https://www.irs.gov/pub/irs-pdf/fw9.pdf?">W9 Form</a>
+              <a target="_blank" href="https://www.irs.gov/pub/irs-pdf/fw9.pdf?">W9 Form</a>
             </mat-list-item>
             <mat-list-item role="listitem">
-              <a href="http://www.saha.org/index.php/property-owners/forms-landlords">SAHA Forms Website</a>
+              <a target="_blank" href="http://www.saha.org/index.php/property-owners/forms-landlords">SAHA Forms Website</a>
             </mat-list-item>
             <mat-list-item role="listitem">
-              <a href="http://hchatexas.org/housing-choice-voucher-program/documents-and-forms/">Harris County Housing Forms Website</a>
+              <a target="_blank" href="http://hchatexas.org/housing-choice-voucher-program/documents-and-forms/">Harris County Housing Forms Website</a>
             </mat-list-item>
             <mat-list-item role="listitem">
-              <a href="http://access.tarrantcounty.com/en/housing-assistance-office/forms-and-publications.html">Tarrant County Housing Forms Website</a>
+              <a target="_blank" href="http://access.tarrantcounty.com/en/housing-assistance-office/forms-and-publications.html">Tarrant County Housing Forms Website</a>
             </mat-list-item>
           </mat-list>
         </div>
@@ -96,34 +126,34 @@
           <mat-list role="list">
             <h4>Screening</h4>
             <mat-list-item role="listitem">
-              <a href="https://login.publicdata.com/" >Public Data</a>
+              <a target="_blank" href="https://login.publicdata.com/" >Public Data</a>
             </mat-list-item>
             <mat-list-item role="listitem">
-              <a href="https://www.dps.texas.gov/" >DPS</a>
+              <a target="_blank" href="https://www.dps.texas.gov/" >DPS</a>
             </mat-list-item>
             <mat-list-item role="listitem">
-              <a href="https://www.bexar-evictions.com" >Eviction Search</a>
+              <a target="_blank" href="https://www.bexar-evictions.com" >Eviction Search</a>
             </mat-list-item>
             <mat-list-item role="listitem">
-              <a href="https://sites.google.com/a/hcptexas.com/past-residents-search/" >"Do not rent to list" Search</a>
+              <a target="_blank" href="https://sites.google.com/a/hcptexas.com/past-residents-search/" >"Do not rent to list" Search</a>
             </mat-list-item>
             <mat-divider></mat-divider>
 
             <h4>Applications</h4>
             <mat-list-item role="listitem">
-              <a href="https://drive.google.com/a/hcptexas.com/file/d/0B5gtd_6sAispMVRtOGVwdDQxUW8/view?usp=drive_web">Privacy Policy</a>
+              <a target="_blank" href="https://drive.google.com/a/hcptexas.com/file/d/0B5gtd_6sAispMVRtOGVwdDQxUW8/view?usp=drive_web">Privacy Policy</a>
             </mat-list-item>
             <mat-list-item role="listitem">
-              <a href="https://drive.google.com/a/hcptexas.com/file/d/0B5gtd_6sAispLWhXODF2b1BzQkE/view?usp=drive_web">Resident Qualifying Criteria</a>
+              <a target="_blank" href="https://drive.google.com/a/hcptexas.com/file/d/0B5gtd_6sAispLWhXODF2b1BzQkE/view?usp=drive_web">Resident Qualifying Criteria</a>
             </mat-list-item>
             <mat-list-item role="listitem">
-              <a href="https://drive.google.com/open?id=0B5gtd_6sAispWEl0Z1d2b0RPbVE">Supplemental Criminal Background Check</a>
+              <a target="_blank" href="https://drive.google.com/open?id=0B5gtd_6sAispWEl0Z1d2b0RPbVE">Supplemental Criminal Background Check</a>
             </mat-list-item>
             <mat-list-item role="listitem">
-              <a href="https://drive.google.com/open?id=0B5gtd_6sAispSWtYV250cUt0aFU">Consent for Release of Information</a>
+              <a target="_blank" href="https://drive.google.com/open?id=0B5gtd_6sAispSWtYV250cUt0aFU">Consent for Release of Information</a>
             </mat-list-item>
             <mat-list-item role="listitem">
-              <a href="https://drive.google.com/open?id=0B5gtd_6sAispS2NJYm9EWHF4ckk">Rental Application Form</a>
+              <a target="_blank" href="https://drive.google.com/open?id=0B5gtd_6sAispS2NJYm9EWHF4ckk">Rental Application Form</a>
             </mat-list-item>
           </mat-list>
 
@@ -134,16 +164,16 @@
           <mat-list role="list">
             <h4>Accounting Resources</h4>
             <mat-list-item role="listitem">
-              <a href="https://drive.google.com/open?id=0B5gtd_6sAispREp3NUpSbkFrUDA">Petty Cash Reimbursement Request Form</a>
+              <a target="_blank" href="https://drive.google.com/open?id=0B5gtd_6sAispREp3NUpSbkFrUDA">Petty Cash Reimbursement Request Form</a>
             </mat-list-item>
             <mat-list-item role="listitem">
-              <a href="https://bluemoonforms.com/?p=login">Bluemoon Forms</a>
+              <a target="_blank" href="https://bluemoonforms.com/?p=login">Bluemoon Forms</a>
             </mat-list-item>
             <mat-list-item role="listitem">
-              <a href="https://portal.cadencebank.com/SignOn.aspx">Cadence Bank Deposits</a>
+              <a target="_blank" href="https://portal.cadencebank.com/SignOn.aspx">Cadence Bank Deposits</a>
             </mat-list-item>
             <mat-list-item role="listitem">
-              <a href="hcp.appfolio.com">Appfolio</a>
+              <a target="_blank" href="hcp.appfolio.com">Appfolio</a>
             </mat-list-item>
           </mat-list>
         </div>
@@ -154,25 +184,25 @@
           <mat-list role="list">
             <h4>Bedbugs</h4>
             <mat-list-item role="listitem">
-              <a href="https://docs.google.com/a/hcptexas.com/forms/d/16Tk50nc5vePWUi23wr3vtl8zuVUXZB0sZ1imzZSPpgs/edit?usp=drive_web">Bedbug Request Form</a>
+              <a target="_blank" href="https://docs.google.com/a/hcptexas.com/forms/d/16Tk50nc5vePWUi23wr3vtl8zuVUXZB0sZ1imzZSPpgs/edit?usp=drive_web">Bedbug Request Form</a>
             </mat-list-item>
             <mat-list-item role="listitem">
-              <a href="https://drive.google.com/a/hcptexas.com/file/d/0B5gtd_6sAispVkd0TlY2Z251TFk/view?usp=drive_web">Bedbug Letter for Customer to sign</a>
+              <a target="_blank" href="https://drive.google.com/a/hcptexas.com/file/d/0B5gtd_6sAispVkd0TlY2Z251TFk/view?usp=drive_web">Bedbug Letter for Customer to sign</a>
             </mat-list-item>
             <mat-list-item role="listitem">
-              <a href="https://docs.google.com/a/hcptexas.com/presentation/d/1qr8Vh6YJSs9G1WPcn-AdTlWFOVnSXK1aQXdTCVHWpD4/edit?usp=drive_web">Bedbug How-to for Maintenance and Management</a>
+              <a target="_blank" href="https://docs.google.com/a/hcptexas.com/presentation/d/1qr8Vh6YJSs9G1WPcn-AdTlWFOVnSXK1aQXdTCVHWpD4/edit?usp=drive_web">Bedbug How-to for Maintenance and Management</a>
             </mat-list-item>
             <mat-divider></mat-divider>
 
             <h4>Inventory</h4>
             <mat-list-item role="listitem">
-              <a href="https://docs.google.com/spreadsheets/d/18xdNBXJS5dVlTncA4WW2Qzs217vXIkBSEL0Qj6HnzA4/edit#gid=10">Total Quantities List (For manager)</a>
+              <a target="_blank" href="https://docs.google.com/spreadsheets/d/18xdNBXJS5dVlTncA4WW2Qzs217vXIkBSEL0Qj6HnzA4/edit#gid=10">Total Quantities List (For manager)</a>
             </mat-list-item>
             <mat-list-item role="listitem">
-              <a href="https://docs.google.com/a/hcptexas.com/spreadsheets/d/1NU968sNxKof2siQq-Ng3YgUc1Tm93K5ZGFi4U6uFHPM/edit?usp=sharing">Reorder Form (For manager)</a>
+              <a target="_blank" href="https://docs.google.com/a/hcptexas.com/spreadsheets/d/1NU968sNxKof2siQq-Ng3YgUc1Tm93K5ZGFi4U6uFHPM/edit?usp=sharing">Reorder Form (For manager)</a>
             </mat-list-item>
             <mat-list-item role="listitem">
-              <a href="https://docs.google.com/spreadsheets/d/18xdNBXJS5dVlTncA4WW2Qzs217vXIkBSEL0Qj6HnzA4/edit#gid=17">Quantities Sheet (For maintenance)</a>
+              <a target="_blank" href="https://docs.google.com/spreadsheets/d/18xdNBXJS5dVlTncA4WW2Qzs217vXIkBSEL0Qj6HnzA4/edit#gid=17">Quantities Sheet (For maintenance)</a>
             </mat-list-item>
           </mat-list>
 
@@ -183,19 +213,19 @@
           <mat-list role="list">
             <h4>Paid Time Off</h4>
             <mat-list-item role="listitem">
-              <a href="https://goo.gl/forms/TlMJMrGlqgZJfaAx2">PTO Request Form</a>
+              <a target="_blank" href="https://goo.gl/forms/TlMJMrGlqgZJfaAx2">PTO Request Form</a>
             </mat-list-item>
             <mat-list-item role="listitem">
-              <a href="https://drive.google.com/open?id=0B5gtd_6sAispZ191dm1HR2F3RjhrdDEtZDhHc1NsZ2RqcWl3">Mileage Claim Form</a>
+              <a target="_blank" href="https://drive.google.com/open?id=0B5gtd_6sAispZ191dm1HR2F3RjhrdDEtZDhHc1NsZ2RqcWl3">Mileage Claim Form</a>
             </mat-list-item>
             <mat-list-item role="listitem">
-              <a href="https://www.irs.gov/pub/irs-pdf/fw4.pdf">W-4</a>
+              <a target="_blank" href="https://www.irs.gov/pub/irs-pdf/fw4.pdf">W-4</a>
             </mat-list-item>
             <mat-divider></mat-divider>
 
             <h4>Employment Application</h4>
             <mat-list-item role="listitem">
-              <a href="https://drive.google.com/open?id=0ByOMGIuu-B4YbFgxVGZMWk5WUUE">Employment Application</a>
+              <a target="_blank" href="https://drive.google.com/open?id=0ByOMGIuu-B4YbFgxVGZMWk5WUUE">Employment Application</a>
             </mat-list-item>
           </mat-list>
         </div>
@@ -203,7 +233,7 @@
     </mat-tab-group>
   </mat-card-content>
 </mat-card>
-
+<div style="height: 100px;"></div>
 <!--
 <mat-card>
   <mat-card-content>

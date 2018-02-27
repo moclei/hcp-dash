@@ -1,0 +1,73 @@
+@import '../../hcp-theme';
+
+header{
+  text-align: center;
+  color: #263238;
+  background-color: #00BFA5;
+  font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+header .container {
+  padding: 50px 50px 25px 75px;
+}
+
+header .intro-text .name-large {
+  /*display: block;*/
+  /*text-transform: uppercase;*/
+  font-weight: 400;
+  font-size: 2.75em;
+  margin-top: 0;
+}
+
+header .intro-text .name-small {
+  /*display: block;*/
+  text-transform: uppercase;
+  font-weight: 400;
+  font-size: 1.75em;
+  margin-top: 0;
+}
+
+header .intro-text .skills {
+  font-size: 1.1em;
+  /*font-weight: 300;*/
+}
+
+.home-buttons{
+  /* color:  mat-color($candy-app-accent, darker);*/
+  /* padding: 4px;*/
+  text-align: center;
+  /* font-weight: 300;*/
+}
+
+.home-buttons button{
+  font-size: 1.25em;
+}
+
+
+.card-demo mat-card-footer {
+  left: 24px;
+  margin-bottom: 24px;
+}
+
+@mixin mat-icon-size($size: 96px) {
+  font-size: $size;
+  height: $size;
+  width: $size;
+}
+
+.mat-icon {
+  @include mat-icon-size(96px);
+}
+
+.card-spacer {
+  padding: 0.5em;
+}
+
+.card-layout {
+  width: 90%;
+  padding-top: 25px;
+  padding-bottom: 25px;
+}
+
+.card-main{
+  margin: 24px;
+}

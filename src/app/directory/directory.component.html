@@ -1,3 +1,48 @@
-<p>
-  directory works!
-</p>
+<mat-card >
+  <mat-card-title>Company Directory</mat-card-title>
+  <mat-card-content>
+
+    <div class="dir-container mat-elevation-z8">
+      <div class="dir-header">
+        <mat-form-field>
+          <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+        </mat-form-field>
+      </div>
+
+      <mat-table #table [dataSource]="dataSource" matSort>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="name">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+        </ng-container>
+
+        <!-- Position Column -->
+        <ng-container matColumnDef="position">
+          <mat-header-cell *matHeaderCellDef> Position </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.position}} </mat-cell>
+        </ng-container>
+
+        <!-- Location Column -->
+        <ng-container matColumnDef="location">
+          <mat-header-cell *matHeaderCellDef> Location </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.location}} </mat-cell>
+        </ng-container>
+
+        <!-- Number Column -->
+        <ng-container matColumnDef="number">
+          <mat-header-cell *matHeaderCellDef> Number </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.number}} </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+      <mat-paginator #paginator
+                     [pageSize]="10"
+                     [pageSizeOptions]="[5, 10, 20]">
+      </mat-paginator>
+    </div>
+  </mat-card-content>
+</mat-card>
+<div style="height: 100px;"></div>

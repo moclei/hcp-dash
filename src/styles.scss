@@ -1,4 +1,4 @@
-@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+@import "./hcp-theme.scss";
 
 html, body {
   height: 100%;
@@ -42,5 +42,11 @@ h6 {
 .mat-elevation-z4 {
   position: relative;
   z-index: 1;
+}
+
+
+.mat-menu-panel.profile-menu {
+  max-width: none !important;
+  padding: 16px;
 }
 
