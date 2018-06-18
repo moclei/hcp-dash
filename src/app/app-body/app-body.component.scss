@@ -34,6 +34,7 @@
   /* When the sidenav is not fixed, stretch the sidenav container to fill the available space. This
      causes `<mat-sidenav-content>` to act as our scrolling element for desktop layouts. */
   flex: 1;
+  background-color: #ECEFF1;
 }
 
 .is-mobile .dash-sidenav-container {
@@ -49,10 +50,8 @@
   right: 0;
 }
 
-.footer {
-  position: absolute;
-  left: 0;
-  bottom: 0;
+
+mat-list-item.sidenav-list-item a{
   width: 100%;
-  text-align: center;
+  text-align: start;
 }

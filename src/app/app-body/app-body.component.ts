@@ -3,6 +3,7 @@ import {MatSidenav} from '@angular/material';
 import {ObservableMedia} from '@angular/flex-layout';
 import {UserService} from '../services/user.service';
 import {Subscription} from 'rxjs/Subscription';
+import {DashService} from '../services/dash-service.service';
 
 @Component({
   selector: 'app-body',
@@ -20,6 +21,7 @@ export class AppBodyComponent implements OnInit, OnDestroy, AfterViewInit {
 
   constructor(public media: ObservableMedia,
               userService: UserService,
+              private dashService: DashService,
               private cdr: ChangeDetectorRef) {
 
     try {
@@ -32,12 +34,13 @@ export class AppBodyComponent implements OnInit, OnDestroy, AfterViewInit {
       || this.currentEmail === 'mrust@hcptexas.com'
       || this.currentEmail === 'accountsrec4@hcptexas.com'
       || this.currentEmail === 'corky@hcptexas.com'
-      || this.currentEmail === 'mhurley@hcptexas.com') {
+      || this.currentEmail === 'mhurley@hcptexas.com'
+    ) {
       this.isExecutive = true;
     }
     this.subscription = this.userService.whenSignedIn().subscribe(userAuthorized => {
       this.userAuthorized = userAuthorized;
-      if(this.userAuthorized){
+      if (this.userAuthorized) {
         this.sidenav.close();
         this.sidenav.open();
       } else {
@@ -45,16 +48,24 @@ export class AppBodyComponent implements OnInit, OnDestroy, AfterViewInit {
       }
       console.log('userAuthorized: ' + userAuthorized);
     });
+    this.dashService.toggleSidebar.subscribe(() => {
+      if (this.sidenav.opened) {
+        this.sidenav.close();
+      } else {
+        this.sidenav.open();
+      }
+    });
   }
   ngOnInit() {
   }
-  ngAfterViewInit(){
-    if (this.userService.isUserSignedIn()){
-      console.log('app-body.component -> afterViewInit -> userService.isUserSignedIn==true')
+  ngAfterViewInit() {
+    if (this.userService.isUserSignedIn()) {
+      console.log('app-body.component -> afterViewInit -> userService.isUserSignedIn==true');
       this.userAuthorized = true;
       this.cdr.detectChanges();
     }
   }
+
   ngOnDestroy() {
       this.subscription.unsubscribe();
   }

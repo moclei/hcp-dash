@@ -8,24 +8,41 @@
         <mat-list-item role="listitem">
           <h4>Forms</h4>
         </mat-list-item>
-        <mat-divider></mat-divider>
-        <mat-list-item role="listitem">
-          <a target="_blank" mat-button href="https://docs.google.com/forms/d/e/1FAIpQLSe8XL1Oqq3A_0KfdFVJHuKVThjQYhli2TkY7kdAmPygq1bF5g/viewform?usp=sf_link">Thank You Visits</a>
+        <mat-list-item  class="sidenav-list-item" role="listitem">
+          <a target="_blank" mat-button  href="https://docs.google.com/forms/d/e/1FAIpQLSe8XL1Oqq3A_0KfdFVJHuKVThjQYhli2TkY7kdAmPygq1bF5g/viewform?usp=sf_link">Thank You Visits</a>
         </mat-list-item>
-        <mat-list-item role="listitem">
+        <mat-list-item class="sidenav-list-item" role="listitem">
           <a target="_blank" mat-button href="https://docs.google.com/forms/u/1/d/1v6ybI2OWNFnwUkKQFmSZ7rZRkTpWWv1c8Z3K7PFQxAw/edit?usp=drive_web">Service Agreements</a>
         </mat-list-item>
-        <mat-list-item role="listitem">
-          <p><a target="_blank" mat-button href="https://docs.google.com/forms/d/e/1FAIpQLScnLAApErjtQcrQ66x4eFO9JOrErj0i4Vq4m-SbyXuDYxXEWA/viewform?usp=sf_link">Speedy Approvals</a></p>
+        <mat-list-item class="sidenav-list-item" role="listitem">
+          <a target="_blank" mat-button href="https://docs.google.com/forms/d/e/1FAIpQLScnLAApErjtQcrQ66x4eFO9JOrErj0i4Vq4m-SbyXuDYxXEWA/viewform?usp=sf_link">Speedy Approvals</a>
         </mat-list-item>
-        <mat-list-item role="listitem">
-          <p><a target="_blank" mat-button href="https://docs.google.com/forms/d/e/1FAIpQLSdarMH653FWdSU_RWzhov0z9DA-VyfjdxXT4V0Vl7RcZuxPaA/viewform?usp=sf_link">Request PTO</a></p>
+        <mat-list-item class="sidenav-list-item" role="listitem">
+          <a target="_blank" mat-button href="https://docs.google.com/forms/d/e/1FAIpQLSdarMH653FWdSU_RWzhov0z9DA-VyfjdxXT4V0Vl7RcZuxPaA/viewform?usp=sf_link">Request PTO</a>
         </mat-list-item>
-        <mat-list-item role="listitem" *ngIf="this.isExecutive">
-          <button mat-button routerLink="mr-builder">Make Ready Builder</button>
-        </mat-list-item>
+      <mat-list-item class="sidenav-list-item" role="listitem">
+        <a target="_blank" mat-button href="https://goo.gl/forms/IUALMdVIG5Uxej4R2">Bedbug Treatment Request</a>
+      </mat-list-item>
+      <mat-list-item class="sidenav-list-item" role="listitem">
+        <p><button mat-button color="warn" routerLink="/contractors">Contractors </button></p>
+      </mat-list-item>
+      <mat-list-item role="listitem" >
+        <button mat-button routerLink="mr-builder">Make Ready Builder *<sup>new</sup></button>
+      </mat-list-item>
+      <mat-list-item role="listitem" >
+        <button mat-button routerLink="ty-visits">New Thank You Visits *<sup>new</sup></button>
+      </mat-list-item>
     </mat-list>
+    <mat-divider></mat-divider>
 
+    <mat-list *ngIf="this.isExecutive" role="list">
+      <mat-list-item role="listitem">
+        <h4>Experimental</h4>
+      </mat-list-item>
+      <mat-list-item role="listitem" >
+        <button mat-button routerLink="decision-board">Decision Board</button>
+      </mat-list-item>
+    </mat-list>
     <!--<p><button mat-button>Make Ready Builder</button></p>-->
     <!--<p><button mat-button>Bedbug Requests</button></p>-->
   </mat-sidenav>
@@ -33,12 +50,12 @@
   <mat-sidenav-content class="content-container">
 
     <router-outlet></router-outlet>
-    <mat-toolbar color="primary" class="footer">
+    <!--<mat-toolbar color="primary" class="footer">
       <mat-toolbar-row>
         <span class="example-spacer"></span>
         <span>Every Little Bit Matters</span>
       </mat-toolbar-row>
-    </mat-toolbar>
+    </mat-toolbar>-->
   </mat-sidenav-content>
 
 </mat-sidenav-container>

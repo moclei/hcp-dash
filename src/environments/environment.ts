@@ -4,5 +4,11 @@
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  firebase: {
+    apiKey: 'AIzaSyDS3GHD2j5cxhv3vyZMaFAmkRDIxBrwf_k',
+    authDomain: 'hcpdash-frontend.firebaseapp.com',
+    databaseURL: 'https://hcpdash-frontend.firebaseio.com',
+    projectId: 'hcpdash-frontend',
+  }
 };

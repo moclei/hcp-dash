@@ -2,6 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {UserService} from '../services/user.service';
 import {Subscription} from 'rxjs/Subscription';
 import {UserProfile} from '../services/user.service';
+import {DashService} from '../services/dash-service.service';
 
 @Component({
   selector: 'app-header',
@@ -18,7 +19,8 @@ export class AppHeaderComponent implements OnInit, OnDestroy {
   userEmail = '';
   userName = '';
 
-  constructor(userService: UserService) {
+  constructor(userService: UserService,
+              private dashService: DashService) {
     this.userService = userService;
     if (this.userService.isUserSignedIn()) {
       this.setAuthState(true);
@@ -39,10 +41,15 @@ export class AppHeaderComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
+  public openSidebar() {
+    this.dashService.toggleSidebar.emit();
+  }
+
   signOut() {
     this.userService.signOut();
     this.userSignedIn = false;
   }
+
 
   setAuthState(isSignedIn: boolean) {
     console.log('userAuthorized: ' + isSignedIn);

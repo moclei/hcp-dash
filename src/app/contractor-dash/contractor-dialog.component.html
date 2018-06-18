@@ -1,0 +1,35 @@
+
+  <h1 mat-dialog-title >{{data.contractorName}}: {{data.status}}</h1>
+  <div mat-dialog-content class="outer-dialog inner-dialog-content"  fxLayout="column" fxLayoutAlign="center start">
+    <section class="mat-typography">
+      <h3 *ngIf="data.phoneNumber">Phone: {{data.phoneNumber}}</h3>
+      <h3 *ngIf="!data.phoneNumber">No contact number recorded. Call the last property they worked at.</h3>
+      <p *ngIf="data.status=='Active'">Currently working at: {{data.currentProperty}}, {{data.currentUnit}}</p>
+      <p *ngIf="data.status=='Inactive'">Last Job: {{data.currentProperty}}, {{data.currentUnit}}</p>
+      <p *ngIf="data.status=='Bad'">Do Not Hire</p>
+    </section>
+    <div *ngIf="data.reviews.length > 0; else reviewCardElse">
+      <section class="mat-typography">
+        <h3>Contractor has a score of {{data.averageScore}} over {{data.reviews.length}} Reviews</h3>
+      </section>
+      <div >
+        <h4>Reviews: </h4>
+        <mat-card *ngFor="let review of data.reviewData">
+          <mat-card-content>
+            <h4>{{review.reviewerName}} ({{review.reviewerId}})</h4>
+            <star-rating-comp [starType]="'svg'" [rating]="3"></star-rating-comp>
+            <p *ngIf="review.comments; else reviewElse">{{review.comments}}</p>
+            <ng-template #reviewElse><p><i>No comment left by reviewer</i></p></ng-template>
+            <p>{{review.reviewDate | date}}</p>
+          </mat-card-content>
+        </mat-card>
+      </div>
+  </div>
+    <ng-template #reviewCardElse>
+      <h4></h4>
+    </ng-template>
+  </div>
+
+  <div mat-dialog-actions>
+    <button mat-button [mat-dialog-close] >Ok</button>
+  </div>

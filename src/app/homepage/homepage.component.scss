@@ -66,8 +66,17 @@ header .intro-text .skills {
   width: 90%;
   padding-top: 25px;
   padding-bottom: 25px;
+  padding-left: 50px;
 }
 
 .card-main{
   margin: 24px;
+  width: 250px;
+}
+
+.card-round{
+  margin: 24px;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
 }

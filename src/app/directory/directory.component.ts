@@ -3,8 +3,9 @@ import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
 import {Subscription} from 'rxjs/Subscription';
 import {MatButton} from '@angular/material';
 import 'rxjs/add/observable/timer';
-import {SheetsModel} from '../services/sheetmodel.service';
-import { Listing } from '../services/google-http.service';
+import {SheetsModel} from '../services/directory.service';
+import { Listing } from '../services/directory.service';
+import {AppscriptService} from '../services/appscript.service';
 
 @Component({
   selector: 'app-directory',
@@ -43,6 +44,7 @@ export class DirectoryComponent implements OnInit, OnDestroy {
         this.dataSource.paginator = this.paginator;
         // console.log('loaded directory data: msg:' + JSON.stringify(this.contacts));
       });
+
   }
 
   ngOnInit() {

@@ -7,9 +7,10 @@
 
   </mat-toolbar-row>
   <mat-toolbar-row *ngIf="this.userProfile">
+    <button mat-icon-button (click)="openSidebar()"> <mat-icon color="white" class="main-menu-icon">menu</mat-icon></button>
     <img class="dash-logo" src="../../assets/watermeadow_logo_blue_gray_sm.png"/>
-    <button ngClass="header-button"
-            ngClass.lt-md="header-button-small"
+    <button ngClass="header-text"
+            ngClass.gt-md="header-text-large"
             mat-button routerLink="">HCP Dashboard</button>
     <span class="example-spacer"></span>
     <div fxLayoutAlign="row" fxHide fxShow.gt-sm>
@@ -18,6 +19,8 @@
       <p><button mat-button class="header-button" routerLink="/calendar">Calendar</button></p>
       <p><button mat-button class="header-button" routerLink="/directory">Directory</button></p>
       <p><button mat-button class="header-button" routerLink="/map">Maps</button></p>
+      <p><button mat-button class="header-button" routerLink="/contractors">Contractors</button></p>
+
       <p><a mat-button target="_blank" href="https://hcp.appfolio.com/">Appfolio</a></p>
       <p *ngIf="!this.userProfile"><button mat-button (click)="signOut()">Sign In</button></p>
     </div>

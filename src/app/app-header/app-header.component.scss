@@ -1,7 +1,6 @@
 .dash-logo{
   max-width: 80%;
   max-height: 80%;
-
 }
 /*
 .header-button{
@@ -12,14 +11,17 @@
   font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
 }*/
 
-
+.header-text-large{
+  font-size: 1.5em;
+  font-weight: 400;
+}
 
 .header-button{
   padding-left:4px;
   padding-right:4px;
 }
 
-.header-button-small{
+.header-text{
   text-align: center;
   color: white;
   font-size: 1em;
@@ -57,4 +59,8 @@
   text-align: right;
   padding: 0px;
   margin: 0px;
+}
+
+.main-menu-icon:hover{
+  color: deeppink;
 }

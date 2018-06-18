@@ -11,6 +11,10 @@ import {AuthGuard} from './auth-guard.service';
 import {LoginPageComponent} from './login-page/login-page.component';
 import {AppBodyComponent} from './app-body/app-body.component';
 import {UserService} from './services/user.service';
+import {DecisionsRoutingModule} from './decision-board/decisions-routing.module';
+import {ContractorsComponent} from './contractors/contractors.component';
+import {ContractorDashComponent} from './contractor-dash/contractor-dash.component';
+import {ThankYouVisitsComponent} from './thank-you-visits/thank-you-visits.component';
 
 
 const routes: Routes = [
@@ -43,11 +47,19 @@ const routes: Routes = [
     path: 'mr-builder',
     component: MakereadyBuilderComponent,
     canActivate: [AuthGuard]
-  }
-  ,
+  },
+  {
+    path: 'ty-visits',
+    component: ThankYouVisitsComponent,
+    canActivate: [AuthGuard]
+  },
   {
     path: 'login-page',
     component: LoginPageComponent
+  },
+  {
+    path: 'contractors',
+    component: ContractorDashComponent
   },
   {
     path: '',
@@ -59,6 +71,7 @@ const routes: Routes = [
 @NgModule({
   imports: [
     CommonModule,
+    DecisionsRoutingModule,
     RouterModule.forRoot(routes, {useHash: true})
   ],
   exports: [
