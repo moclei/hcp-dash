@@ -9,10 +9,8 @@ import {MapComponent} from './map/map.component';
 import {MakereadyBuilderComponent} from './makeready-builder/makeready-builder.component';
 import {AuthGuard} from './auth-guard.service';
 import {LoginPageComponent} from './login-page/login-page.component';
-import {AppBodyComponent} from './app-body/app-body.component';
 import {UserService} from './services/user.service';
 import {DecisionsRoutingModule} from './decision-board/decisions-routing.module';
-import {ContractorsComponent} from './contractors/contractors.component';
 import {ContractorDashComponent} from './contractor-dash/contractor-dash.component';
 import {ThankYouVisitsComponent} from './thank-you-visits/thank-you-visits.component';
 

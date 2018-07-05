@@ -13,7 +13,7 @@ import {
   MatButtonModule, MatCardModule, MatDialogModule, MatFormFieldModule, MatIconModule, MatInputModule, MatMenuModule,
   MatProgressSpinnerModule,
   MatSelectModule, MatSidenavModule,
-  MatToolbarModule
+  MatToolbarModule, MatGridListModule
 } from '@angular/material';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {ElasticModule} from 'angular2-elastic';
@@ -21,11 +21,14 @@ import {DecisionBoardComponent} from './decision-board.component';
 import {AngularFirestoreModule} from 'angularfire2/firestore';
 import {AngularFireModule} from 'angularfire2';
 import {environment} from '../../environments/environment';
+import {StarRatingModule} from 'angular-star-rating';
+import { NgxMasonryModule } from 'ngx-masonry';
 
 @NgModule({
   imports: [
     CommonModule,
     BrowserModule,
+    NgxMasonryModule,
     FlexLayoutModule,
     MatToolbarModule,
     MatSidenavModule,
@@ -35,9 +38,11 @@ import {environment} from '../../environments/environment';
     MatSelectModule,
     MatInputModule,
     MatFormFieldModule,
+    MatGridListModule,
     ReactiveFormsModule,
     FormsModule,
     MatIconModule,
+    StarRatingModule.forRoot(),
     MatDialogModule,
     MatMenuModule,
     MatProgressSpinnerModule,

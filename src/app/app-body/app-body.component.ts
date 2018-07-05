@@ -55,6 +55,9 @@ export class AppBodyComponent implements OnInit, OnDestroy, AfterViewInit {
         this.sidenav.open();
       }
     });
+    this.dashService.closeSidebar.subscribe(() => {
+        this.sidenav.close();
+    });
   }
   ngOnInit() {
   }

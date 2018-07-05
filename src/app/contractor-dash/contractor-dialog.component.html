@@ -17,7 +17,7 @@
         <mat-card *ngFor="let review of data.reviewData">
           <mat-card-content>
             <h4>{{review.reviewerName}} ({{review.reviewerId}})</h4>
-            <star-rating-comp [starType]="'svg'" [rating]="3"></star-rating-comp>
+            <!--<star-rating-comp [starType]="'svg'" [rating]="3"></star-rating-comp>-->
             <p *ngIf="review.comments; else reviewElse">{{review.comments}}</p>
             <ng-template #reviewElse><p><i>No comment left by reviewer</i></p></ng-template>
             <p>{{review.reviewDate | date}}</p>

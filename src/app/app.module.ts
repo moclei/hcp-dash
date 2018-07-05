@@ -6,7 +6,8 @@ import {
   MatButtonModule, MatCheckboxModule, MatSidenavModule, MatToolbarModule,
   MatIconModule, MatMenuModule, MatTabsModule, MatCardModule, MatListModule,
   MatDividerModule, MatInputModule, MatTableModule, MatPaginatorModule, MatSortModule,
-  MatStepperModule, MatSelectModule, MatOptionModule, MatRadioModule, MatDialogModule, MatDatepickerModule, MatNativeDateModule
+  MatStepperModule, MatSelectModule, MatOptionModule, MatRadioModule, MatDialogModule, MatDatepickerModule, MatNativeDateModule,
+  MatExpansionModule, MatProgressSpinnerModule
 } from '@angular/material';
 import { AppComponent } from './app.component';
 import { AppHeaderComponent } from './app-header/app-header.component';
@@ -35,12 +36,18 @@ import { ContractorsComponent } from './contractors/contractors.component';
 import {ContractorsModel} from './services/contractor.service';
 import {ContractorDashComponent, ContractorDialogComponent} from './contractor-dash/contractor-dash.component';
 import {Contractors2Model} from './services/contractors2.service';
-import {StarRatingModule} from 'angular-star-rating';
 import {AppscriptService} from './services/appscript.service';
 import { FullnameValidatorDirective } from './fullname-validator.directive';
 import {UnitLoadService} from './services/unit-load.service';
 import { PositiveNumberDirective } from './positive-number.directive';
 import { ThankYouVisitsComponent } from './thank-you-visits/thank-you-visits.component';
+import {AngularFireModule} from 'angularfire2';
+import {environment} from '../environments/environment';
+import {AngularFirestoreModule} from 'angularfire2/firestore';
+import { DynaformTestComponent } from './test/dynaform-test/dynaform-test.component';
+import { TextMaskModule } from 'angular2-text-mask';
+import { SpeedyAppsComponent } from './speedy-apps/speedy-apps.component';
+
 
 const gapiClientConfig: NgGapiClientConfig = {
   client_id: '603056598967-i65l4teqm0kk7k18steg7i0vt9k2253i.apps.googleusercontent.com',
@@ -73,15 +80,20 @@ const gapiClientConfig: NgGapiClientConfig = {
     ContractorDialogComponent,
     FullnameValidatorDirective,
     PositiveNumberDirective,
-    ThankYouVisitsComponent
+    ThankYouVisitsComponent,
+    DynaformTestComponent,
+    SpeedyAppsComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFirestoreModule,
     GoogleApiModule.forRoot({
       provide: NG_GAPI_CONFIG,
       useValue: gapiClientConfig
     }),
+
     HttpClientModule,
     FlexLayoutModule,
     MatButtonModule,
@@ -97,6 +109,8 @@ const gapiClientConfig: NgGapiClientConfig = {
     MatDividerModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatProgressSpinnerModule,
+    MatExpansionModule,
     FormsModule,
     ReactiveFormsModule,
     MatInputModule,
@@ -108,9 +122,9 @@ const gapiClientConfig: NgGapiClientConfig = {
     MatSelectModule,
     MatOptionModule,
     PapaParseModule,
-    StarRatingModule.forRoot(),
     DecisionBoardModule,
     AppRoutingModule,
+    TextMaskModule,
     CoreModule
   ],
   providers: [
