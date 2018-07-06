@@ -13,6 +13,7 @@ import {UserService} from './services/user.service';
 import {DecisionsRoutingModule} from './decision-board/decisions-routing.module';
 import {ContractorDashComponent} from './contractor-dash/contractor-dash.component';
 import {ThankYouVisitsComponent} from './thank-you-visits/thank-you-visits.component';
+import {SpeedyAppsComponent} from './speedy-apps/speedy-apps.component';
 
 
 const routes: Routes = [
@@ -44,6 +45,11 @@ const routes: Routes = [
   {
     path: 'mr-builder',
     component: MakereadyBuilderComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'speedy-apps',
+    component: SpeedyAppsComponent,
     canActivate: [AuthGuard]
   },
   {
