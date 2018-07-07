@@ -32,9 +32,7 @@
       mat-button routerLink="">HCP Dashboard
     </button>
 
-    <span
-      class="example-spacer">
-    </span>
+    <span class="example-spacer"></span>
 
     <div
       fxLayoutAlign="row"
@@ -165,7 +163,7 @@
           <img
             *ngIf="this.userProfile"
             [matMenuTriggerFor]="authMenu"
-            class="profile-img profile-img-large"
+            class="profile-img profile-img-button"
             [src]="this.profileImg"/>
           <div
             fxLayoutAlign="center start"
@@ -197,7 +195,7 @@
     <div class="img-profile-container">
       <img
         [matMenuTriggerFor]="subAuthMenu"
-        class="profile-img"
+        class="profile-img profile-img-button"
         *ngIf="this.userProfile"
         [src]="this.profileImg"/>
     </div>

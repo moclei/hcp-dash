@@ -1,35 +1,164 @@
-
-  <h1 mat-dialog-title >{{data.contractorName}}: {{data.status}}</h1>
-  <div mat-dialog-content class="outer-dialog inner-dialog-content"  fxLayout="column" fxLayoutAlign="center start">
+<!-- MODEL
+name: string;
+currentProperty: string;
+unit: Unit;
+makeReadyType: Array<string>;
+scheduledStartDate: Date;
+scheduledFinishDate	: Date;
+phoneNumber: string;
+status: string;
+updatedAt?: FieldValue;
+createdAt?: FieldValue;
+-->
+<div *ngIf="!this.userService.contractorEditor; else editor">
+  <h2 mat-dialog-title>{{data.name}}</h2>
+  <div
+    mat-dialog-content
+    class="outer-dialog inner-dialog-content"
+    fxLayout="column"
+    fxLayoutAlign="center start">
     <section class="mat-typography">
+      <p></p>
       <h3 *ngIf="data.phoneNumber">Phone: {{data.phoneNumber}}</h3>
       <h3 *ngIf="!data.phoneNumber">No contact number recorded. Call the last property they worked at.</h3>
-      <p *ngIf="data.status=='Active'">Currently working at: {{data.currentProperty}}, {{data.currentUnit}}</p>
-      <p *ngIf="data.status=='Inactive'">Last Job: {{data.currentProperty}}, {{data.currentUnit}}</p>
-      <p *ngIf="data.status=='Bad'">Do Not Hire</p>
+      <p *ngIf="data.status=='Active'">{{data.status}}: Currently working at {{data.currentProperty}} {{data.unit.unitName}}</p>
+      <p *ngIf="data.status=='Inactive'">{{data.status}}: Last job was at{{data.currentProperty}} {{data.unit.unitName}}</p>
+      <p *ngIf="data.status=='Bad'">{{data.status}}: Do Not Hire</p>
     </section>
-    <div *ngIf="data.reviews.length > 0; else reviewCardElse">
+   <!-- <div *ngIf="data.reviews.length > 0; else reviewCardElse">
       <section class="mat-typography">
         <h3>Contractor has a score of {{data.averageScore}} over {{data.reviews.length}} Reviews</h3>
       </section>
-      <div >
+      <div>
         <h4>Reviews: </h4>
         <mat-card *ngFor="let review of data.reviewData">
           <mat-card-content>
             <h4>{{review.reviewerName}} ({{review.reviewerId}})</h4>
-            <!--<star-rating-comp [starType]="'svg'" [rating]="3"></star-rating-comp>-->
+            <star-rating-comp [starType]="'svg'" [rating]="3"></star-rating-comp>
             <p *ngIf="review.comments; else reviewElse">{{review.comments}}</p>
             <ng-template #reviewElse><p><i>No comment left by reviewer</i></p></ng-template>
             <p>{{review.reviewDate | date}}</p>
           </mat-card-content>
         </mat-card>
       </div>
-  </div>
+    </div>
     <ng-template #reviewCardElse>
-      <h4></h4>
-    </ng-template>
+    </ng-template>-->
   </div>
 
   <div mat-dialog-actions>
-    <button mat-button [mat-dialog-close] >Ok</button>
+    <button mat-button [mat-dialog-close]>Ok</button>
   </div>
+</div>
+
+<ng-template #editor>
+  <h2 mat-dialog-title>Edit Contractor: {{data.name}}</h2>
+<form
+  [formGroup]="editFormGroup"
+  class="mr-form">
+  <div
+    fxLayout="column">
+    <div
+      fxLayout="column"
+      fxLayoutAlign="start">
+      <!--'name': name,
+      'currentProperty': currentProperty,
+      'unit': unit,
+      'makeReadyType': makeReadyType,
+      'scheduledStartDate': now,
+      'scheduledFinishDate'	: now,
+      'phoneNumber': phoneNumber,
+      'status': status,
+      'updatedAt': null,
+      'createdAt': this.contractorService.timestamp,
+         nameCtrl: [data.name, Validators.required],
+      phoneCtrl: [data.phoneNumber, Validators.required],
+      statusCtrl: [data.status, Validators.required],
+      currentPropertyCtrl: [data.currentProperty],
+      unit: [data.unit.unitName]
+      -->
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="Contractor's Name (First and Last)"
+          formControlName="nameCtrl"
+          appFullnameValidator>
+      </mat-form-field>
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="Phone Number"
+          formControlName="phoneCtrl">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-select
+          placeholder="Filter by status"
+          formControlName="statusCtrl">
+          <mat-option
+            *ngFor="let status of this.statuses"
+            value={{status.filterName}}>
+            {{ status.displayName }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-select
+          placeholder="Property"
+          formControlName="propertyCtrl"
+          (selectionChange)="setPropertySelected($event.value)">
+          <mat-option
+            *ngFor="let property of this.properties"
+            value={{property.sheetName}}>
+            {{ property.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field
+        class="bigger-width">
+        <mat-select
+          placeholder="Address"
+          formControlName="unitCtrl"
+          (selectionChange)="setUnitSelected($event)">
+          <mat-option
+            *ngFor="let unit of parsedUnits"
+            value={{unit.unitName}}>
+            {{ unit.unitName }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field
+        class="bigger-width">
+        <mat-select
+          placeholder="Make Ready Type (Last or current job)"
+          formControlName="mrTypeCtrl">
+          <mat-option
+            *ngFor="let type of mrTypes"
+            value={{type.description}}>
+            {{ type.description }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div fxLayout="row" fxLayoutGap="16px">
+      <div>First added on {{data.createdAt.toDate() | date}}</div>
+      <div>Last updated on {{data.updatedAt.toDate() | date}}</div>
+    </div>
+
+    <div fxLayout="row" fxLayoutGap="16px" style="padding-top: 24px">
+      <button
+        mat-raised-button
+        color="accent"
+        (click)="onEditSaveClickHandler()"
+        [disabled]="!editFormGroup.valid">
+        Save
+      </button>
+      <button
+        mat-raised-button
+        (click)="onEditCancelClickHandler()"
+        color="accent">
+        Cancel
+      </button>
+    </div>
+  </div>
+</form>
+</ng-template>

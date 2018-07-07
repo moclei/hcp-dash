@@ -1,0 +1,101 @@
+
+<h1 mat-dialog-title >Add a contractor</h1>
+<div
+  mat-dialog-content
+  class="outer-dialog inner-dialog-content"
+  fxLayout="column"
+  fxLayoutAlign="center start">
+  <form [formGroup]="addFormGroup"
+        class="mr-form">
+    <div
+      fxLayout="column"
+      fxLayoutGap="32px"
+      fxFlexOffset="16px"
+      fxFlex="100%">
+      <div
+        fxLayout="column"
+        fxLayoutGap="8px"
+        fxLayoutAlign="start">
+        <section class="mat-typography">
+          <h2>Contractor's details</h2>
+        </section>
+        <!--'name': name,
+        'currentProperty': currentProperty,
+        'unit': unit,
+        'makeReadyType': makeReadyType,
+        'scheduledStartDate': now,
+        'scheduledFinishDate'	: now,
+        'phoneNumber': phoneNumber,
+        'status': status,
+        'updatedAt': null,
+        'createdAt': this.contractorService.timestamp,-->
+        <mat-form-field>
+            <input
+              matInput
+              placeholder="Contractor's Name (First and Last)"
+              formControlName="nameCtrl"
+              appFullnameValidator
+              required>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-select
+            placeholder="Property"
+            formControlName="propertyCtrl"
+            (selectionChange)="setPropertySelected($event)"
+            required>
+            <mat-option
+              *ngFor="let property of properties"
+              value={{property.sheetName}}>
+              {{ property.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field
+          class="bigger-width">
+          <mat-select
+            placeholder="Address"
+            formControlName="unitCtrl"
+            (selectionChange)="setUnitSelected($event)"
+            required>
+            <mat-option
+              *ngFor="let unit of parsedUnits"
+              value={{unit.unitName}}>
+              {{ unit.unitName }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div
+        fxLayout="row"
+        fxLayoutAlign="center">
+        <mat-card
+          *ngIf="unitSelected"
+          class="unit-card">
+          <section class="mat-typography">
+            <mat-card-header>
+              <mat-card-title>Unit details</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <p>Beds: {{unitSelected.bedrooms}}, Baths: {{unitSelected.bathrooms}}</p>
+              <p>Floorplan: {{unitSelected.code}}</p>
+              <p>Size: {{unitSelected.size}} Sq. Ft.</p>
+            </mat-card-content>
+          </section>
+        </mat-card>
+      </div>
+      <div
+        style="padding-top: 24px">
+        <button
+          mat-raised-button
+          color="accent"
+          [disabled]="!firstFormGroup.valid"
+          matStepperNext>Next
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div mat-dialog-actions>
+  <button mat-button [mat-dialog-close] >Ok</button>
+</div>

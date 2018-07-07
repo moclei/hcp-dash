@@ -47,6 +47,7 @@ import {AngularFirestoreModule} from 'angularfire2/firestore';
 import { DynaformTestComponent } from './test/dynaform-test/dynaform-test.component';
 import { TextMaskModule } from 'angular2-text-mask';
 import { SpeedyAppsComponent } from './speedy-apps/speedy-apps.component';
+import { PhonePipe } from './pipes/phone.pipe';
 
 
 const gapiClientConfig: NgGapiClientConfig = {
@@ -82,7 +83,8 @@ const gapiClientConfig: NgGapiClientConfig = {
     PositiveNumberDirective,
     ThankYouVisitsComponent,
     DynaformTestComponent,
-    SpeedyAppsComponent
+    SpeedyAppsComponent,
+    PhonePipe
   ],
   imports: [
     BrowserModule,
