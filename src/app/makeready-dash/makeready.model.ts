@@ -1,11 +1,16 @@
+import * as firebase from 'firebase';
+import FieldValue = firebase.firestore.FieldValue;
+
 export class MakeReady {
-  private timestamp: Date;
-  private email: string;
-  private propertyName: string;
-  private preparerName: string;
-  private unit: Unit;
-  private scope: Scope;
+  timestamp: string;
+  email: string;
+  propertyName: string;
+  preparerName: string;
+  unit: Unit;
+  scope: Scope;
   contracts: Contract[];
+  updatedAt?: FieldValue;
+  createdAt?: FieldValue;
 
   constructor(timestamp, email, propertyName, preparerName, unit) {
     this.timestamp = timestamp;
@@ -23,6 +28,10 @@ export class MakeReady {
   getAsJSON() {
     return JSON.parse(JSON.stringify(this));
   }
+}
+
+export interface MakeReadyId extends MakeReady {
+  id: string;
 }
 
 export interface Contract {

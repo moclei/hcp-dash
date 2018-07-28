@@ -6,7 +6,7 @@ import { DirectoryComponent} from './directory/directory.component';
 import { CommonModule} from '@angular/common';
 import { CalendarComponent} from './calendar/calendar.component';
 import {MapComponent} from './map/map.component';
-import {MakereadyBuilderComponent} from './makeready-builder/makeready-builder.component';
+import {MakereadyBuilderComponent} from './makeready-dash/makeready-builder/makeready-builder.component';
 import {AuthGuard} from './auth-guard.service';
 import {LoginPageComponent} from './login-page/login-page.component';
 import {UserService} from './services/user.service';
@@ -14,6 +14,7 @@ import {DecisionsRoutingModule} from './decision-board/decisions-routing.module'
 import {ContractorDashComponent} from './contractor-dash/contractor-dash.component';
 import {ThankYouVisitsComponent} from './thank-you-visits/thank-you-visits.component';
 import {SpeedyAppsComponent} from './speedy-apps/speedy-apps.component';
+import {MakereadyDashComponent} from './makeready-dash/makeready-dash.component';
 
 
 const routes: Routes = [
@@ -45,6 +46,11 @@ const routes: Routes = [
   {
     path: 'mr-builder',
     component: MakereadyBuilderComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'mr-table',
+    component: MakereadyDashComponent,
     canActivate: [AuthGuard]
   },
   {

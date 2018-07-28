@@ -25,9 +25,9 @@ import { LoginComponent } from './login/login.component';
 import { GoogleHttpService} from './services/google-http.service';
 import { SheetsModel} from './services/directory.service';
 import { SheetsService} from './services/sheets.service';
-import { MakereadyBuilderComponent } from './makeready-builder/makeready-builder.component';
+import { MakereadyBuilderComponent } from './makeready-dash/makeready-builder/makeready-builder.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import { MakereadyResultsComponent } from './makeready-builder/makeready-results/makeready-results.component';
+import { MakereadyResultsComponent } from './makeready-dash/makeready-results/makeready-results.component';
 import {CoreModule} from './core/core.module';
 import { LoginPageComponent } from './login-page/login-page.component';
 import {DecisionBoardModule} from './decision-board/decisions.module';
@@ -48,6 +48,9 @@ import { DynaformTestComponent } from './test/dynaform-test/dynaform-test.compon
 import { TextMaskModule } from 'angular2-text-mask';
 import { SpeedyAppsComponent } from './speedy-apps/speedy-apps.component';
 import { PhonePipe } from './pipes/phone.pipe';
+import { MakereadyDashComponent } from './makeready-dash/makeready-dash.component';
+import {MakeReadyDialogComponent, MakereadyTableComponent} from './makeready-dash/makeready-table/makeready-table.component';
+import { MakereadyCompleteComponent } from './makeready-dash/makeready-complete/makeready-complete.component';
 
 
 const gapiClientConfig: NgGapiClientConfig = {
@@ -84,7 +87,11 @@ const gapiClientConfig: NgGapiClientConfig = {
     ThankYouVisitsComponent,
     DynaformTestComponent,
     SpeedyAppsComponent,
-    PhonePipe
+    PhonePipe,
+    MakeReadyDialogComponent,
+    MakereadyDashComponent,
+    MakereadyTableComponent,
+    MakereadyCompleteComponent
   ],
   imports: [
     BrowserModule,
@@ -140,7 +147,8 @@ const gapiClientConfig: NgGapiClientConfig = {
     UnitLoadService
   ],
   entryComponents: [
-    ContractorDialogComponent
+    ContractorDialogComponent,
+    MakeReadyDialogComponent
   ],
   bootstrap: [AppComponent]
 })

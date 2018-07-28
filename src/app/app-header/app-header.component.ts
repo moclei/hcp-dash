@@ -26,7 +26,12 @@ export class AppHeaderComponent implements OnInit, OnDestroy {
       this.setAuthState(true);
     }
     this.subscription = this.userService.whenSignedIn().subscribe(userAuthorized => {
+      console.log('app-header constructor whenSignedIn');
       this.setAuthState(userAuthorized);
+    }, () => {
+      console.log('app-header constructor whenSignedIn error');
+    }, () => {
+      console.log('app-header constructor whenSignedIn complete');
     });
   }
 
@@ -59,7 +64,7 @@ export class AppHeaderComponent implements OnInit, OnDestroy {
       this.profileImg = this.userProfile.imgUrl;
       this.userName = this.userProfile.name;
       this.userEmail = this.userProfile.email;
-      console.log('AppHeaderComponent -> constructor -> user.profile: ' + JSON.stringify(this.userProfile));
+      // console.log('AppHeaderComponent -> constructor -> user.profile: ' + JSON.stringify(this.userProfile));
     } else {
       this.userSignedIn = false;
       this.userProfile = null;

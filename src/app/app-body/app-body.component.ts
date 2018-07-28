@@ -39,6 +39,7 @@ export class AppBodyComponent implements OnInit, OnDestroy, AfterViewInit {
       this.isExecutive = true;
     }
     this.subscription = this.userService.whenSignedIn().subscribe(userAuthorized => {
+      console.log('app-body whenSignedIn');
       this.userAuthorized = userAuthorized;
       if (this.userAuthorized) {
         this.sidenav.close();

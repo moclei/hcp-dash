@@ -1,6 +1,6 @@
 import * as firebase from 'firebase';
 import FieldValue = firebase.firestore.FieldValue;
-import {Unit} from '../makeready-builder/makeready.model';
+import {Unit} from '../makeready-dash/makeready.model';
 
 
 export interface Contractor {
@@ -9,7 +9,7 @@ export interface Contractor {
   unit: Unit;
   makeReadyType: Array<string>;
   scheduledStartDate: Date;
-  scheduledFinishDate	: Date;
+  scheduledFinishDate: Date;
   phoneNumber: string;
   status: string;
   updatedAt?: FieldValue;
