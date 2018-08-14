@@ -1,0 +1,76 @@
+<div mat-dialog-title class="anni-title">Review your Decisions!</div>
+<div mat-dialog-content>
+  <div *ngIf="!saving; else loadingSpinner" >
+    <mat-card>
+      <mat-card-content>
+        <div fxLayout="column">
+          <div fxLayout="row" fxLayoutGap="16px" fxLayoutAlign="start center" *ngIf="decisionsToSave[currentCount].title">
+            <p><b>{{decisionsToSave[currentCount].title}}</b></p>
+            <div class="mat-caption"> by {{decisionsToSave[currentCount].email}} on {{decisionsToSave[currentCount].createdAt | timestamp}}</div>
+          </div>
+          <p>Original Decision: {{decisionsToSave[currentCount].content}}</p>
+          <div *ngIf="decisionsToSave[currentCount].result"><p>Result: {{decisionsToSave[currentCount].result }}</p></div>
+          <form [formGroup]="editDecisionGroup"
+                class="mr-form">
+            <mat-form-field
+              class="full-width">
+            <textarea
+              matInput
+              formControlName="updatedDecisionCtrl"
+              cdkTextareaAutosize
+              cdkAutosizeMinRows="2"
+              cdkAutosizeMaxRows="7"
+              placeholder="How do you feel about this decision now?"
+              #contentCtrl="cdkTextareaAutosize"
+              required>
+            </textarea>
+            </mat-form-field>
+          </form>
+         <!-- <section class="mat-typography">
+            <div class="mat-caption">Created by {{decisionsToSave[currentCount].email}} on {{decisionsToSave[currentCount].createdAt | timestamp}}</div>
+            <div *ngIf="decisionsToSave[currentCount].updatedAt">
+              <div class="mat-caption">Last updated on {{decisionsToSave[currentCount].updatedAt | timestamp}}</div>
+            </div>
+          </section>-->
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+  </div>
+
+  <ng-template #loadingSpinner>
+    <mat-progress-spinner
+      color="accent"
+      mode="indeterminate">
+    </mat-progress-spinner>
+  </ng-template>
+</div>
+<mat-card-subtitle class="anni-count">
+  Anniversary {{this.currentCount+1}} of {{this.totalDecisions}}
+</mat-card-subtitle>
+<div mat-dialog-actions>
+  <!--<button mat-button (click)="onNoClick()">No Thanks</button>-->
+  <button
+    [disabled]="currentCount===0"
+    mat-button
+    color="primary"
+    (click)="onBackClick()">Back
+  </button>
+  <div
+    *ngIf="!this.lastDecision; else lastDecisionButton">
+    <button
+      mat-button
+      color="primary"
+      (click)="onNextClick()">Next
+    </button>
+  </div>
+  <ng-template
+    #lastDecisionButton>
+    <button
+      mat-raised-button
+      color="accent"
+      [disabled]="!lastDecision"
+      [mat-dialog-close]=""
+      cdkFocusInitial>Ok</button>
+  </ng-template>
+</div>

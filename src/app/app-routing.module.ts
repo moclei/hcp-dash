@@ -15,6 +15,7 @@ import {ContractorDashComponent} from './contractor-dash/contractor-dash.compone
 import {ThankYouVisitsComponent} from './thank-you-visits/thank-you-visits.component';
 import {SpeedyAppsComponent} from './speedy-apps/speedy-apps.component';
 import {MakereadyDashComponent} from './makeready-dash/makeready-dash.component';
+import {BonusDashComponent} from './bonus-dash/bonus-dash.component';
 
 
 const routes: Routes = [
@@ -70,6 +71,10 @@ const routes: Routes = [
   {
     path: 'contractors',
     component: ContractorDashComponent
+  },
+  {
+    path: 'bonus',
+    component: BonusDashComponent
   },
   {
     path: '',

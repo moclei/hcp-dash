@@ -21,7 +21,6 @@ import { CalendarComponent } from './calendar/calendar.component';
 import { MapComponent } from './map/map.component';
 import { GoogleApiModule, NG_GAPI_CONFIG, NgGapiClientConfig} from 'ng-gapi';
 import { HttpClientModule} from '@angular/common/http';
-import { LoginComponent } from './login/login.component';
 import { GoogleHttpService} from './services/google-http.service';
 import { SheetsModel} from './services/directory.service';
 import { SheetsService} from './services/sheets.service';
@@ -51,11 +50,15 @@ import { PhonePipe } from './pipes/phone.pipe';
 import { MakereadyDashComponent } from './makeready-dash/makeready-dash.component';
 import {MakeReadyDialogComponent, MakereadyTableComponent} from './makeready-dash/makeready-table/makeready-table.component';
 import { MakereadyCompleteComponent } from './makeready-dash/makeready-complete/makeready-complete.component';
+import { BonusDashComponent } from './bonus-dash/bonus-dash.component';
+import {BonusTableComponent, BonusTableDialogComponent} from './bonus-dash/bonus-table/bonus-table.component';
+import { BonusComponent } from './bonus-dash/bonus/bonus.component';
 
 
 const gapiClientConfig: NgGapiClientConfig = {
   client_id: '603056598967-i65l4teqm0kk7k18steg7i0vt9k2253i.apps.googleusercontent.com',
   discoveryDocs: ['https://sheets.googleapis.com/$discovery/rest?version=v4'],
+  cookie_policy: 'none',
   scope: [
     'https://mail.google.com/',
     'https://www.googleapis.com/auth/documents',
@@ -76,7 +79,6 @@ const gapiClientConfig: NgGapiClientConfig = {
     DirectoryComponent,
     CalendarComponent,
     MapComponent,
-    LoginComponent,
     MakereadyBuilderComponent,
     MakereadyResultsComponent,
     ContractorsComponent,
@@ -89,9 +91,13 @@ const gapiClientConfig: NgGapiClientConfig = {
     SpeedyAppsComponent,
     PhonePipe,
     MakeReadyDialogComponent,
+    BonusTableDialogComponent,
     MakereadyDashComponent,
     MakereadyTableComponent,
-    MakereadyCompleteComponent
+    MakereadyCompleteComponent,
+    BonusDashComponent,
+    BonusTableComponent,
+    BonusComponent
   ],
   imports: [
     BrowserModule,
@@ -148,7 +154,8 @@ const gapiClientConfig: NgGapiClientConfig = {
   ],
   entryComponents: [
     ContractorDialogComponent,
-    MakeReadyDialogComponent
+    MakeReadyDialogComponent,
+    BonusTableDialogComponent
   ],
   bootstrap: [AppComponent]
 })

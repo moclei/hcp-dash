@@ -3,6 +3,7 @@ import {UserService} from '../services/user.service';
 import {Subscription} from 'rxjs/Subscription';
 import {UserProfile} from '../services/user.service';
 import {DashService} from '../services/dash-service.service';
+import {Observable} from 'rxjs/index';
 
 @Component({
   selector: 'app-header',
@@ -18,21 +19,42 @@ export class AppHeaderComponent implements OnInit, OnDestroy {
   profileImg = '';
   userEmail = '';
   userName = '';
+  isLoggedIn: Observable<boolean>;
+  userSubscription: Subscription;
 
   constructor(userService: UserService,
               private dashService: DashService) {
     this.userService = userService;
-    if (this.userService.isUserSignedIn()) {
+    this.isLoggedIn = userService.isUserSignedIn();
+/*
+    if (!userService.hasToken()) {
+      this.userSubscription = this.userService.isUserSignedIn().subscribe({
+        next(signedIn) {
+          if (signedIn) {
+            this.setAuthState(true);
+          }
+        },
+        error(msg) {
+          console.log('Error Signing in: ', msg);
+        }
+      });
+    } else {
       this.setAuthState(true);
     }
-    this.subscription = this.userService.whenSignedIn().subscribe(userAuthorized => {
-      console.log('app-header constructor whenSignedIn');
-      this.setAuthState(userAuthorized);
-    }, () => {
-      console.log('app-header constructor whenSignedIn error');
-    }, () => {
-      console.log('app-header constructor whenSignedIn complete');
-    });
+*/
+    if (!userService.hasToken()) {
+      this.userSubscription = this.userService.isUserSignedIn().subscribe((signedIn) => {
+        if (signedIn) {
+          console.log(true);
+          this.setAuthState(true);
+        }
+      }, (errorMsg) => {
+        console.warn('Error Signing in: ', errorMsg);
+      });
+    }
+    else{
+      this.setAuthState(true);
+    }
   }
 
   ngOnInit() {
@@ -44,6 +66,7 @@ export class AppHeaderComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
+    this.userSubscription.unsubscribe();
   }
 
   public openSidebar() {
@@ -57,7 +80,7 @@ export class AppHeaderComponent implements OnInit, OnDestroy {
 
 
   setAuthState(isSignedIn: boolean) {
-    console.log('userAuthorized: ' + isSignedIn);
+    // console.log('userAuthorized: ' + isSignedIn);
     if (isSignedIn) {
       this.userSignedIn = isSignedIn;
       this.userProfile = this.userService.getUserProfile();

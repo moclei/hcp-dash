@@ -3,7 +3,7 @@
   class="dash-toolbar mat-elevation-z5">
 
   <mat-toolbar-row
-    *ngIf="!this.userProfile">
+    *ngIf="!(isLoggedIn | async)">
     <img class="dash-logo" src="../../assets/watermeadow_logo_blue_gray_sm.png"/>
     <button
       ngClass="header-button"
@@ -13,7 +13,7 @@
   </mat-toolbar-row>
 
   <mat-toolbar-row
-    *ngIf="this.userProfile">
+    *ngIf="(isLoggedIn | async)">
 
     <button
       mat-icon-button
@@ -89,20 +89,20 @@
         </a>
       </p>
       <p
-        *ngIf="!this.userProfile">
+        *ngIf="!(isLoggedIn | async)">
         <button
           mat-button
           (click)="signOut()">Sign In
         </button>
       </p>
     </div>
-      <!--<p *ngIf="!this.userSignedIn" fxHide fxShow.md fxShow.lg><button class="signout-button" mat-button (click)="signIn()">sign in</button></p>-->
+      <!--<p *ngIf="!this.(isLoggedIn | async)" fxHide fxShow.md fxShow.lg><button class="signout-button" mat-button (click)="signIn()">sign in</button></p>-->
     <!--<p fxHide fxShow.md><button mat-button routerLink="">Property</button></p>-->
     <div
       class="img-profile-container"
       fxHide.xs>
       <img
-        *ngIf="this.userProfile"
+        *ngIf="(isLoggedIn | async)"
         [matMenuTriggerFor]="authMenu"
         class="profile-img profile-img-button"
         [src]="this.profileImg"/>
@@ -161,7 +161,7 @@
           fxLayout="row"
           fxLayoutAlign="center center">
           <img
-            *ngIf="this.userProfile"
+            *ngIf="(isLoggedIn | async)"
             [matMenuTriggerFor]="authMenu"
             class="profile-img profile-img-button"
             [src]="this.profileImg"/>
@@ -173,7 +173,7 @@
           </div>
         </div>
         <button
-          *ngIf="this.userSignedIn"
+          *ngIf="(isLoggedIn | async)"
           mat-menu-item
           (click)="signOut()">
           <span>Sign out</span>
@@ -184,7 +184,7 @@
   </mat-toolbar-row>
 
   <mat-toolbar-row
-    *ngIf="this.userProfile"
+    *ngIf="(isLoggedIn | async)"
     fxHide
     fxShow.xs>
 
@@ -196,7 +196,7 @@
       <img
         [matMenuTriggerFor]="subAuthMenu"
         class="profile-img profile-img-button"
-        *ngIf="this.userProfile"
+        *ngIf="(isLoggedIn | async)"
         [src]="this.profileImg"/>
     </div>
 
@@ -253,7 +253,7 @@
         <h6>{{this.userProfile.email}}</h6>
       </div>
       <button
-        *ngIf="this.userSignedIn"
+        *ngIf="(isLoggedIn | async)"
         mat-menu-item
         (click)="signOut()">
         <span>Sign out</span>

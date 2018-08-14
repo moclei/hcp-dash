@@ -24,7 +24,6 @@
     "@angular/platform-browser": "^6.0.5",
     "@angular/platform-browser-dynamic": "^6.0.5",
     "@angular/router": "^6.0.5",
-    "@thisissoon/angular-masonry": "^1.1.0",
     "@types/gapi": "0.0.35",
     "@types/gapi.auth2": "0.0.46",
     "angular-star-rating": "^4.0.0-beta.3",

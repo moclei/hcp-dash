@@ -38,17 +38,15 @@ export class AppBodyComponent implements OnInit, OnDestroy, AfterViewInit {
     ) {
       this.isExecutive = true;
     }
-    this.subscription = this.userService.whenSignedIn().subscribe(userAuthorized => {
-      console.log('app-body whenSignedIn');
-      this.userAuthorized = userAuthorized;
-      if (this.userAuthorized) {
-        this.sidenav.close();
-        this.sidenav.open();
-      } else {
-        this.sidenav.close();
-      }
-      console.log('userAuthorized: ' + userAuthorized);
-    });
+    if(!this.userService.hasToken()) {
+      this.userService.isUserSignedIn().subscribe(userAuthorized => {
+        // console.log('app-body whenSignedIn');
+        this.userAuthorized = userAuthorized;
+        // console.log('userAuthorized: ' + userAuthorized);
+      });
+    } else {
+      this.userAuthorized = false;
+    }
     this.dashService.toggleSidebar.subscribe(() => {
       if (this.sidenav.opened) {
         this.sidenav.close();
@@ -57,21 +55,21 @@ export class AppBodyComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     });
     this.dashService.closeSidebar.subscribe(() => {
-        this.sidenav.close();
+      this.sidenav.close();
     });
   }
   ngOnInit() {
   }
   ngAfterViewInit() {
-    if (this.userService.isUserSignedIn()) {
-      console.log('app-body.component -> afterViewInit -> userService.isUserSignedIn==true');
-      this.userAuthorized = true;
+    this.userService.isUserSignedIn().subscribe(userAuthorized => {
+      // console.log('app-body.component -> afterViewInit -> userService.isUserSignedIn=' + userAuthorized);
+      this.userAuthorized = userAuthorized;
       this.cdr.detectChanges();
-    }
+    });
   }
 
   ngOnDestroy() {
-      this.subscription.unsubscribe();
+    this.subscription.unsubscribe();
   }
 
   close() {

@@ -1,0 +1,46 @@
+<div>
+  <h2 mat-dialog-title>Edit Property Bonus Data: {{data.propertyName}}</h2>
+  <form
+    [formGroup]="editFormGroup"
+    class="mr-form">
+    <div
+      fxLayout="column">
+      <div
+        fxLayout="column"
+        fxLayoutAlign="start">
+        <mat-form-field>
+          <input
+            matInput
+            placeholder="Gross Potential Rent"
+            formControlName="grossPotential">
+        </mat-form-field>
+        <mat-form-field>
+          <input
+            matInput
+            placeholder="Collected Month to Date"
+            formControlName="collectedMTD">
+        </mat-form-field>
+
+      </div>
+      <div fxLayout="row" fxLayoutGap="16px">
+        <div>Last updated on {{this.updatedAt | date}}</div>
+      </div>
+
+      <div fxLayout="row" fxLayoutGap="16px" style="padding-top: 24px">
+        <button
+          mat-raised-button
+          color="accent"
+          (click)="updateBonusHandler()"
+          [disabled]="!editFormGroup.valid">
+          Save
+        </button>
+        <button
+          mat-raised-button
+          (click)="cancelUpdateBonusHandler()"
+          color="accent">
+          Cancel
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

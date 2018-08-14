@@ -13,16 +13,19 @@ import {
   MatButtonModule, MatCardModule, MatDialogModule, MatFormFieldModule, MatIconModule, MatInputModule, MatMenuModule,
   MatProgressSpinnerModule,
   MatSelectModule, MatSidenavModule,
-  MatToolbarModule, MatGridListModule
+  MatToolbarModule, MatGridListModule, MAT_DIALOG_DEFAULT_OPTIONS
 } from '@angular/material';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {ElasticModule} from 'angular2-elastic';
-import {DecisionBoardComponent} from './decision-board.component';
+import {
+  DecisionAnniversaryDialogComponent,
+  DecisionBoardComponent} from './decision-board.component';
 import {AngularFirestoreModule} from 'angularfire2/firestore';
 import {AngularFireModule} from 'angularfire2';
 import {environment} from '../../environments/environment';
 import {StarRatingModule} from 'angular-star-rating';
 import { NgxMasonryModule } from 'ngx-masonry';
+import {TimestampPipe} from '../pipes/timestamp.pipe';
 
 @NgModule({
   imports: [
@@ -57,12 +60,16 @@ import { NgxMasonryModule } from 'ngx-masonry';
     DecisionListComponent,
     DecisionInputComponent,
     DecisionDialogComponent,
+    DecisionAnniversaryDialogComponent,
+    TimestampPipe
   ],
   providers: [
-    DecisionService
+    DecisionService,
+    {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}}
   ],
   entryComponents: [
-    DecisionDialogComponent
+    DecisionDialogComponent,
+    DecisionAnniversaryDialogComponent
   ]
 })
 export class DecisionBoardModule {}
