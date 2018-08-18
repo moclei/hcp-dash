@@ -29,7 +29,6 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { MakereadyResultsComponent } from './makeready-dash/makeready-results/makeready-results.component';
 import {CoreModule} from './core/core.module';
 import { LoginPageComponent } from './login-page/login-page.component';
-import {DecisionBoardModule} from './decision-board/decisions.module';
 import {DashService} from './services/dash-service.service';
 import { ContractorsComponent } from './contractors/contractors.component';
 import {ContractorsModel} from './services/contractor.service';
@@ -48,7 +47,10 @@ import { TextMaskModule } from 'angular2-text-mask';
 import { SpeedyAppsComponent } from './speedy-apps/speedy-apps.component';
 import { PhonePipe } from './pipes/phone.pipe';
 import { MakereadyDashComponent } from './makeready-dash/makeready-dash.component';
-import {MakeReadyDialogComponent, MakereadyTableComponent} from './makeready-dash/makeready-table/makeready-table.component';
+import {
+  MakeReadyDialogComponent,
+  MakereadyTableComponent
+} from './makeready-dash/makeready-table/makeready-table.component';
 import { MakereadyCompleteComponent } from './makeready-dash/makeready-complete/makeready-complete.component';
 import { BonusDashComponent } from './bonus-dash/bonus-dash.component';
 import {BonusTableComponent, BonusTableDialogComponent} from './bonus-dash/bonus-table/bonus-table.component';
@@ -137,7 +139,6 @@ const gapiClientConfig: NgGapiClientConfig = {
     MatSelectModule,
     MatOptionModule,
     PapaParseModule,
-    DecisionBoardModule,
     AppRoutingModule,
     TextMaskModule,
     CoreModule

@@ -10,7 +10,6 @@ import {MakereadyBuilderComponent} from './makeready-dash/makeready-builder/make
 import {AuthGuard} from './auth-guard.service';
 import {LoginPageComponent} from './login-page/login-page.component';
 import {UserService} from './services/user.service';
-import {DecisionsRoutingModule} from './decision-board/decisions-routing.module';
 import {ContractorDashComponent} from './contractor-dash/contractor-dash.component';
 import {ThankYouVisitsComponent} from './thank-you-visits/thank-you-visits.component';
 import {SpeedyAppsComponent} from './speedy-apps/speedy-apps.component';
@@ -77,6 +76,10 @@ const routes: Routes = [
     component: BonusDashComponent
   },
   {
+    path: 'decisions',
+    loadChildren: './decision-board/decisions.module#DecisionBoardModule'
+  },
+  {
     path: '',
     component: HomepageComponent,
     canActivate: [AuthGuard]
@@ -86,7 +89,6 @@ const routes: Routes = [
 @NgModule({
   imports: [
     CommonModule,
-    DecisionsRoutingModule,
     RouterModule.forRoot(routes, {useHash: true})
   ],
   exports: [

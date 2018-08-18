@@ -2,20 +2,18 @@ import { NgModule } from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
-import {DecisionComponent, DecisionDialogComponent} from './decision/decision.component';
+import {DecisionComponent} from './decision/decision.component';
 import {DecisionsRoutingModule} from './decisions-routing.module';
 import {DecisionService} from './decision.service';
-import {DecisionListComponent} from './decision-list/decision-list.component';
+import {DecisionListComponent, DecisionDialogComponent} from './decision-list/decision-list.component';
 import {DecisionInputComponent} from './decision-input/decision-input.component';
 import {FlexLayoutModule} from '@angular/flex-layout';
-import {BrowserModule} from '@angular/platform-browser';
 import {
   MatButtonModule, MatCardModule, MatDialogModule, MatFormFieldModule, MatIconModule, MatInputModule, MatMenuModule,
   MatProgressSpinnerModule,
   MatSelectModule, MatSidenavModule,
   MatToolbarModule, MatGridListModule, MAT_DIALOG_DEFAULT_OPTIONS
 } from '@angular/material';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {ElasticModule} from 'angular2-elastic';
 import {
   DecisionAnniversaryDialogComponent,
@@ -30,12 +28,10 @@ import {TimestampPipe} from '../pipes/timestamp.pipe';
 @NgModule({
   imports: [
     CommonModule,
-    BrowserModule,
     NgxMasonryModule,
     FlexLayoutModule,
     MatToolbarModule,
     MatSidenavModule,
-    BrowserAnimationsModule,
     MatCardModule,
     MatButtonModule,
     MatSelectModule,
@@ -59,8 +55,8 @@ import {TimestampPipe} from '../pipes/timestamp.pipe';
     DecisionBoardComponent,
     DecisionListComponent,
     DecisionInputComponent,
-    DecisionDialogComponent,
     DecisionAnniversaryDialogComponent,
+    DecisionDialogComponent,
     TimestampPipe
   ],
   providers: [
@@ -68,8 +64,8 @@ import {TimestampPipe} from '../pipes/timestamp.pipe';
     {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}}
   ],
   entryComponents: [
-    DecisionDialogComponent,
-    DecisionAnniversaryDialogComponent
+    DecisionAnniversaryDialogComponent,
+    DecisionDialogComponent
   ]
 })
 export class DecisionBoardModule {}
