@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {UserService} from '../services/user.service';
+import {AppscriptService} from '../services/appscript.service';
 
 @Component({
   selector: 'app-homepage',
@@ -9,15 +9,9 @@ import {UserService} from '../services/user.service';
 export class HomepageComponent implements OnInit {
   // TODO make the button in the template
   // TODO emit an event to the sidenav in the app-body to toggle for small screens
-  // userService: UserService;
-
-
-  constructor(/*userService: UserService*/) {
-    // this.userService = userService;
+  constructor(public appsScript: AppscriptService) {
     // console.log('homepage.component constructer -> passing authenticationService');
   }
-
   ngOnInit() {
   }
-
 }

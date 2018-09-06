@@ -31,20 +31,17 @@ h1.app-name {
 }
 
 .dash-logo{
-  max-width: 80%;
-  max-height: 80%;
+  max-width: 150px;
+  max-height: 150px;
 }
-/*
-.header-button{
-  text-align: center;
-  color: white;
-  font-size: 1.5em;
-  font-weight: 400;
-  font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
-}*/
 
-.header-text-large{
-  font-size: 1.5em;
+.header-menu-items-large{
+  font-size: 2.5em;
+  font-weight: 400;
+}
+
+.header-menu-items-small{
+  font-size: 0.6em;
   font-weight: 400;
 }
 
@@ -72,11 +69,19 @@ h1.app-name {
 }
 
 .profile-img-button{
-  width: 40%;
+  width: 35px;
+  height: 35px;
   cursor: pointer;
+}
+.profile-img-small{
+  width: 35px;
+  height: 35px;
+  padding: 0;
 }
 
 .profile-img-large{
+  width: 70px;
+  height: 70px;
   padding: 4px;
 }
 
@@ -85,7 +90,6 @@ h1.app-name {
   padding: 16px;
   max-width: none;
 }
-
 
 .img-profile-container{
   text-align: right;

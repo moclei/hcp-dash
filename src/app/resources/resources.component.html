@@ -2,35 +2,35 @@
   <mat-card-title>Resources</mat-card-title>
   <mat-card-content>
     <mat-tab-group class="demo-tab-group">
-      <mat-tab *ngIf="this.isExecutive" label="Executive">
-        <div class="demo-tab-content">
+      <div *ngIf="auth.user | async as user;">
+        <mat-tab *ngIf="user.isEditor" label="Executive">
+          <div class="demo-tab-content">
+            <mat-list role="list">
+              <mat-list-item role="listitem">
+                <a target="_blank" href="https://script.google.com/a/hcptexas.com/macros/s/AKfycbx5Ry5bi55LNwIptPbVkoGiNDTon_7eRHulViL9kHoyoNhZDDE/exec">
+                  PTO Approvals
+                </a>
+              </mat-list-item>
+              <mat-list-item role="listitem">
+                <a target="_blank" href="https://docs.google.com/spreadsheets/d/1NKoncwqO_T8MRbeaSYWFHvEl-OUSB5iwbwtuPthMH-g/edit#gid=2102650795">
+                  Service Agreements
+                </a>
+              </mat-list-item>
+              <mat-list-item role="listitem">
+                <a target="_blank" href="https://docs.google.com/spreadsheets/d/1J3jCBsuHyijyI7dVIPSjCy-4E-7JoD4VQ9dAuEFgVZs/edit#gid=1636383335">
+                  Thank You Visits
+                </a>
+              </mat-list-item>
+              <mat-list-item role="listitem">
+                <a target="_blank" href="https://docs.google.com/spreadsheets/d/1AWUhgd6lRvtd2mjiAf_iSZDbwOdGjO6vCCZBK2EKOL4/edit#gid=0">
+                  Manager Reprimands
+                </a>
+              </mat-list-item>
 
-          <mat-list role="list">
-            <mat-list-item role="listitem">
-              <a target="_blank" href="https://script.google.com/a/hcptexas.com/macros/s/AKfycbx5Ry5bi55LNwIptPbVkoGiNDTon_7eRHulViL9kHoyoNhZDDE/exec">
-                PTO Approvals
-              </a>
-            </mat-list-item>
-            <mat-list-item role="listitem">
-              <a target="_blank" href="https://docs.google.com/spreadsheets/d/1NKoncwqO_T8MRbeaSYWFHvEl-OUSB5iwbwtuPthMH-g/edit#gid=2102650795">
-                Service Agreements
-              </a>
-            </mat-list-item>
-            <mat-list-item role="listitem">
-              <a target="_blank" href="https://docs.google.com/spreadsheets/d/1J3jCBsuHyijyI7dVIPSjCy-4E-7JoD4VQ9dAuEFgVZs/edit#gid=1636383335">
-                Thank You Visits
-              </a>
-            </mat-list-item>
-            <mat-list-item role="listitem">
-              <a target="_blank" href="https://docs.google.com/spreadsheets/d/1AWUhgd6lRvtd2mjiAf_iSZDbwOdGjO6vCCZBK2EKOL4/edit#gid=0">
-                Manager Reprimands
-              </a>
-            </mat-list-item>
-
-          </mat-list>
-        </div>
-      </mat-tab>
-
+            </mat-list>
+          </div>
+        </mat-tab>
+      </div>
 
       <mat-tab label="Management">
         <div class="demo-tab-content">
@@ -173,7 +173,7 @@
               <a target="_blank" href="https://portal.cadencebank.com/SignOn.aspx">Cadence Bank Deposits</a>
             </mat-list-item>
             <mat-list-item role="listitem">
-              <a target="_blank" href="hcp.appfolio.com">Appfolio</a>
+              <a target="_blank" href="https://hcp.appfolio.com">Appfolio</a>
             </mat-list-item>
           </mat-list>
         </div>

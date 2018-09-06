@@ -5,7 +5,6 @@ import {MatButton} from '@angular/material';
 import 'rxjs/add/observable/timer';
 import {SheetsModel} from '../services/directory.service';
 import { Listing } from '../services/directory.service';
-import {AppscriptService} from '../services/appscript.service';
 
 @Component({
   selector: 'app-directory',

@@ -9,8 +9,11 @@ export class MakeReady {
   unit: Unit;
   scope: Scope;
   contracts: Contract[];
+  checklist?: Checklist;
   updatedAt?: FieldValue;
   createdAt?: FieldValue;
+  deletedReason?: string;
+  deletedAt?: FieldValue;
 
   constructor(timestamp, email, propertyName, preparerName, unit) {
     this.timestamp = timestamp;
@@ -151,23 +154,29 @@ export interface Flooring {
   repairTileFlatFee: number;
   flooringList: Array<{}>;
 }
-/*
-export interface Upgrade {
-  name: string;
-  scope: string;
-  options: UpgradeCheckbox[];
-  contractDate: Date;
-  contractorName: string;
-  price: number;
+export interface Checklist {
+    makeReadyRequested: boolean;
+    materialsSubmitted: boolean;
+    makeReadyApproved: boolean;
+    materialsOrdered: boolean;
+    contractorScheduled: boolean;
+    contractorName: string;
+    materialsDelivered: boolean;
+    contractorStarted: boolean;
+    contractorFinished: boolean;
+    invoiceSubmitted: boolean;
+    invoicePaid: boolean;
+    makeReadyRequestedDate?: FieldValue;
+    materialsSubmittedDate?: FieldValue;
+    makeReadyApprovedDate?: FieldValue;
+    materialsOrderedDate?: FieldValue;
+    materialsDeliveredDate?: FieldValue;
+    contractorScheduledDate?: FieldValue;
+    contractorStartedDate?: FieldValue;
+    contractorFinishedDate?: FieldValue;
+    invoiceSubmittedDate?: FieldValue;
+    invoicePaidDate?: FieldValue;
 }
-
-export interface UpgradeCheckbox {
-  name: string;
-  description: string;
-  value: boolean;
-  price: number;
-}*/
-
 export interface Unit {
   unitName: string;
   bedrooms: number;

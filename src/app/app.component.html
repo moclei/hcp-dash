@@ -1,358 +1,222 @@
-
- <!-- <app-header></app-header>
-  <app-body></app-body> -->
-
-
- <div class="app-container" [class.app-is-mobile]="mobileQuery.matches">
-
-   <!--
-   <mat-toolbar color="primary" class="app-toolbar">
-     <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
-     <h1 class="app-name">Responsive App</h1>
-   </mat-toolbar>-->
+<!-- <app-header></app-header>
+ <app-body></app-body> -->
 
 
+<div class="app-container" [class.app-is-mobile]="mobileQuery.matches">
 
-     <!-- TOOLBAR - LARGE SCREEN -->
-     <div  *ngIf="userAuthorized; else notAuthorized">
-       <mat-toolbar color="primary" class="app-toolbar">
-       <button
-         mat-icon-button
-         (click)="snav.toggle()">
-         <mat-icon
-           color="white"
-           class="main-menu-icon">menu
-         </mat-icon>
-       </button>
-       <img class="dash-logo" src="../../assets/watermeadow_logo_blue_gray_sm.png"/>
-       <button
-         ngClass="header-text"
-         ngClass.gt-md="header-text-large"
-         mat-button routerLink="">HCP Dashboard
-       </button>
-       <span class="example-spacer"></span>
-       <div
-         fxLayoutAlign="row"
-         fxHide
-         fxShow.gt-sm>
-         <p>
-           <button
-             mat-button
-             class="header-button"
-             routerLink="">Home
-           </button>
-         </p>
-         <p>
-           <button
-             mat-button
-             class="header-button"
-             routerLink="/resources">Resources
-           </button>
-         </p>
-         <p>
-           <button
-             mat-button
-             class="header-button"
-             routerLink="/calendar">Calendar
-           </button>
-         </p>
-         <p>
-           <button
-             mat-button
-             class="header-button"
-             routerLink="/directory">Directory
-           </button>
-         </p>
-         <p>
-           <button
-             mat-button
-             class="header-button"
-             routerLink="/map">Maps
-           </button>
-         </p>
-         <p>
-           <button
-             mat-button
-             class="header-button"
-             routerLink="/contractors">Contractors
-           </button>
-         </p>
-
-         <p>
-           <a
-             mat-button
-             target="_blank"
-             href="https://hcp.appfolio.com/">Appfolio
-           </a>
-         </p>
-         <p
-           *ngIf="!(isLoggedIn | async)">
-           <button
-             mat-button
-             (click)="signOut()">Sign In
-           </button>
-         </p>
-       </div>
-       <div class="img-profile-container"
-         fxHide.xs>
-         <img [matMenuTriggerFor]="authMenu"
-           *ngIf="(isLoggedIn | async)"
-           class="profile-img profile-img-button"
-           [src]="this.profileImg"/>
-       </div>
-       <div
-         fxHide.gt-sm
-         fxHide.xs>
-         <button [matMenuTriggerFor]="menu"
-           mat-icon-button>
-           <mat-icon>more_vert</mat-icon>
-         </button>
-       </div>
-       <mat-menu #menu="matMenu">
-         <button
-           mat-menu-item
-           routerLink="">
-           <mat-icon>home</mat-icon>
-           <span>Home</span>
-         </button>
-         <button
-           mat-menu-item
-           routerLink="resources">
-           <span>Resources</span>
-         </button>
-         <button
-           mat-menu-item
-           routerLink="calendar">
-           <span>Calendar</span>
-         </button>
-         <button
-           mat-menu-item
-           routerLink="directory">
-           <span>Directory</span>
-         </button>
-         <button
-           mat-menu-item
-           routerLink="map">
-           <span>Maps</span>
-         </button>
-         <a
-           target="_blank"
-           mat-menu-item href="https://hcp.appfolio.com/">
-           <span>Appfolio</span>
-         </a>
-       </mat-menu>
-       <mat-menu class="profile-menu"
-         #authMenu="matMenu">
-         <div>
-           <div
-             fxLayout="row"
-             fxLayoutAlign="center center">
-             <img
-               *ngIf="(isLoggedIn | async)"
-               [matMenuTriggerFor]="authMenu"
-               class="profile-img profile-img-button"
-               [src]="this.profileImg"/>
-             <div
-               fxLayoutAlign="center start"
-               fxLayout="column">
-               <strong>{{this.userProfile?.name}}</strong>
-               <span>{{this.userProfile?.email}}</span>
-             </div>
-           </div>
-           <button
-             *ngIf="(isLoggedIn | async)"
-             mat-menu-item
-             (click)="signOut()">
-             <span>Sign out</span>
-           </button>
-         </div>
-       </mat-menu>
-     </mat-toolbar>
-
-     <!-- TOOLBAR - END OF LARGE SCREEN -->
-
-     <!-- TOOLBAR - SMALL SCREEN -->
-       <mat-toolbar  color="primary" class="app-toolbar" fxHide fxShow.xs>
-        <span
-          class="example-spacer">
-        </span>
-         <div class="img-profile-container">
-           <img
-             [matMenuTriggerFor]="subAuthMenu"
-             class="profile-img profile-img-button"
-             *ngIf="(isLoggedIn | async)"
-             [src]="this.profileImg"/>
-         </div>
-         <div>
-           <button mat-icon-button
-             [matMenuTriggerFor]="subMenu">
-             <mat-icon>more_vert</mat-icon>
-           </button>
-         </div>
-         <mat-menu #subMenu="matMenu">
-           <button
-             mat-menu-item
-             routerLink="">
-             <mat-icon>home</mat-icon>
-             <span>Home</span>
-           </button>
-           <button
-             mat-menu-item
-             routerLink="resources">
-             <span>Resources</span>
-           </button>
-           <button
-             mat-menu-item
-             routerLink="calendar">
-             <span>Calendar</span>
-           </button>
-           <button
-             mat-menu-item
-             routerLink="directory">
-             <span>Directory</span>
-           </button>
-           <button
-             mat-menu-item
-             routerLink="map">
-             <span>Maps</span>
-           </button>
-           <a
-             target="_blank"
-             mat-menu-item
-             href="https://hcp.appfolio.com/">
-             <span>Appfolio</span>
-           </a>
-         </mat-menu>
-         <mat-menu #subAuthMenu="matMenu" >
-           <div
-             fxLayoutAlign="center center"
-             fxLayout="column">
-             <h5>{{this.userProfile?.name}}</h5>
-             <h6>{{this.userProfile?.email}}</h6>
-           </div>
-           <button
-             *ngIf="(isLoggedIn | async)"
-             mat-menu-item
-             (click)="signOut()">
-             <span>Sign out</span>
-           </button>
-
-         </mat-menu>
-       </mat-toolbar>
-     </div>
-     <!-- TOOLBAR - END OF SMALL SCREEN -->
-
-     <!-- TOOLBAR - NOT LOGGED IN -->
-     <ng-template #notAuthorized>
-       <mat-toolbar  color="primary" class="app-toolbar">
-         <img class="dash-logo" src="../../assets/watermeadow_logo_blue_gray_sm.png"/>
-         <button
-           ngClass="header-button"
-           ngClass.lt-md="header-button-small"
-           mat-button >HCP Dashboard
-         </button>
-       </mat-toolbar>
-     </ng-template>
-     <!-- TOOLBAR - END OF NOT LOGGED IN -->
+    <!--
+    <mat-toolbar color="primary" class="app-toolbar">
+      <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
+      <h1 class="app-name">Responsive App</h1>
+    </mat-toolbar>-->
 
 
+    <!-- TOOLBAR - LARGE SCREEN -->
+    <div *ngIf="auth.user | async as user; else notAuthorized">
+        <mat-toolbar
+                color="primary"
+                class="app-toolbar">
+            <button
+                    mat-icon-button
+                    (click)="snav.toggle()">
+                <mat-icon
+                        color="white"
+                        class="main-menu-icon">menu
+                </mat-icon>
+            </button>
+            <button ngClass="header-text"
+                    mat-button
+                    routerLink="homepage">HCP Dashboard
+            </button>
+            <div fxFlex></div>
+            <div fxLayoutAlign="row"
+                 fxFlexAlign="space-evenly center"
+                 fxShow
+                 fxHide.lt-sm>
+                <button mat-button
+                        routerLink="/resources">Resources
+                </button>
+                <button mat-button
+                        routerLink="/contractors">Contractors
+                </button>
+                    <a mat-button
+                       target="_blank"
+                       href="https://hcp.appfolio.com/">Appfolio
+                    </a>
+                <button mat-button
+                        fxHide.lt-md
+                        routerLink="/directory">Directory
+                </button>
+                <button mat-button
+                        fxHide.lt-md
+                        routerLink="/map">Maps
+                </button>
+                <button mat-button
+                        fxHide.lt-md
+                        routerLink="/calendar">Calendar
+                </button>
+            </div>
+            <div fxHide
+                 fxShow.lt-sm>
+                <button [matMenuTriggerFor]="menu"
+                        mat-icon-button>
+                    <mat-icon>more_vert</mat-icon>
+                </button>
+            </div>
+            <mat-menu #menu="matMenu">
+                <button
+                        mat-menu-item
+                        routerLink="resources">
+                    <span>Resources</span>
+                </button>
+                <button
+                        mat-menu-item
+                        routerLink="calendar">
+                    <span>Calendar</span>
+                </button>
+                <button
+                        mat-menu-item
+                        routerLink="directory">
+                    <span>Directory</span>
+                </button>
+                <button
+                        mat-menu-item
+                        routerLink="map">
+                    <span>Maps</span>
+                </button>
+                <a
+                        target="_blank"
+                        mat-menu-item href="https://hcp.appfolio.com/">
+                    <span>Appfolio</span>
+                </a>
+            </mat-menu>
+            <div class="img-profile-container">
+                <img [matMenuTriggerFor]="authMenu"
+                     class="profile-img profile-img-button profile-img-small"
+                     [src]="user.photoURL"/>
+            </div>
+            <mat-menu class="profile-menu"
+                      #authMenu="matMenu">
+                <div fxLayout="column"
+                     fxLayoutAlign="center start"
+                     fxLayoutGap="8px">
+                    <img [matMenuTriggerFor]="authMenu"
+                         class="profile-img profile-img-button profile-img-large"
+                         [src]="user.photoURL"/>
+                    <strong>{{user.displayName}}</strong>
+                    <span>{{user.email}}</span>
+                    <button mat-stroked-button
+                            color="warn"
+                            (click)="auth.signOut()">Sign out
+                    </button>
+                </div>
+            </mat-menu>
+        </mat-toolbar>
+    </div>
+    <!-- TOOLBAR - NOT LOGGED IN -->
+    <ng-template #notAuthorized>
+        <mat-toolbar color="primary" class="app-toolbar">
+            <img class="dash-logo" src="../../assets/watermeadow_logo_blue_gray_sm.png"/>
+            <button
+                    ngClass="header-button"
+                    ngClass.lt-sm="header-button-small"
+                    mat-button>HCP Dashboard
+            </button>
+        </mat-toolbar>
+    </ng-template>
+    <!-- TOOLBAR - END OF NOT LOGGED IN -->
+
+    <mat-sidenav-container class="app-sidenav-container"
+                           [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
+        <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'"
+                     [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
+            <mat-nav-list *ngIf="auth.user | async as user;">
+                <mat-list role="list">
+                    <mat-list-item role="listitem">
+                        <h4>Forms</h4>
+                    </mat-list-item>
+                    <mat-list-item
+                            class="sidenav-list-item"
+                            role="listitem">
+                        <a target="_blank"
+                           href="https://docs.google.com/forms/d/e/1FAIpQLSe8XL1Oqq3A_0KfdFVJHuKVThjQYhli2TkY7kdAmPygq1bF5g/viewform?usp=sf_link">Thank
+                            You Visits</a>
+                    </mat-list-item>
+                    <mat-list-item
+                            class="sidenav-list-item"
+                            role="listitem">
+                        <a target="_blank"
+                           href="https://docs.google.com/forms/u/1/d/1v6ybI2OWNFnwUkKQFmSZ7rZRkTpWWv1c8Z3K7PFQxAw/edit?usp=drive_web">Service
+                            Agreements</a>
+                    </mat-list-item>
+                    <!--<mat-list-item
+                      class="sidenav-list-item"
+                      role="listitem">
+                      <a target="_blank"
+                         mat-button
+                         href="https://docs.google.com/forms/d/e/1FAIpQLScnLAApErjtQcrQ66x4eFO9JOrErj0i4Vq4m-SbyXuDYxXEWA/viewform?usp=sf_link">Speedy Approvals</a>
+                    </mat-list-item>-->
+                    <mat-list-item
+                            class="sidenav-list-item"
+                            role="listitem">
+                        <a target="_blank"
+                           href="https://docs.google.com/forms/d/e/1FAIpQLSdarMH653FWdSU_RWzhov0z9DA-VyfjdxXT4V0Vl7RcZuxPaA/viewform?usp=sf_link">Request
+                            PTO</a>
+                    </mat-list-item>
+                    <mat-list-item
+                            class="sidenav-list-item"
+                            role="listitem">
+                        <a target="_blank"
+                           href="https://goo.gl/forms/IUALMdVIG5Uxej4R2">Bedbug Treatment Request</a>
+                    </mat-list-item>
+                </mat-list>
+                <mat-divider></mat-divider>
+                <mat-list role="list">
+                    <mat-list-item role="listitem">
+                        <h4>Tools</h4>
+                    </mat-list-item>
+                    <mat-list-item role="listitem" routerLink="contractors">Contractors
+                    </mat-list-item>
+                    <mat-list-item role="listitem" routerLink="mr-table">Make Ready Builder
+                    </mat-list-item>
+                    <mat-list-item role="listitem" routerLink="speedy-apps">Speedy Approvals
+                    </mat-list-item>
+                    <mat-list-item role="listitem" routerLink="decisions">Decision Board
+                    </mat-list-item>
+                </mat-list>
+                <mat-divider></mat-divider>
+                <div *ngIf="auth.user | async as user;">
+                    <mat-list *ngIf="user.isEditor" role="list">
+                        <mat-list-item role="listitem">
+                            <h4>Experimental</h4>
+                        </mat-list-item>
+                        <mat-list-item role="listitem" routerLink="decisions">Decision Board
+                        </mat-list-item>
+                        <mat-list-item role="listitem" routerLink="ty-visits">New Thank You Visits
+                        </mat-list-item>
+                    </mat-list>
+                </div>
+            </mat-nav-list>
+        </mat-sidenav>
+
+        <mat-sidenav-content>
+            <div fxLayout="column" fxLayoutAlign="end">
+                <router-outlet></router-outlet>
+                <div style="height:30vh;"></div>
+                <mat-toolbar color="primary">
+                    <span class="example-spacer"></span>
+                    <span>Every Little Bit Matters</span>
+                </mat-toolbar>
+            </div>
+        </mat-sidenav-content>
+        <!--<div style="height: 75px;"></div>
+        <mat-toolbar color="primary" class="footer">
+          <mat-toolbar-row>
+            <span class="example-spacer"></span>
+            <span>Every Little Bit Matters</span>
+          </mat-toolbar-row>
+        </mat-toolbar>-->
+    </mat-sidenav-container>
 
 
-
-   <mat-sidenav-container class="app-sidenav-container"
-                          [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
-     <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'"
-                  [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
-       <mat-nav-list  *ngIf="this.userAuthorized">
-         <mat-list role="list">
-           <mat-list-item role="listitem">
-             <h4>Forms</h4>
-           </mat-list-item>
-           <mat-list-item
-             class="sidenav-list-item"
-             role="listitem">
-             <a target="_blank"
-                mat-button
-                href="https://docs.google.com/forms/d/e/1FAIpQLSe8XL1Oqq3A_0KfdFVJHuKVThjQYhli2TkY7kdAmPygq1bF5g/viewform?usp=sf_link">Thank You Visits</a>
-           </mat-list-item>
-           <mat-list-item
-             class="sidenav-list-item"
-             role="listitem">
-             <a target="_blank"
-                mat-button
-                href="https://docs.google.com/forms/u/1/d/1v6ybI2OWNFnwUkKQFmSZ7rZRkTpWWv1c8Z3K7PFQxAw/edit?usp=drive_web">Service Agreements</a>
-           </mat-list-item>
-           <!--<mat-list-item
-             class="sidenav-list-item"
-             role="listitem">
-             <a target="_blank"
-                mat-button
-                href="https://docs.google.com/forms/d/e/1FAIpQLScnLAApErjtQcrQ66x4eFO9JOrErj0i4Vq4m-SbyXuDYxXEWA/viewform?usp=sf_link">Speedy Approvals</a>
-           </mat-list-item>-->
-           <mat-list-item
-             class="sidenav-list-item"
-             role="listitem">
-             <a target="_blank"
-                mat-button
-                href="https://docs.google.com/forms/d/e/1FAIpQLSdarMH653FWdSU_RWzhov0z9DA-VyfjdxXT4V0Vl7RcZuxPaA/viewform?usp=sf_link">Request PTO</a>
-           </mat-list-item>
-           <mat-list-item
-             class="sidenav-list-item"
-             role="listitem">
-             <a target="_blank"
-                mat-button href="https://goo.gl/forms/IUALMdVIG5Uxej4R2">Bedbug Treatment Request</a>
-           </mat-list-item>
-         </mat-list>
-         <mat-divider></mat-divider>
-         <mat-list role="list">
-           <mat-list-item role="listitem">
-             <h4>Tools</h4>
-           </mat-list-item>
-           <mat-list-item class="sidenav-list-item" role="listitem">
-             <p><button mat-button color="warn" routerLink="/contractors">Contractors </button></p>
-           </mat-list-item>
-           <mat-list-item role="listitem" >
-             <button mat-button routerLink="mr-table">Make Ready Builder</button>
-           </mat-list-item>
-           <mat-list-item role="listitem" >
-             <button mat-button routerLink="speedy-apps">Speedy Approvals</button>
-           </mat-list-item>
-           <mat-list-item role="listitem" >
-             <button mat-button routerLink="decisions">Decision Board</button>
-           </mat-list-item>
-         </mat-list>
-         <mat-divider></mat-divider>
-         <mat-list *ngIf="this.isExecutive" role="list">
-           <mat-list-item role="listitem">
-             <h4>Experimental</h4>
-           </mat-list-item>
-           <mat-list-item role="listitem" >
-             <button mat-button routerLink="decisions">Decision Board</button>
-           </mat-list-item>
-           <mat-list-item role="listitem" >
-             <button mat-button routerLink="ty-visits">New Thank You Visits *<sup>new</sup></button>
-           </mat-list-item>
-         </mat-list>
-       </mat-nav-list>
-     </mat-sidenav>
-
-     <mat-sidenav-content>
-       <router-outlet></router-outlet>
-       <mat-toolbar color="primary">
-           <span class="example-spacer"></span>
-           <span>Every Little Bit Matters</span>
-       </mat-toolbar>
-     </mat-sidenav-content>
-     <!--<div style="height: 75px;"></div>
-     <mat-toolbar color="primary" class="footer">
-       <mat-toolbar-row>
-         <span class="example-spacer"></span>
-         <span>Every Little Bit Matters</span>
-       </mat-toolbar-row>
-     </mat-toolbar>-->
-   </mat-sidenav-container>
-
-
-
-
- </div>
+</div>
