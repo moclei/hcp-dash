@@ -23,6 +23,9 @@ h1.app-name {
      causes `<mat-sidenav-content>` to act as our scrolling element for desktop layouts. */
   flex: 1;
 }
+.app-sidenav-content{
+  min-height: 93vh;
+}
 
 .app-is-mobile .app-sidenav-container {
   /* When the sidenav is fixed, don't constrain the height of the sidenav container. This allows the
@@ -31,8 +34,10 @@ h1.app-name {
 }
 
 .dash-logo{
-  max-width: 150px;
-  max-height: 150px;
+  max-width: 69px;
+  max-height: 69px;
+  padding: 4px;
+  object-fit: contain;
 }
 
 .header-menu-items-large{
