@@ -12,8 +12,9 @@ export class MakeReady {
   checklist?: Checklist;
   updatedAt?: FieldValue;
   createdAt?: FieldValue;
-  deletedReason?: string;
-  deletedAt?: FieldValue;
+  removedReason?: string;
+  removedAt?: FieldValue;
+  removed?: boolean;
 
   constructor(timestamp, email, propertyName, preparerName, unit) {
     this.timestamp = timestamp;

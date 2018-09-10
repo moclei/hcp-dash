@@ -3,11 +3,34 @@ import {NgModule} from '@angular/core';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {PapaParseModule} from 'ngx-papaparse';
 import {
-    MatButtonModule, MatCheckboxModule, MatSidenavModule, MatToolbarModule,
-    MatIconModule, MatMenuModule, MatTabsModule, MatCardModule, MatListModule,
-    MatDividerModule, MatInputModule, MatTableModule, MatPaginatorModule, MatSortModule,
-    MatStepperModule, MatSelectModule, MatOptionModule, MatRadioModule, MatDialogModule, MatDatepickerModule, MatNativeDateModule,
-    MatExpansionModule, MatProgressSpinnerModule, MatProgressBarModule, MatBadgeModule, MatChipsModule
+    MatButtonModule,
+    MatCheckboxModule,
+    MatSidenavModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatMenuModule,
+    MatTabsModule,
+    MatCardModule,
+    MatListModule,
+    MatDividerModule,
+    MatInputModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatStepperModule,
+    MatSelectModule,
+    MatOptionModule,
+    MatRadioModule,
+    MatDialogModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatExpansionModule,
+    MatProgressSpinnerModule,
+    MatProgressBarModule,
+    MatBadgeModule,
+    MatChipsModule,
+    MatSlideToggleModule,
+    MatSnackBarModule
 } from '@angular/material';
 import {AppComponent} from './app.component';
 import {FlexLayoutModule} from '@angular/flex-layout';
@@ -105,6 +128,7 @@ const gapiClientConfig: NgGapiClientConfig = {
         MatDialogModule,
         MatToolbarModule,
         MatSidenavModule,
+        MatSlideToggleModule,
         MatIconModule,
         MatMenuModule,
         MatTabsModule,
@@ -125,6 +149,7 @@ const gapiClientConfig: NgGapiClientConfig = {
         MatTableModule,
         MatPaginatorModule,
         MatSortModule,
+        MatSnackBarModule,
         MatStepperModule,
         MatSelectModule,
         MatOptionModule,

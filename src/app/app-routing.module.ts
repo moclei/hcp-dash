@@ -85,6 +85,10 @@ const routes: Routes = [
         loadChildren: './decision-board/decisions.module#DecisionBoardModule'
     },
     {
+        path: 'bonus-dash',
+        component: BonusDashComponent
+    },
+    {
         path: '',
         component: HomepageComponent,
         canActivate: [AuthGuard]

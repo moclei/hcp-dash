@@ -1,208 +1,234 @@
-<h1 mat-dialog-title>Make Ready Info</h1>
+<h1 mat-dialog-title>Remove Make-Ready</h1>
 <div mat-dialog-content
      fxLayout="column"
      fxLayoutGap="8px">
-    <mat-card>
-        <mat-card-title>Basics</mat-card-title>
-        <mat-card-content>
-            <div class="mat-body-1">Make Ready Built on {{data.mr.timestamp | date}} by {{data.mr.preparerName}}
-                ({{data.mr.email}})
-            </div>
-        </mat-card-content>
-    </mat-card>
 
-    <mat-card>
-        <mat-card-title>Make Ready</mat-card-title>
-        <mat-card-content>
-            <div>
-                <div class="mat-body-1"><b>Scope: </b></div>
-                <div class="mat-body-1">{{data.mr.scope.scopeDescription}}</div>
-            </div>
-            <div>
-                <div class="mat-body-1"><b>Unit Size: </b></div>
-                <div class="mat-body-1">{{data.mr.unit.size}} square feet</div>
-            </div>
-            <div>
-                <div class="mat-body-1"><b>Rate: </b></div>
-                <div class="mat-body-1">${{data.mr.scope.baseMReadyRate}} / sq. ft.</div>
-            </div>
+    <div fxLayout="column"
+        fxLayoutGap="16px">
+        <mat-form-field style="margin-bottom: -1.25em">
+            <mat-select
+                    placeholder="Reason for Removing"
+                    (selectionChange)="changeReason($event.value)">
+                <mat-option
+                        *ngFor="let r of reasons" [value]="r">
+                    {{r}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field
+                class="example-full-width">
+            <textarea
+                    matInput
+                    [(ngModel)]="removedReason"
+                    placeholder="Leave a comment (required)"></textarea>
+        </mat-form-field>
+        <div [@slideInOut]="slideState">
+                <mat-form-field>
+                    <input matInput
+                           [(ngModel)]="movedInDate"
+                           [matDatepicker]="picker"
+                           placeholder="Move-in Date (optional)">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+        </div>
 
-            <div *ngIf="data.mr.scope.isFullTexture; else notFullTexture">
-                <div>
-                    <div class="mat-body-1"><b>Rate Add: </b></div>
-                    <div class="mat-body-1">$0.25 / sq. ft. additional for full texture.
-                        (${{data.mr.scope.baseMReadyRate}} + $0.25 =
-                        ${{data.mr.scope.baseMReadyRate + 0.25}})
-                    </div>
-                </div>
-                <div>
-                    <div class="mat-body-1"><b>Total: </b></div>
-                    <div class="mat-body-1">${{data.mr.scope.totalPrice}}</div>
-                </div>
-            </div>
-            <ng-template #notFullTexture>
-                <div>
-                    <div class="mat-body-1"><b>Total: </b></div>
-                    <div class="mat-body-1">${{data.mr.scope.totalPrice}}</div>
-                </div>
-            </ng-template>
-        </mat-card-content>
-    </mat-card>
-
-    <mat-card>
-        <mat-card-title>Extras</mat-card-title>
-        <mat-card-content>
-            <div *ngIf="data.mr.scope.costOfExtras > 0; else noExtras">
-                <mat-list>
-                    <mat-list-item *ngFor="let extra of data.mr.scope.extras.extrasAsArray">
-                        <div class="mat-body-1">
-                            {{extra.description}} @ ${{extra.price}} each = ${{extra.totalPrice}}
-                        </div>
-                    </mat-list-item>
-                    <mat-list-item>
-                        <div class="mat-body-1"><b>Total of Extras: </b></div>
-                        <div class="mat-body-1">${{data.mr.scope.costOfExtras}}</div>
-                    </mat-list-item>
-                </mat-list>
-            </div>
-            <ng-template #noExtras>
-                <div class="mat-body-1">No Extras</div>
-            </ng-template>
-        </mat-card-content>
-    </mat-card>
-
-    <mat-card>
-        <mat-card-title>Service Agreement</mat-card-title>
-        <mat-card-content>
-            <div *ngIf="data.mr.contracts[0].contractor; else noMainContractor">
-                <div class="mat-body-1"><b>Contractor: </b></div>
-                <div class="mat-body-1">{{data.mr.contracts[0].contractor}}</div>
-            </div>
-            <ng-template #noMainContractor>
-                <div class="mat-body-1"><b>Contract created blank.</b></div>
-            </ng-template>
-            <div>
-                <div class="mat-body-1"><b>Start Date: </b></div>
-                <div class="mat-body-1">{{data.mr.contracts[0].startDate}}</div>
-            </div>
-            <div>
-                <div class="mat-body-1"><b>Contract Price: </b></div>
-                <div class="mat-body-1">${{data.mr.contracts[0].price}}</div>
-            </div>
-        </mat-card-content>
-    </mat-card>
-
-    <mat-card *ngIf="data.mr.scope.showerTile">
-        <mat-card-title>Shower Tile Service Agreement</mat-card-title>
-        <mat-card-content>
-            <div *ngIf="data.mr.contracts[2].contractor; else noMainContractor">
-                <div class="mat-body-1"><b>Contractor: </b></div>
-                <div class="mat-body-1">{{data.mr.contracts[2].contractor}}</div>
-            </div>
-            <ng-template #noMainContractor>
-                <div class="mat-body-1"><b>Contract created blank.</b></div>
-            </ng-template>
-            <div>
-                <div class="mat-body-1"><b>Scope: </b></div>
-                <div class="mat-body-1">{{data.mr.contracts[2].scope}}</div>
-            </div>
-            <div>
-                <div class="mat-body-1"><b>Start Date: </b></div>
-                <div class="mat-body-1">{{data.mr.contracts[2].startDate}}</div>
-            </div>
-            <div>
-                <div class="mat-body-1"><b>Contract Price: </b></div>
-                <div class="mat-body-1">${{data.mr.contracts[2].price}}</div>
-            </div>
-        </mat-card-content>
-    </mat-card>
-
-    <mat-card *ngIf="data.mr.scope.granite">
-        <mat-card-title>Granite Countertops Service Agreement</mat-card-title>
-        <mat-card-content>
-            <div *ngIf="data.mr.contracts[1].contractor; else noMainContractor">
-                <div class="mat-body-1"><b>Contractor: </b></div>
-                <div class="mat-body-1">{{data.mr.contracts[1].contractor}}</div>
-            </div>
-            <ng-template #noMainContractor>
-                <div class="mat-body-1"><b>Contract created blank.</b></div>
-            </ng-template>
-            <div>
-                <div class="mat-body-1"><b>Scope: </b></div>
-                <div class="mat-body-1">{{data.mr.contracts[1].scope}}</div>
-            </div>
-            <div>
-                <div class="mat-body-1"><b>Start Date: </b></div>
-                <div class="mat-body-1">{{data.mr.contracts[1].startDate}}</div>
-            </div>
-            <div>
-                <div class="mat-body-1"><b>Contract Price:</b></div>
-                <div class="mat-body-1">${{data.mr.contracts[1].price}}</div>
-            </div>
-        </mat-card-content>
-    </mat-card>
-
-    <mat-card *ngIf="data.mr.scope.microwave">
-        <mat-card-title>Microwave Service Agreement</mat-card-title>
-        <mat-card-content>
-            <div *ngIf="data.mr.contracts[3].contractor; else noMainContractor">
-                <div class="mat-body-1"><b>Contractor: </b></div>
-                <div class="mat-body-1">{{data.mr.contracts[3].contractor}}</div>
-            </div>
-            <ng-template #noMainContractor>
-                <div class="mat-body-1"><b>Contract created blank.</b></div>
-            </ng-template>
-            <div>
-                <div class="mat-body-1"><b>Scope: </b></div>
-                <div class="mat-body-1">{{data.mr.contracts[3].scope}}</div>
-            </div>
-            <div>
-                <div class="mat-body-1"><b>Start Date: </b></div>
-                <div class="mat-body-1">{{data.mr.contracts[3].startDate}}</div>
-            </div>
-            <div>
-                <div class="mat-body-1"><b>Contract Price: </b></div>
-                <div class="mat-body-1">${{data.mr.contracts[3].price}}</div>
-            </div>
-        </mat-card-content>
-    </mat-card>
-
-    <mat-card *ngIf="data.mr.scope.flooring.flooringList.length > 0">
-        <mat-card-title>Flooring</mat-card-title>
-        <mat-card-content>
-            <div>
-                <mat-list>
-                    <mat-list-item *ngFor="let flooring of data.mr.scope.flooring.flooringList">
-                        <div>
-                            {{flooring.description}} @ {{flooring.quantity}} sq. ft.
-                        </div>
-                    </mat-list-item>
-                </mat-list>
-            </div>
-        </mat-card-content>
-    </mat-card>
-
-    <mat-card *ngIf="data.mr.scope.applianceList.length > 0">
-        <mat-card-title>Appliances</mat-card-title>
-        <mat-card-content>
-            <div>
-                <mat-list>
-                    <mat-list-item *ngFor="let appliance of data.mr.scope.applianceList">
-                        <div>
-                            {{appliance}}
-                        </div>
-                    </mat-list-item>
-                </mat-list>
-            </div>
-        </mat-card-content>
-    </mat-card>
+    </div>
 </div>
 
 <div mat-dialog-actions>
-    <button mat-button [mat-dialog-close]>Ok</button>
-    <div *ngIf="auth.user | async as user;">
-        <div *ngIf="user.isEditor">
-            <button mat-raised-button color="warn" (click)="deleteMakeReady()">DELETE</button>
-        </div>
-    </div>
+    <button mat-raised-button
+            color="warn"
+            [disabled]="!reasonSelected"
+            (click)="onRemoveHandler()">Remove It</button>
+    <button mat-button [mat-dialog-close]>Cancel</button>
 </div>
+
+<!--
+ <mat-card>
+     <mat-card-title>Basics</mat-card-title>
+     <mat-card-content>
+         <div class="mat-body-1">Make Ready Built on {{data.mr.timestamp | date}} by {{data.mr.preparerName}}
+             ({{data.mr.email}})
+         </div>
+     </mat-card-content>
+ </mat-card>
+ <mat-card>
+     <mat-card-title>Make Ready</mat-card-title>
+     <mat-card-content>
+         <div>
+             <div class="mat-body-1"><b>Scope: </b></div>
+             <div class="mat-body-1">{{data.mr.scope.scopeDescription}}</div>
+         </div>
+         <div>
+             <div class="mat-body-1"><b>Unit Size: </b></div>
+             <div class="mat-body-1">{{data.mr.unit.size}} square feet</div>
+         </div>
+         <div>
+             <div class="mat-body-1"><b>Rate: </b></div>
+             <div class="mat-body-1">${{data.mr.scope.baseMReadyRate}} / sq. ft.</div>
+         </div>
+
+         <div *ngIf="data.mr.scope.isFullTexture; else notFullTexture">
+             <div>
+                 <div class="mat-body-1"><b>Rate Add: </b></div>
+                 <div class="mat-body-1">$0.25 / sq. ft. additional for full texture.
+                     (${{data.mr.scope.baseMReadyRate}} + $0.25 =
+                     ${{data.mr.scope.baseMReadyRate + 0.25}})
+                 </div>
+             </div>
+             <div>
+                 <div class="mat-body-1"><b>Total: </b></div>
+                 <div class="mat-body-1">${{data.mr.scope.totalPrice}}</div>
+             </div>
+         </div>
+         <ng-template #notFullTexture>
+             <div>
+                 <div class="mat-body-1"><b>Total: </b></div>
+                 <div class="mat-body-1">${{data.mr.scope.totalPrice}}</div>
+             </div>
+         </ng-template>
+     </mat-card-content>
+ </mat-card>
+ <mat-card>
+     <mat-card-title>Extras</mat-card-title>
+     <mat-card-content>
+         <div *ngIf="data.mr.scope.costOfExtras > 0; else noExtras">
+             <mat-list>
+                 <mat-list-item *ngFor="let extra of data.mr.scope.extras.extrasAsArray">
+                     <div class="mat-body-1">
+                         {{extra.description}} @ ${{extra.price}} each = ${{extra.totalPrice}}
+                     </div>
+                 </mat-list-item>
+                 <mat-list-item>
+                     <div class="mat-body-1"><b>Total of Extras: </b></div>
+                     <div class="mat-body-1">${{data.mr.scope.costOfExtras}}</div>
+                 </mat-list-item>
+             </mat-list>
+         </div>
+         <ng-template #noExtras>
+             <div class="mat-body-1">No Extras</div>
+         </ng-template>
+     </mat-card-content>
+ </mat-card>
+ <mat-card>
+     <mat-card-title>Service Agreement</mat-card-title>
+     <mat-card-content>
+         <div *ngIf="data.mr.contracts[0].contractor; else noMainContractor">
+             <div class="mat-body-1"><b>Contractor: </b></div>
+             <div class="mat-body-1">{{data.mr.contracts[0].contractor}}</div>
+         </div>
+         <ng-template #noMainContractor>
+             <div class="mat-body-1"><b>Contract created blank.</b></div>
+         </ng-template>
+         <div>
+             <div class="mat-body-1"><b>Start Date: </b></div>
+             <div class="mat-body-1">{{data.mr.contracts[0].startDate}}</div>
+         </div>
+         <div>
+             <div class="mat-body-1"><b>Contract Price: </b></div>
+             <div class="mat-body-1">${{data.mr.contracts[0].price}}</div>
+         </div>
+     </mat-card-content>
+ </mat-card>
+ <mat-card *ngIf="data.mr.scope.showerTile">
+     <mat-card-title>Shower Tile Service Agreement</mat-card-title>
+     <mat-card-content>
+         <div *ngIf="data.mr.contracts[2].contractor; else noMainContractor">
+             <div class="mat-body-1"><b>Contractor: </b></div>
+             <div class="mat-body-1">{{data.mr.contracts[2].contractor}}</div>
+         </div>
+         <ng-template #noMainContractor>
+             <div class="mat-body-1"><b>Contract created blank.</b></div>
+         </ng-template>
+         <div>
+             <div class="mat-body-1"><b>Scope: </b></div>
+             <div class="mat-body-1">{{data.mr.contracts[2].scope}}</div>
+         </div>
+         <div>
+             <div class="mat-body-1"><b>Start Date: </b></div>
+             <div class="mat-body-1">{{data.mr.contracts[2].startDate}}</div>
+         </div>
+         <div>
+             <div class="mat-body-1"><b>Contract Price: </b></div>
+             <div class="mat-body-1">${{data.mr.contracts[2].price}}</div>
+         </div>
+     </mat-card-content>
+ </mat-card>
+ <mat-card *ngIf="data.mr.scope.granite">
+     <mat-card-title>Granite Countertops Service Agreement</mat-card-title>
+     <mat-card-content>
+         <div *ngIf="data.mr.contracts[1].contractor; else noMainContractor">
+             <div class="mat-body-1"><b>Contractor: </b></div>
+             <div class="mat-body-1">{{data.mr.contracts[1].contractor}}</div>
+         </div>
+         <ng-template #noMainContractor>
+             <div class="mat-body-1"><b>Contract created blank.</b></div>
+         </ng-template>
+         <div>
+             <div class="mat-body-1"><b>Scope: </b></div>
+             <div class="mat-body-1">{{data.mr.contracts[1].scope}}</div>
+         </div>
+         <div>
+             <div class="mat-body-1"><b>Start Date: </b></div>
+             <div class="mat-body-1">{{data.mr.contracts[1].startDate}}</div>
+         </div>
+         <div>
+             <div class="mat-body-1"><b>Contract Price:</b></div>
+             <div class="mat-body-1">${{data.mr.contracts[1].price}}</div>
+         </div>
+     </mat-card-content>
+ </mat-card>
+ <mat-card *ngIf="data.mr.scope.microwave">
+     <mat-card-title>Microwave Service Agreement</mat-card-title>
+     <mat-card-content>
+         <div *ngIf="data.mr.contracts[3].contractor; else noMainContractor">
+             <div class="mat-body-1"><b>Contractor: </b></div>
+             <div class="mat-body-1">{{data.mr.contracts[3].contractor}}</div>
+         </div>
+         <ng-template #noMainContractor>
+             <div class="mat-body-1"><b>Contract created blank.</b></div>
+         </ng-template>
+         <div>
+             <div class="mat-body-1"><b>Scope: </b></div>
+             <div class="mat-body-1">{{data.mr.contracts[3].scope}}</div>
+         </div>
+         <div>
+             <div class="mat-body-1"><b>Start Date: </b></div>
+             <div class="mat-body-1">{{data.mr.contracts[3].startDate}}</div>
+         </div>
+         <div>
+             <div class="mat-body-1"><b>Contract Price: </b></div>
+             <div class="mat-body-1">${{data.mr.contracts[3].price}}</div>
+         </div>
+     </mat-card-content>
+ </mat-card>
+ <mat-card *ngIf="data.mr.scope.flooring.flooringList.length > 0">
+     <mat-card-title>Flooring</mat-card-title>
+     <mat-card-content>
+         <div>
+             <mat-list>
+                 <mat-list-item *ngFor="let flooring of data.mr.scope.flooring.flooringList">
+                     <div>
+                         {{flooring.description}} @ {{flooring.quantity}} sq. ft.
+                     </div>
+                 </mat-list-item>
+             </mat-list>
+         </div>
+     </mat-card-content>
+ </mat-card>
+ <mat-card *ngIf="data.mr.scope.applianceList.length > 0">
+     <mat-card-title>Appliances</mat-card-title>
+     <mat-card-content>
+         <div>
+             <mat-list>
+                 <mat-list-item *ngFor="let appliance of data.mr.scope.applianceList">
+                     <div>
+                         {{appliance}}
+                     </div>
+                 </mat-list-item>
+             </mat-list>
+         </div>
+     </mat-card-content>
+ </mat-card>
+ -->
