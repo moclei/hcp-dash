@@ -15,6 +15,7 @@ import {
     MatDividerModule,
     MatInputModule,
     MatTableModule,
+    MatTooltipModule,
     MatPaginatorModule,
     MatSortModule,
     MatStepperModule,
@@ -71,6 +72,7 @@ import {BonusDashComponent} from './bonus-dash/bonus-dash.component';
 import {BonusTableComponent, BonusTableDialogComponent} from './bonus-dash/bonus-table/bonus-table.component';
 import {BonusComponent} from './bonus-dash/bonus/bonus.component';
 import {MakereadyChecklistComponent} from './makeready-dash/makeready-checklist/makeready-checklist.component';
+import {CurrencyPipe} from '@angular/common';
 
 /*
 const gapiClientConfig: NgGapiClientConfig = {
@@ -133,6 +135,7 @@ const gapiClientConfig: NgGapiClientConfig = {
         MatMenuModule,
         MatTabsModule,
         MatCardModule,
+        MatTooltipModule,
         MatListModule,
         MatDividerModule,
         MatDatepickerModule,
@@ -164,7 +167,8 @@ const gapiClientConfig: NgGapiClientConfig = {
         SheetsService,
         DashService,
         AppscriptService,
-        UnitLoadService
+        UnitLoadService,
+        CurrencyPipe
     ],
     entryComponents: [
         ContractorDialogComponent,

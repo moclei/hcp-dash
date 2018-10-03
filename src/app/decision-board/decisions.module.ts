@@ -1,71 +1,73 @@
-import { NgModule } from '@angular/core';
+import {NgModule} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import { CommonModule } from '@angular/common';
-
+import {CommonModule} from '@angular/common';
+import {Masonry, MasonryModule} from '@thisissoon/angular-masonry';
 import {DecisionComponent} from './decision/decision.component';
 import {DecisionsRoutingModule} from './decisions-routing.module';
 import {DecisionService} from './decision.service';
-import {DecisionListComponent, DecisionDialogComponent} from './decision-list/decision-list.component';
 import {DecisionInputComponent} from './decision-input/decision-input.component';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {
-  MatButtonModule, MatCardModule, MatDialogModule, MatFormFieldModule, MatIconModule, MatInputModule, MatMenuModule,
-  MatProgressSpinnerModule,
-  MatSelectModule, MatSidenavModule,
-  MatToolbarModule, MatGridListModule, MAT_DIALOG_DEFAULT_OPTIONS
+    MatButtonModule, MatCardModule, MatDialogModule, MatFormFieldModule, MatIconModule, MatInputModule, MatMenuModule,
+    MatProgressSpinnerModule,
+    MatSelectModule, MatSidenavModule,
+    MatToolbarModule, MatGridListModule, MAT_DIALOG_DEFAULT_OPTIONS, MatStepperModule
 } from '@angular/material';
 import {ElasticModule} from 'angular2-elastic';
-import {
-  DecisionAnniversaryDialogComponent,
-  DecisionBoardComponent} from './decision-board.component';
 import {AngularFirestoreModule} from 'angularfire2/firestore';
 import {AngularFireModule} from 'angularfire2';
 import {environment} from '../../environments/environment';
 import {StarRatingModule} from 'angular-star-rating';
-import { NgxMasonryModule } from 'ngx-masonry';
 import {TimestampPipe} from '../pipes/timestamp.pipe';
+import {DecisionAnniversaryDialogComponent, DecisionDashComponent, DecisionDialogComponent} from './decision-dash/decision-dash.component';
+import {DecisionReviewComponent} from './decision-review/decision-review.component';
+
+const masonryProviders = [
+    {provide: Masonry, useFactory: () => window['Masonry']}
+];
 
 @NgModule({
-  imports: [
-    CommonModule,
-    NgxMasonryModule,
-    FlexLayoutModule,
-    MatToolbarModule,
-    MatSidenavModule,
-    MatCardModule,
-    MatButtonModule,
-    MatSelectModule,
-    MatInputModule,
-    MatFormFieldModule,
-    MatGridListModule,
-    ReactiveFormsModule,
-    FormsModule,
-    MatIconModule,
-    StarRatingModule.forRoot(),
-    MatDialogModule,
-    MatMenuModule,
-    MatProgressSpinnerModule,
-    ElasticModule,
-    AngularFireModule.initializeApp(environment.firebase), // imports firebase/app needed for everything
-    AngularFirestoreModule, // imports firebase/firestore, only needed for database features
-    DecisionsRoutingModule
-  ],
-  declarations: [
-    DecisionComponent,
-    DecisionBoardComponent,
-    DecisionListComponent,
-    DecisionInputComponent,
-    DecisionAnniversaryDialogComponent,
-    DecisionDialogComponent,
-    TimestampPipe
-  ],
-  providers: [
-    DecisionService,
-    {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}}
-  ],
-  entryComponents: [
-    DecisionAnniversaryDialogComponent,
-    DecisionDialogComponent
-  ]
+    imports: [
+        CommonModule,
+        FlexLayoutModule,
+        MatToolbarModule,
+        MatSidenavModule,
+        MatCardModule,
+        MatButtonModule,
+        MatSelectModule,
+        MatInputModule,
+        MatFormFieldModule,
+        MatGridListModule,
+        ReactiveFormsModule,
+        FormsModule,
+        MatIconModule,
+        MatStepperModule,
+        StarRatingModule.forRoot(),
+        MasonryModule.forRoot(masonryProviders),
+        MatDialogModule,
+        MatMenuModule,
+        MatProgressSpinnerModule,
+        ElasticModule,
+        AngularFireModule.initializeApp(environment.firebase), // imports firebase/app needed for everything
+        AngularFirestoreModule, // imports firebase/firestore, only needed for database features
+        DecisionsRoutingModule
+    ],
+    declarations: [
+        DecisionComponent,
+        DecisionInputComponent,
+        DecisionAnniversaryDialogComponent,
+        DecisionDialogComponent,
+        TimestampPipe,
+        DecisionDashComponent,
+        DecisionReviewComponent
+    ],
+    providers: [
+        DecisionService
+    ],
+    entryComponents: [
+        DecisionAnniversaryDialogComponent,
+        DecisionDialogComponent
+    ]
 })
-export class DecisionBoardModule {}
+export class DecisionBoardModule {
+}

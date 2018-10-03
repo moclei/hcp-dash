@@ -1,5 +1,6 @@
 import * as firebase from 'firebase';
 import FieldValue = firebase.firestore.FieldValue;
+import Timestamp = firebase.firestore.Timestamp;
 
 export class MakeReady {
   timestamp: string;
@@ -15,6 +16,7 @@ export class MakeReady {
   removedReason?: string;
   removedAt?: FieldValue;
   removed?: boolean;
+  moveOutDate?: Timestamp;
 
   constructor(timestamp, email, propertyName, preparerName, unit) {
     this.timestamp = timestamp;
