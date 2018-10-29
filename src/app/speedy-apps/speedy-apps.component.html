@@ -1,0 +1,529 @@
+<mat-horizontal-stepper
+  [linear]="true"
+  #stepper="matHorizontalStepper"
+  class="stepper-container">
+
+
+  <mat-step
+    [stepControl]="basicsFormGroup"
+    #basicsStep>
+    <mat-card class="card-stepper">
+      <mat-card-content>
+        <form
+          [formGroup]="basicsFormGroup"
+          class="mr-form">
+          <ng-template
+            matStepLabel>Basics
+          </ng-template>
+          <div
+            fxLayout="column"
+            fxLayoutGap="16px"
+            fxFlexOffset="16px"
+            ngClass="full-width">
+            <section class="mat-typography">
+              <h2>Speedy Approvals</h2>
+            </section>
+            <div
+              fxLayout="column"
+              fxLayoutGap="16px"
+              fxFlexOffset="16px"
+              ngClass="full-width"
+              [ngClass.lt-sm]="{'full-width':true, 'fixed-width':false}"
+              [ngClass.gt-sm]="{'full-width':false, 'fixed-width':true}">
+
+              <mat-form-field>
+                <input
+                  matInput
+                  placeholder="Your Name (First and Last)"
+                  formControlName="nameCtrl"
+                  appFullnameValidator>
+              </mat-form-field>
+              <mat-form-field>
+                <input
+                  matInput
+                  placeholder="The Customer's Name (First and Last)"
+                  formControlName="customerNameCtrl"
+                  appFullnameValidator>
+              </mat-form-field>
+              <mat-form-field>
+                <mat-select
+                  placeholder="Property"
+                  formControlName="propertyCtrl"
+                  (selectionChange)="setPropertySelected($event)">
+                  <mat-option
+                    *ngFor="let property of properties"
+                    value={{property.sheetName}}>
+                    {{ property.name }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field
+                class="bigger-width">
+                <mat-select
+                  placeholder="Address"
+                  formControlName="unitCtrl"
+                  (selectionChange)="setUnitSelected($event)">
+                  <mat-option
+                    *ngFor="let unit of parsedUnits"
+                    value={{unit.unitName}}>
+                    {{ unit.unitName }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <mat-card
+              *ngIf="unitSelected"
+              class="unit-card">
+              <section class="mat-typography">
+                <mat-card-header>
+                  <mat-card-title>Unit details</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                  <p>Beds: {{unitSelected.bedrooms}}, Baths: {{unitSelected.bathrooms}}</p>
+                  <p>Floorplan: {{unitSelected.floorplan}}</p>
+                  <p>Size: {{unitSelected.size}} Sq. Ft.</p>
+                </mat-card-content>
+              </section>
+            </mat-card>
+
+            <div
+              style="padding-top: 24px">
+              <button
+                mat-raised-button
+                color="accent"
+                (click)="chooseBasics()"
+                [disabled]="!basicsFormGroup.valid"
+                matStepperNext>Next
+              </button>
+            </div>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </mat-step>
+
+
+  <mat-step
+    [stepControl]="incomeFormGroup"
+    #incomeStep>
+    <mat-card class="card-stepper">
+      <mat-card-content>
+        <form [formGroup]="incomeFormGroup">
+          <ng-template matStepLabel>Income</ng-template>
+          <div
+            fxLayout="column"
+            fxLayoutGap="16px"
+            fxFlexOffset="16px"
+            ngClass="full-width">
+            <div>
+              <h2 class="mat-h2">Income</h2>
+              <h3 class="mat-h3">Does the customer make more than 2.5 times the rent, per month?.</h3>
+            </div>
+            <div
+              fxLayout="column"
+              fxLayoutGap="16px"
+              fxFlexOffset="16px"
+              ngClass="full-width"
+              [ngClass.lt-sm]="{'full-width':true, 'fixed-width':false}"
+              [ngClass.gt-sm]="{'full-width':false, 'fixed-width':true}">
+              <mat-form-field>
+                <span matPrefix>$ &nbsp;</span>
+                <input
+                  matInput
+                  type="number"
+                  appPositiveNumber
+                  placeholder="Current Market Rent"
+                  formControlName="rentCtrl"
+                  (keyup)="incomeOrRentChangeHandler()">
+              </mat-form-field>
+              <mat-form-field>
+                <span matPrefix>$ &nbsp;</span>
+                <input
+                  matInput
+                  type="number"
+                  appPositiveNumber
+                  placeholder="Customer's Income"
+                  (keyup)="incomeOrRentChangeHandler()"
+                  formControlName="incomeCtrl">
+              </mat-form-field>
+            </div>
+            <mat-card
+              *ngIf="this.incomeRatio > -1"
+              class="unit-card">
+              <section class="mat-typography">
+                <mat-card-header>
+                  <mat-card-title>Income Ratio</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                  <p>Customer makes {{this.incomeRatio | number:'1.1'}} times the rent, per month.</p>
+                  <div *ngIf="this.incomeRatio<2.5">
+                    <br>
+                    <p style="color: red;">The customer makes less than 2.5 times the rent as income - they do not
+                      qualify with this
+                      income.</p>
+                  </div>
+                </mat-card-content>
+              </section>
+            </mat-card>
+
+            <mat-card
+              class="unit-card">
+              <section class="mat-typography">
+                <mat-card-header>
+                  <mat-card-title>Tips for verifying income:</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                  <mat-list dense>
+                    <mat-list-item>* Ask how much they make per month.</mat-list-item>
+                    <mat-list-item>* Include all sources of income such as: TANF, SSI letter, Food Stamps, Housing
+                      Authority Voucher, GI Forum, College Funds, Help
+                      Agencies..
+                    </mat-list-item>
+                    <mat-list-item>* Other forms can be considered - call Mike to discuss.</mat-list-item>
+                    <mat-list-item>* If they are getting rental assistance, use their portion of the rent instead of the
+                      entire rent.
+                    </mat-list-item>
+                    <mat-list-item>* After pre-approval we will verify the income with documents they bring such as:
+                      Check stubs, direct deposit, income tax, bank statements and more.
+                    </mat-list-item>
+                  </mat-list>
+                </mat-card-content>
+              </section>
+            </mat-card>
+
+            <div fxLayout="row" fxLayoutGap="16px" style="padding-top: 24px">
+              <button
+                mat-raised-button
+                color="accent"
+                matStepperPrevious>Back
+              </button>
+              <button
+                mat-raised-button
+                color="accent"
+                [disabled]="!incomeFormGroup.valid"
+                matStepperNext>Next
+              </button>
+            </div>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </mat-step>
+
+  <mat-step
+    [stepControl]="employmentFormGroup"
+    #employmentStep>
+    <mat-card>
+      <mat-card-content>
+
+
+        <form [formGroup]="employmentFormGroup">
+          <ng-template matStepLabel>Employment</ng-template>
+          <div fxLayout="column"
+               fxLayoutGap="16px"
+               fxFlexOffset="16px"
+               ngClass="full-width">
+            <div>
+              <h2 class="mat-h2">Employment History</h2>
+            </div>
+
+            <div
+              fxLayout="column"
+              fxLayoutGap="16px"
+              fxFlexOffset="16px"
+              ngClass="full-width"
+              [ngClass.lt-sm]="{'full-width':true, 'fixed-width':false}"
+              [ngClass.gt-sm]="{'full-width':false, 'fixed-width':true}">
+              <h3 class="mat-h3">Have you been employed for more than a year?</h3>
+              <mat-radio-group
+                formControlName="employmentCtrl"
+                fxLayoutGap="4px"
+                fxLayout="column"
+                fxLayoutAlign="space-evenly"
+                (change)="enableFollowOn($event, 'fullDeposit')">
+                <mat-radio-button value="Yes">Yes</mat-radio-button>
+                <mat-radio-button value="No">No</mat-radio-button>
+              </mat-radio-group>
+
+              <div
+                [@slideInOut]="fullDepositState">
+                <h3 class="mat-h3">Are you willing to pay a full month's rent as deposit?</h3>
+                <mat-radio-group
+                  formControlName="fullDepositCtrl"
+                  fxLayoutGap="4px"
+                  fxLayout="column"
+                  fxLayoutAlign="space-evenly"
+                  (change)="chooseFullDeposit($event)">
+                  <mat-radio-button value="Yes">Yes</mat-radio-button>
+                  <mat-radio-button value="No">No</mat-radio-button>
+                </mat-radio-group>
+              </div>
+            </div>
+
+            <div
+              fxLayout="row"
+              fxLayoutGap="16px"
+              style="padding-top: 24px">
+              <button
+                mat-raised-button
+                color="accent"
+                matStepperPrevious>Back
+              </button>
+              <button
+                mat-raised-button
+                color="accent"
+                [disabled]="!employmentFormGroup.valid"
+                matStepperNext>Next
+              </button>
+            </div>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </mat-step>
+
+  <mat-step
+    [stepControl]="rentalFormGroup"
+    #rentalStep>
+    <mat-card>
+      <mat-card-content>
+
+        <form
+          [formGroup]="rentalFormGroup">
+          <ng-template matStepLabel>Rental</ng-template>
+          <div fxLayout="column"
+               fxLayoutGap="16px"
+               fxFlexOffset="16px"
+               ngClass="full-width">
+            <div>
+              <h2 class="mat-h2">Rental History</h2>
+            </div>
+
+            <div
+              fxLayout="column"
+              fxLayoutGap="16px"
+              fxFlexOffset="16px"
+              ngClass="full-width"
+              [ngClass.lt-sm]="{'full-width':true, 'fixed-width':false}"
+              [ngClass.gt-sm]="{'full-width':false, 'fixed-width':true}">
+              <h3 class="mat-h3">(Are they clear from the "Do Not Rent To" List?)</h3>
+              <mat-radio-group
+                formControlName="rentalCtrl"
+                fxLayoutGap="4px"
+                fxLayout="column"
+                (change)="chooseRental($event)"
+                fxLayoutAlign="space-evenly">
+                <mat-radio-button value="Yes">Yes</mat-radio-button>
+                <mat-radio-button value="No">No</mat-radio-button>
+              </mat-radio-group>
+            </div>
+
+            <mat-card
+              class="unit-card">
+              <section class="mat-typography">
+                <mat-card-header>
+                  <mat-card-title>Check the "Do Not Rent To List" while they wait:</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                  <mat-list dense>
+                    <mat-list-item><a target="_blank"
+                                      href="https://sites.google.com/a/hcptexas.com/past-residents-search/">"Do not rent
+                      to list" Search</a>
+                    </mat-list-item>
+                  </mat-list>
+                </mat-card-content>
+              </section>
+            </mat-card>
+
+            <div
+              fxLayout="row"
+              fxLayoutGap="16px"
+              style="padding-top: 24px">
+              <button
+                mat-raised-button
+                color="accent"
+                matStepperPrevious>Back
+              </button>
+              <button
+                mat-raised-button
+                color="accent"
+                [disabled]="!rentalFormGroup.valid"
+                matStepperNext>Next
+              </button>
+            </div>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </mat-step>
+
+  <mat-step
+    [stepControl]="legalFormGroup"
+    #legalStep>
+    <mat-card>
+      <mat-card-content>
+        <form
+          [formGroup]="legalFormGroup">
+          <ng-template matStepLabel>Legal</ng-template>
+          <div fxLayout="column"
+               fxLayoutGap="16px"
+               fxFlexOffset="16px"
+               ngClass="full-width">
+            <div>
+              <h2 class="mat-h2">Legal History</h2>
+            </div>
+
+            <div fxLayout="column"
+                 fxLayoutGap="16px"
+                 fxFlexOffset="16px"
+                 ngClass="full-width"
+                 [ngClass.lt-sm]="{'full-width':true, 'fixed-width':false}"
+                 [ngClass.gt-sm]="{'full-width':false, 'fixed-width':true}">
+
+              <h3 class="mat-h3">(Do they pass a criminal history check?)</h3>
+              <mat-radio-group
+                formControlName="legalCtrl"
+                fxLayoutGap="4px"
+                fxLayout="column"
+                fxLayoutAlign="space-evenly"
+                (change)="enableFollowOn($event, 'appeal')">
+                <mat-radio-button value="Yes">Yes</mat-radio-button>
+                <mat-radio-button value="No">No</mat-radio-button>
+              </mat-radio-group>
+              <div
+                [@slideInOut]="appealState">
+
+                <h3 class="mat-h3">Do they want to appeal the decision? (Appeal = call Mike)</h3>
+                <mat-radio-group
+                  formControlName="appealCtrl"
+                  fxLayoutGap="4px"
+                  fxLayout="column"
+                  (change)="chooseAppeal($event)"
+                  fxLayoutAlign="space-evenly">
+                  <mat-radio-button value="Yes">Yes</mat-radio-button>
+                  <mat-radio-button value="No">No</mat-radio-button>
+                </mat-radio-group>
+              </div>
+            </div>
+
+            <mat-card
+              class="unit-card">
+              <section class="mat-typography">
+                <mat-card-header>
+                  <mat-card-title>Check while they wait:</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                  <mat-list dense>
+                    <mat-list-item role="listitem">
+                      <a target="_blank" href="https://login.publicdata.com/">Public Data</a>
+                    </mat-list-item>
+                    <mat-list-item role="listitem">
+                      <a target="_blank" href="https://www.dps.texas.gov/">DPS</a>
+                    </mat-list-item>
+                  </mat-list>
+                </mat-card-content>
+              </section>
+            </mat-card>
+
+            <div fxLayout="row" fxLayoutGap="16px" style="padding-top: 24px">
+              <button
+                mat-raised-button
+                color="accent"
+                matStepperPrevious>Back
+              </button>
+              <button
+                mat-raised-button
+                color="accent"
+                [disabled]="!legalFormGroup.valid"
+                (click)="processApproval()"
+                matStepperNext>Next
+              </button>
+            </div>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </mat-step>
+
+  <mat-step
+    [stepControl]="resultFormGroup"
+    #resultStep>
+    <form [formGroup]="resultFormGroup">
+      <ng-template matStepLabel>Done</ng-template>
+
+
+      <mat-card>
+        <div
+          fxLayout="column"
+          fxLayoutAlign="center center">
+
+          <div *ngIf="!this.submitted"
+               fxLayout="column"
+               fxLayoutAlign="center center">
+            <div *ngIf="this.approved; else notApproved">
+              <div
+                *ngIf="!this.isAppeal; else isAppeal">
+                <h1 class="mat-h1">Welcome to the Family!</h1>
+                <h2 class="mat-h2">{{this.basicsFormGroup.value.customerNameCtrl}}'s application is pre-approved</h2>
+                <div *ngIf="this.fullDeposit;  else notFullDeposit">
+                  <p> &nbsp;with a full deposit</p>
+                </div>
+                <ng-template #notFullDeposit>.</ng-template>
+              </div>
+              <ng-template #isAppeal>
+                <h2 class="mat-h2">Application is not pre-approved, pending an appeal</h2>
+                <p>{{this.basicsFormGroup.value.customerNameCtrl}}'s application was not pre-approved</p>
+                <p>Since the prospective customer requested an appeal based on their legal history, call Mike to
+                  discuss.</p>
+              </ng-template>
+            </div>
+
+            <ng-template #notApproved>
+              <h2 class="mat-h2">The application is not pre-approved.</h2>
+            </ng-template>
+          </div>
+
+          <div *ngIf="this.processing; else showResults">
+            <mat-spinner></mat-spinner>
+            <h2 class="mat-h2">Submitting the Speedy App!</h2>
+            <p>This should take approximately 10 seconds.</p>
+          </div>
+          <ng-template #showResults>
+            <div *ngIf="this.submitted; else notSubmitted">
+              <p>The Speedy App for {{this.speedyApp?.customerName}} has been submitted. Check your email for the
+                result.</p>
+              <button mat-stroked-button
+                      (click)="reset()">
+                Do Another</button>
+            </div>
+            <ng-template #notSubmitted>
+              <p>One last step, press 'Finish' below to send Your Speedy App for {{this.speedyApp?.customerName}}.</p>
+            </ng-template>
+          </ng-template>
+        </div>
+      </mat-card>
+
+      <div
+        fxLayout="row"
+        fxLayoutGap="16px"
+        style="padding-top: 24px">
+        <button
+          mat-raised-button
+          color="accent"
+          matStepperPrevious>Back
+        </button>
+        <div *ngIf="!this.submitted">
+          <button
+            mat-raised-button
+            (click)="onSubmit()"
+            [disabled]="this.processing"
+            color="accent">Finish
+          </button>
+        </div>
+      </div>
+    </form>
+  </mat-step>
+
+</mat-horizontal-stepper>
+<div style="height: 250px;"></div>
+
