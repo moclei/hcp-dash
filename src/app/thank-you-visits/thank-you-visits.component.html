@@ -1,0 +1,415 @@
+<mat-card class="card-stepper">
+  <mat-card-content>
+    <mat-horizontal-stepper [linear]="false" #stepper="matHorizontalStepper" >
+
+      <mat-step [stepControl]="firstFormGroup" #step1>
+        <form [formGroup]="firstFormGroup" class="mr-form">
+          <ng-template matStepLabel>Unit details</ng-template>
+          <div fxLayout="column" fxLayoutGap="32px" fxFlexOffset="16px" fxFlex.gt-sm="50%" fxFlex="100%">
+            <div fxLayoutGap="8px" fxLayout="column" fxLayoutAlign="start start">
+              <h2 >Thank You Visit Form</h2>
+              <h4 >Unit details</h4>
+              <mat-form-field>
+                <input matInput placeholder="Your Name (First and Last)" formControlName="nameCtrl" appFullnameValidator required>
+              </mat-form-field>
+              <mat-form-field>
+                <mat-select placeholder="Property" formControlName="propertyCtrl" (selectionChange)="setPropertySelected($event)" required>
+                  <mat-option *ngFor="let property of properties" value={{property.sheetName}}>
+                    {{ property.name }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field class="bigger-width">
+                <mat-select placeholder="Address" formControlName="unitCtrl" (selectionChange)="setUnitSelected($event)" required>
+                  <mat-option *ngFor="let unit of parsedUnits" value={{unit.unitName}}>
+                    {{ unit.unitName }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <div *ngIf="unitSelected">
+                <div>Beds: {{unitSelected.Bedrooms}}, Baths: {{unitSelected.Bathrooms}}</div>
+                <div>Floorplan: {{unitSelected.Code}}</div>
+                <div>Size: {{unitSelected.Size}} Sq. Ft.</div>
+              </div>
+            </div>
+            <div style="padding-top: 24px">
+              <button mat-raised-button color="accent"  [disabled]="!firstFormGroup.valid" matStepperNext>Next</button>
+            </div>
+          </div>
+        </form>
+      </mat-step>
+
+      <mat-step [stepControl]="secondFormGroup" #step2>
+        <form [formGroup]="secondFormGroup">
+          <ng-template matStepLabel>Entry</ng-template>
+          <!--<div fxLayout="column" fxLayoutGap="32px"  fxFlexOffset="16px" >-->
+          <div fxLayout="column" fxLayoutGap="32px" fxFlexOffset="16px" fxFlex.gt-sm="75%" fxFlex="100%">
+            <div fxLayoutGap="8px" fxLayout="column" fxLayoutAlign="start start">
+              <h4>Entry Questions</h4>
+              <div fxLayoutGap="32px"
+                   fxLayout="row wrap"
+                   fxLayoutAlign="space-between start"
+                   fxFlexOffset="16px">
+
+                <div fxLayoutGap="4px"
+                     fxFlex="220px"
+                     fxLayout="column"
+                     fxLayoutAlign="start start">
+                  <h4 class="step-header">Resident was home?</h4>
+                  <mat-radio-group formControlName="someoneHomeCtrl"
+                                   fxLayout="column"
+                                   fxLayoutAlign="space-evenly"
+                                   fxLayoutGap="4px"
+                                   (change)="someoneHomeCtrlChange($event)">
+                    <mat-radio-button value="1">Someone was home</mat-radio-button>
+                    <mat-radio-button value="2">No one was home</mat-radio-button>
+                  </mat-radio-group>
+                  <div [@slideInOut]="someoneHomeState">
+                    <div>
+                      <mat-form-field>
+                        <input matInput
+                               placeholder="Customer's Name"
+                               formControlName="customerNameCtrl" >
+                      </mat-form-field>
+                      <mat-form-field>
+                        <input matInput
+                               placeholder="Customer's Contact"
+                               formControlName="customerContactCtrl" >
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+
+                <div fxLayoutGap="4px"
+                     fxFlex="220px"
+                     fxLayout="column"
+                     fxLayoutAlign="start start">
+                  <h4 class="step-header">Gained entry?</h4>
+                  <mat-radio-group formControlName="enteredCtrl"
+                                   fxLayoutGap="4px"
+                                   fxLayout="column"
+                                   fxLayoutAlign="space-evenly"
+                                   (change)="weEnteredCtrlChange($event)">
+                    <mat-radio-button value="1">We entered</mat-radio-button>
+                    <mat-radio-button value="2">We did not enter</mat-radio-button>
+                  </mat-radio-group>
+                  <div [@slideInOut]="weEnteredState">
+                    <div>
+                      <mat-form-field>
+                        <input matInput
+                               placeholder="Reason for not entering"
+                               formControlName="noEntryReasonCtrl" >
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div fxLayout="row"  fxLayoutGap="16px"  style="padding-top: 24px">
+                <button mat-raised-button color="accent"  matStepperPrevious>Back</button>
+                <button mat-raised-button color="accent" matStepperNext>Next</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </mat-step>
+
+      <mat-step [stepControl]="thirdFormGroup"  #step3>
+        <form [formGroup]="thirdFormGroup">
+          <ng-template matStepLabel>Visit Questions</ng-template>
+          <div fxLayout="column" fxLayoutGap="32px" fxFlexOffset="16px">
+            <div fxLayoutGap="8px" fxLayout="column" fxLayoutAlign="start start">
+
+              <h4 >Thank you visit questions</h4>
+
+              <div fxLayout="column" fxLayoutAlign="start" fxLayoutGap="4px">
+                <h4 class="step-header">Fire Extinguisher Present?</h4>
+                <mat-radio-group formControlName="extinguisherPresentCtrl"
+                                 fxLayout="column"
+                                 fxLayoutAlign="space-evenly"
+                                 fxLayoutGap="4px"
+                                 (change)="fireExtCtrlChange($event)">
+                  <mat-radio-button value="1">Yes</mat-radio-button>
+                  <mat-radio-button value="2">No, no fire extinguisher</mat-radio-button>
+                </mat-radio-group>
+                <div [@slideInOut]="fireExtinguisherState">
+                  <div>
+                    <h4 class="step-header">Fire extinguisher under kitchen sink?</h4>
+                    <mat-radio-group formControlName="extinguisherUnderSinkCtrl"
+                                     fxLayout="column"
+                                     fxLayoutAlign="space-evenly"
+                                     fxLayoutGap="4px"
+                                     (change)="fireExtLocationCtrlChange($event)">
+                      <mat-radio-button value="1">Yes</mat-radio-button>
+                      <mat-radio-button value="2">No, elsewhere</mat-radio-button>
+                    </mat-radio-group>
+                    <div [@slideInOut]="extinguisherLocationState">
+                      <div>
+                        <mat-form-field>
+                          <input matInput
+                                 placeholder="Location"
+                                 formControlName="extinguisherLocationCtrl" >
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <h4 class="step-header">Fire Extinguisher full?</h4>
+                    <mat-radio-group formControlName="extinguisherFullCtrl"
+                                     fxLayout="column"
+                                     fxLayoutAlign="space-evenly"
+                                     fxLayoutGap="4px">
+                      <mat-radio-button value="1">Yes, display shows it in green</mat-radio-button>
+                      <mat-radio-button value="2">No, the display showed it in red</mat-radio-button>
+                    </mat-radio-group>
+                  </div>
+                </div>
+              </div>
+
+              <div fxLayout="column"
+                   fxLayoutAlign="start"
+                   fxLayoutGap="4px">
+                <h4 class="step-header">Any water leaks?</h4>
+                <mat-radio-group formControlName="leaksPresentCtrl"
+                                 fxLayout="column"
+                                 fxLayoutAlign="space-evenly"
+                                 fxLayoutGap="4px"
+                                 (change)="leaksCtrlChange($event)">
+                  <mat-radio-button value="1">Yes</mat-radio-button>
+                  <mat-radio-button value="2">No, I have looked and asked and there are no leaks.</mat-radio-button>
+                </mat-radio-group>
+                <div [@slideInOut]="leaksLocationState">
+                  <div>
+                    <mat-form-field>
+                      <input matInput
+                             placeholder="Locations of leaks"
+                             formControlName="leaksLocationCtrl" >
+                    </mat-form-field>
+                  </div>
+                </div>
+              </div>
+
+              <div fxLayout="column"
+                   fxLayoutAlign="start"
+                   fxLayoutGap="4px">
+                <h4 class="step-header">Do they have the maintenance service phone number sticker on their fridge?</h4>
+                <mat-radio-group formControlName="stickerPresentCtrl"
+                                 fxLayout="column"
+                                 fxLayoutAlign="space-evenly"
+                                 fxLayoutGap="4px">
+                  <mat-radio-button value="1">Yes</mat-radio-button>
+                  <mat-radio-button value="2">No, there is no sticker.</mat-radio-button>
+                </mat-radio-group>
+              </div>
+
+              <div fxLayout="column"
+                   fxLayoutAlign="start"
+                   fxLayoutGap="4px">
+                <h4 class="step-header">Is the front door secure?</h4>
+                <mat-radio-group formControlName="doorSecureCtrl"
+                                 fxLayout="column"
+                                 fxLayoutAlign="space-evenly"
+                                 fxLayoutGap="4px"
+                                 (change)="doorSecurityCtrlChange($event)">
+                  <mat-radio-button value="1">Yes</mat-radio-button>
+                  <mat-radio-button value="2">No</mat-radio-button>
+                </mat-radio-group>
+                <div [@slideInOut]="doorSecurityState">
+                  <div>
+                    <mat-form-field>
+                      <input matInput
+                             placeholder="What is it missing?"
+                             formControlName="doorSecureMissingCtrl" >
+                    </mat-form-field>
+                  </div>
+                </div>
+              </div>
+
+              <div fxLayout="column"
+                   fxLayoutAlign="start"
+                   fxLayoutGap="4px">
+                <h4 class="step-header">Is there a working smoke detector in every bedroom and the livingroom?</h4>
+                <mat-radio-group formControlName="smokeAlarmCtrl"
+                                 fxLayout="column"
+                                 fxLayoutAlign="space-evenly"
+                                 fxLayoutGap="4px"
+                                 (change)="smokeAlarmCtrlChange($event)">
+                  <mat-radio-button value="1">Yes</mat-radio-button>
+                  <mat-radio-button value="2">No</mat-radio-button>
+                </mat-radio-group>
+                <div [@slideInOut]="smokeAlarmMissingState">
+                  <div>
+                    <mat-form-field>
+                      <input matInput
+                             placeholder="What is it missing?"
+                             formControlName="smokeAlarmMissingCtrl" >
+                    </mat-form-field>
+                  </div>
+                </div>
+              </div>
+
+
+              <div  fxLayout="row"  fxLayoutGap="16px"  style="padding-top: 24px">
+                <button mat-raised-button color="accent"  matStepperPrevious>Back</button>
+                <button mat-raised-button color="accent"  matStepperNext>Next</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </mat-step>
+
+      <mat-step [stepControl]="fourthFormGroup"  #step4>
+        <form [formGroup]="fourthFormGroup" >
+          <ng-template matStepLabel>Air Filter</ng-template>
+          <div fxLayout="column" fxLayoutGap="32px" fxFlexOffset="16px" fxFlex.gt-sm="50%" fxFlex="100%">
+            <div fxLayoutGap="8px" fxLayout="column" fxLayoutAlign="start start">
+
+              <h4>Air Conditioner - Air Filter</h4>
+
+              <div fxLayout="column" fxLayoutAlign="start" fxLayoutGap="4px">
+                <h4 class="step-header">Was there an air filter?</h4>
+                <mat-radio-group formControlName="airFilterPresentCtrl"
+                                 fxLayout="column"
+                                 fxLayoutAlign="space-evenly"
+                                 fxLayoutGap="4px"
+                                 (change)="airFilterCtrlChange($event)">
+                  <mat-radio-button value="1">Yes</mat-radio-button>
+                  <mat-radio-button value="2">Yes, but this apartment has window unit(s)</mat-radio-button>
+                  <mat-radio-button value="3">No, the air filter was missing</mat-radio-button>
+                </mat-radio-group>
+                <div [@slideInOut]="airFilterState">
+                  <div>
+                    <h4 class="step-header">Air filter had a date written on it?</h4>
+                    <mat-radio-group formControlName="airFilterHasDateCtrl"
+                                     fxLayout="column"
+                                     fxLayoutAlign="space-evenly"
+                                     fxLayoutGap="4px"
+                                     (change)="airFilterDateCtrlChange($event)">
+                      <mat-radio-button value="1">Yes</mat-radio-button>
+                      <mat-radio-button value="2">No, no date written on it</mat-radio-button>
+                    </mat-radio-group>
+                    <div [@slideInOut]="airFilterDateState">
+                      <div>
+                        <mat-form-field >
+                          <input matInput
+                                 [matDatepicker]="picker"
+                                 placeholder="Date on Air Filter"
+                                 formControlName="airFilterDateCtrl">
+                          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                          <mat-datepicker touchUi="true" #picker></mat-datepicker>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+            <div  fxLayout="row"  fxLayoutGap="16px"  style="padding-top: 24px">
+              <button mat-raised-button color="accent"  matStepperPrevious>Back</button>
+              <button mat-raised-button color="accent"  matStepperNext>Next</button>
+            </div>
+          </div>
+        </form>
+      </mat-step>
+
+      <mat-step [stepControl]="fifthFormGroup"  #step5>
+        <form [formGroup]="fifthFormGroup" >
+          <ng-template matStepLabel>Plussing</ng-template>
+          <div fxLayout="column" fxLayoutGap="32px" fxFlexOffset="16px" fxFlex.gt-sm="50%" fxFlex="100%">
+            <div fxLayoutGap="8px" fxLayout="column" fxLayoutAlign="start start">
+
+              <div fxLayout="column" fxLayoutAlign="start" fxLayoutGap="4px">
+                <h4 class="step-header">How can we plus your stay?</h4>
+                <mat-form-field class="full-width">
+                  <textarea matInput
+                            placeholder="Additional Work"
+                            formControlName="additionalCtrl"></textarea>
+                </mat-form-field>
+              </div>
+
+            </div>
+            <div  fxLayout="row"  fxLayoutGap="16px"  style="padding-top: 24px">
+              <button mat-raised-button color="accent"  matStepperPrevious>Back</button>
+              <button mat-raised-button color="accent"  matStepperNext (click)="processTYVisit()">Next</button>
+            </div>
+          </div>
+        </form>
+      </mat-step>
+
+      <mat-step [stepControl]="sixthFormGroup" #step6>
+        <form [formGroup]="sixthFormGroup">
+          <ng-template matStepLabel >Review</ng-template>
+          <h3 class="step-header">Please review your thank you visit:</h3>
+
+          <div *ngIf="this.weEntered; else noEntry">
+            <div *ngIf="this.someoneHome; else noOneHome">
+              Customer was home at time of the inspection.
+              <ul>
+                <li>Customer Name: {{this.visit.customerName}}</li>
+                <li>Customer Contact: {{this.visit.customerContact}}</li>
+              </ul>
+              <br>
+              <b>Fire Extinguisher</b>
+              <div *ngIf="fireExtinguisherPresent; else noFireExtinguisher">
+
+              </div>
+              <ng-template #noFireExtinguisher>
+                No fire extinguisher was present in the unit. Get one installed under the kitchen sink immediately.
+              </ng-template>
+            </div>
+            <ng-template #noOneHome>
+              No one was present at the time of the inspection.
+            </ng-template>
+          </div>
+          <ng-template #noEntry>
+            We did not enter. Return to this thank you visit next week. It is important to get into every apartment.
+            Reason for not entering: {{this.visit.noEntryReason}}
+          </ng-template>
+<!--
+          'someoneHome': this.someoneHome,
+          'weEntered': this.weEntered,
+          'fireExtinguisherPresent': this.fireExtinguisherPresent,
+          'fireExtinguisherUnderSink': this.fireExtinguisherUnderSink,
+          'hasLeaks': this.hasLeaks,
+          'doorSecure': this.doorSecure,
+          'smokeAlarmMissing': this.smokeAlarmMissing,
+          'hasAirFilter': this.hasAirFilter,
+          'hasAirFilterDate': this.hasAirFilterDate,
+          'extinguisherFull': (this.thirdFormGroup.value.extinguisherFullCtrl === 1),
+          'hasSticker': (this.thirdFormGroup.value.stickerPresentCtrl === 1),
+          'inspectorName': this.firstFormGroup.value.nameCtrl,
+          'unit': this.unitSelected,
+          'property': this.firstFormGroup.value.propertyCtrl,
+          'customerName': this.secondFormGroup.value.customerNameCtrl,
+          'customerContact': this.secondFormGroup.value.customerContactCtrl,
+          'noEntryReason': this.secondFormGroup.value.noEntryReasonCtrl,
+          'extinguisherLocation': this.thirdFormGroup.value.extinguisherLocationCtrl,
+          'leakLocations': this.thirdFormGroup.value.leaksLocationCtrl,
+          'doorSecureMissing': this.thirdFormGroup.value.doorSecureMissingCtrl,
+          'smokeAlarmMissingLocations': this.thirdFormGroup.value.smokeAlarmMissingCtrl,
+          'airFilterDate': this.fourthFormGroup.value.airFilterDateCtrl-->
+
+          <div  fxLayout="row"  fxLayoutGap="16px" style="padding-top: 24px" >
+            <button mat-raised-button color="accent"  matStepperPrevious>Back</button>
+            <button mat-raised-button color="accent" matStepperNext (click)="onSubmit()">Submit</button>
+          </div>
+        </form>
+      </mat-step>
+
+      <mat-step #step7>
+        <form [formGroup]="seventhFormGroup">
+          <ng-template matStepLabel>Done</ng-template>
+          <br>
+          <div class="checkmark draw"></div>
+          You're thank you visit has been succesfully submitted.
+          <br>
+          <div>
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-button (click)="resetAll()">Do Another</button>
+          </div>
+        </form>
+      </mat-step>
+    </mat-horizontal-stepper>
+  </mat-card-content>
+</mat-card>
+<div style="height: 250px;"></div>
+
