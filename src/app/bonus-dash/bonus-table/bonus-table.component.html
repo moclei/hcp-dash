@@ -1,0 +1,157 @@
+<mat-card class="example-container">
+  <mat-card-title>Bonuses</mat-card-title>
+  <mat-card-content>
+    <div fxLayout="column"
+         fxLayoutGap="16px">
+      <!--<button mat-raised-button (click)="onDeleteClick()">Delete August Bonuses</button>-->
+      <!-- <button mat-raised-button (click)="onAddClick()">Add August Bonuses</button> -->
+      <div fxLayout="row"
+           fxLayoutGap="16px">
+        <mat-form-field style="margin-bottom: -1.25em">
+          <mat-select
+                  placeholder="Month"
+                  [(ngModel)]="monthSelected"
+                  (selectionChange)="onSelectChange()">
+            <mat-option
+                    *ngFor="let month of this.months; let i = index"
+                    [value]="i">
+              {{ month}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field style="margin-bottom: -1.25em">
+          <mat-select
+                  placeholder="Year"
+                  [(ngModel)]="yearSelected"
+                  (selectionChange)="onSelectChange()">
+            <mat-option
+                    *ngFor="let year of this.years"
+                    [value]="year">
+              {{ year}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div
+        class="example-table-container mat-elevation-z8">
+
+        <table
+          mat-table
+          class="example-table"
+          #table
+          [dataSource]="matDataSource"
+          matSort>
+
+          <!-- Name-->
+          <ng-container
+            matColumnDef="propertyName">
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              mat-sort-header> Property Name
+            </th>
+            <td
+              mat-cell
+              *matCellDef="let element"
+              (click)="openDialog(element)"> {{element.propertyName}}
+            </td>
+          </ng-container>
+
+          <!-- Gross Potential -->
+          <ng-container
+            matColumnDef="grossPotential">
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              mat-sort-header> Gross Potential Rent
+            </th>
+            <td
+              mat-cell
+              *matCellDef="let element"
+              (click)="openDialog(element)"> {{element.grossPotential | currency}}
+            </td>
+          </ng-container>
+
+          <!-- Collected Month To Date  -->
+          <ng-container
+            matColumnDef="collectedMTD">
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              mat-sort-header> Collected Month-To-Date
+            </th>
+            <td
+              mat-cell
+              *matCellDef="let element"
+              (click)="openDialog(element)"> {{element.collectedMTD | currency}}
+            </td>
+          </ng-container>
+
+          <!-- Outstanding MTD-->
+          <ng-container
+            matColumnDef="outstandingMTD">
+            <th
+              mat-header-cell
+              *matHeaderCellDef> Outstanding Month-T0-Date
+            </th>
+            <td
+              mat-cell
+              *matCellDef="let element"
+              (click)="openDialog(element)"> {{element.outstandingMTD | currency}}
+            </td>
+          </ng-container>
+
+          <!-- Collected Percent -->
+          <ng-container
+            matColumnDef="collectedPercent">
+            <th
+              mat-header-cell
+              *matHeaderCellDef> Collected %
+            </th>
+            <td
+              mat-cell
+              *matCellDef="let element"
+              (click)="openDialog(element)"> {{element.collectedPercent | percent}}
+            </td>
+          </ng-container>
+
+          <!-- Percent Left To Bonus-->
+          <ng-container
+            matColumnDef="percentLeftToBonus">
+            <th
+              mat-header-cell
+              *matHeaderCellDef> Percent Left To Bonus
+            </th>
+            <td
+              mat-cell
+              *matCellDef="let element"
+              (click)="openDialog(element)"> {{element.percentLeftToBonus | percent}}
+            </td>
+          </ng-container>
+
+          <!-- Last Updated -->
+          <ng-container
+            matColumnDef="updatedAt">
+            <th
+              mat-header-cell
+              *matHeaderCellDef> Last Updated On
+            </th>
+            <td
+              mat-cell
+              *matCellDef="let element"
+              (click)="openDialog(element)">
+              {{element.updatedAt ? (dateOrTimestamp(element) | date:'shortDate') : '---'}}
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="dispColumnsActive"></tr>
+          <tr mat-row *matRowDef="let row; columns: dispColumnsActive; "></tr>
+        </table>
+        <mat-paginator #paginator
+                       [pageSize]="10"
+                       [pageSizeOptions]="[5, 10, 20]">
+        </mat-paginator>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

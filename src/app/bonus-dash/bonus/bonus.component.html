@@ -1,0 +1,150 @@
+<div fxLayout="row"
+     fxLayoutAlign="center">
+    <div fxFlex="20"></div>
+    <div fxLayout="column"
+         fxLayoutAlign="start start"
+         fxLayoutGap="16px">
+
+        <mat-card>
+            <mat-card-content>
+
+                <div *ngIf="auth.user | async as user;">
+                    <div *ngIf="user.isEditor">
+                        <mat-form-field style="margin-bottom: -1.25em">
+                            <mat-select
+                                    placeholder="Filter by property"
+                                    (selectionChange)="onSelectProperty($event.value)">
+                                <mat-option
+                                        *ngFor="let property of this.properties"
+                                        value={{property.sheetName}}>
+                                    {{ property.name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="mat-h3">{{this.propertySelected}} Bonus Estimate
+                        {{this.bonusService.months[this.monthSelected]}}</h3>
+                </div>
+                <div fxLayout="row"
+                     fxLayoutAlign="start start"
+                     *ngIf="selectedBonus as b">
+
+                    <!--
+                                <div>
+                                  <div id="container">
+                                    <div id="glass">
+                                      <div id="water"
+                                           [ngStyle]="{height: waterHeight + 'px'}">
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                    -->
+                    <div id="trapezoid">
+                        <div id="inner-trapezoid">
+                        </div>
+                        <div id="glass-water"
+                             [ngStyle]="{'border-top': (percentCurrent * 200) + 'px solid #9cc6ff',
+                       'border-left': (30-((200 - (200 * percentCurrent))/6.6)) + 'px solid transparent',
+                       'border-right': (30-((200 - (200 * percentCurrent))/6.6)) + 'px solid transparent',
+                       'left': ((-27)+((200 - (200 * percentCurrent))/6.6))+'px'}"></div>
+                    </div>
+                    <div class="test-box">
+                        <div class="tick">
+                <span [ngStyle]="{top: getHundredPercentHeight(b)}">100% ({{b.grossPotential | currency:'USD':'symbol':'1.0-0'}})
+                </span>
+                        </div>
+                        <div class="tick">
+
+                <span [ngStyle]="{top: '0em', left: '5px'}">90% ({{(b.grossPotential * (1-b.thresholdPercent)) | currency:'USD':'symbol':'1.0-0' }})
+                  <br/>
+                  This is your threshold
+                </span>
+                        </div>
+                        <div class="tick"
+                             [ngStyle]="{top: getCollectedHeight(b)+'px', left: '-10px'}">
+                <span [ngStyle]="{left: '190px'}">
+                  Your Collections: {{b.collectedMTD  | currency:'USD':'symbol':'1.0-0'}}
+                  <br/>
+                  {{ returnSentence(b)}}
+                </span>
+                            <!--
+                            <span *ngIf="getBonusEstimate(b) > 0"
+                                  [ngStyle]="{left: '190px'}">
+                                 Your bonus will be {{getBonusEstimate(b) | currency }}*
+                               </span>
+                            <span *ngIf="getBonusEstimate(b) <= 0"
+                                  [ngStyle]="{left: '190px'}">
+                              You have {{leftToBonus(b) | currency }} left to collect until bonus*
+                            </span>-->
+
+                        </div>
+                        <div class="tick"><span></span></div>
+                        <div class="tick"><span></span></div>
+                        <div class="tick"><span></span></div>
+                        <div class="tick"><span></span></div>
+                        <div class="tick"><span></span></div>
+                        <div class="tick"><span></span></div>
+                        <div class="tick"><span></span></div>
+                        <div class="tick"><span>0</span></div>
+                    </div>
+
+                </div>
+                <div>
+                    <span [ngStyle]="{font: '0.2em'}">*Bonus estimates are subject to change. These are preliminary numbers and must be verified. Please use this as a guideline only.</span>
+                </div>
+            </mat-card-content>
+        </mat-card>
+        <mat-card>
+            <mat-card-content>
+                <div fxLayout="row"
+                     fxLayoutAlign="start start"
+                     *ngIf="lastMonthBonus as b">
+                    <div id="glass-last-month">
+                        <div id="glass-inner-last-month">
+                        </div>
+                        <div id="glass-water-last-month"
+                             [ngStyle]="{'border-top': (percentLast * 200) + 'px solid #9cc6ff',
+                       'border-left': (30-((200 - (200 * percentLast))/6.6)) + 'px solid transparent',
+                       'border-right': (30-((200 - (200 * percentLast))/6.6)) + 'px solid transparent',
+                       'left': ((-27)+((200 - (200 * percentLast))/6.6))+'px'}"></div>
+                    </div>
+
+                    <div class="test-box">
+                        <div class="tick">
+                <span [ngStyle]="{top: getHundredPercentHeight(b)}">100% ({{b.grossPotential | currency:'USD':'symbol':'1.0-0'}})
+                </span>
+                        </div>
+                        <div class="tick">
+
+                <span [ngStyle]="{top: '0em', left: '5px'}">90% ({{(b.grossPotential * (1-b.thresholdPercent)) | currency:'USD':'symbol':'1.0-0' }})
+                  <br/>
+                  This is your threshold
+                </span>
+                        </div>
+                        <div class="tick"
+                             [ngStyle]="{top: getCollectedHeight(b)+'px', left: '-10px'}">
+                <span [ngStyle]="{left: '190px'}">
+                  Your Collections: {{b.collectedMTD  | currency:'USD':'symbol':'1.0-0'}}
+                  <br/>
+                  {{ returnSentence(b)}}
+                </span>
+
+                        </div>
+                        <div class="tick"><span></span></div>
+                        <div class="tick"><span></span></div>
+                        <div class="tick"><span></span></div>
+                        <div class="tick"><span></span></div>
+                        <div class="tick"><span></span></div>
+                        <div class="tick"><span></span></div>
+                        <div class="tick"><span></span></div>
+                        <div class="tick"><span>0</span></div>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+    <div fxFlex="20"></div>
+</div>

@@ -1,0 +1,21 @@
+<div fxFlex>
+  <mat-card class="decision-input-card" [class.input-closed]="!isFocused">
+    <mat-card-content>
+      <form [formGroup]="inputForm" (focus)="onFocus()" (blur)="onBlur()">
+        <div class="form-group">
+          <mat-form-field *ngIf="isFocused">
+            <input class="form-control" formControlName="title" matInput placeholder="Title" >
+          </mat-form-field>
+          <mat-form-field>
+            <textarea class="form-control" formControlName="content" matInput fz-elastic
+                  placeholder="Make a decision..." (click)="showFullForm()" ></textarea>
+          </mat-form-field>
+        </div>
+      </form>
+    </mat-card-content>
+    <mat-card-actions *ngIf="isFocused">
+      <div fxFlex></div>
+      <button mat-button  (click)="onClick()">DONE</button>
+    </mat-card-actions>
+  </mat-card>
+</div>

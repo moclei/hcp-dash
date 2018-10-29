@@ -1,0 +1,29 @@
+.example-table {
+  overflow: auto;
+  max-height: 600px;
+}
+.example-table-container {
+  overflow: auto;
+  width: 90vw;
+  min-width: 450px;
+}
+.mat-row:hover{
+  background-color: #E0F2F1;
+  cursor:pointer;
+}
+.contractor-add-card {
+  padding: 16px;
+}
+table {
+  width: 100%;
+}
+
+/* Column Widths */
+.mat-column-number,
+.mat-column-state {
+  max-width: 64px;
+}
+
+.mat-column-created {
+  max-width: 124px;
+}

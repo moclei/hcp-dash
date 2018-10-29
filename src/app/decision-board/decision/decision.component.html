@@ -1,0 +1,34 @@
+<mat-card
+  (mouseenter)="onMouseEnter()"
+  (mouseleave)="onMouseLeave()"
+  [class.mat-elevation-z8]="mouseEnter"
+  class="decision-panel">
+
+  <mat-card-content>
+    <div fxLayout="column">
+      <div *ngIf="decision.title">
+        <p><b>{{decision.title}}</b></p>
+      </div>
+      <p [ngStyle]="figureTextSize(decision.content.length)">{{decision.content}}</p>
+      <div *ngIf="decision.result">
+        <p [ngStyle]="figureTextSize(decision.result.length)">{{decision.result }}</p>
+      </div>
+      <div *ngIf="decision.rating">
+        <star-rating
+          [starType]="'svg'"
+          [rating]="decision.rating"
+          [readOnly]="true"
+          class="decision-star-rating">
+        </star-rating>
+      </div>
+      <!--<section class="mat-typography decision-footnote">
+        <div *ngIf="mouseEnter">
+          <div class="mat-caption">Created on {{this.createdAt | date:'shortDate'}} by {{decision.email}}</div>
+          <div *ngIf="this.updatedAt">
+            <div class="mat-caption">Updated on {{this.updatedAt | date:'shortDate'}}</div>
+          </div>
+        </div>
+      </section>-->
+    </div>
+  </mat-card-content>
+</mat-card>

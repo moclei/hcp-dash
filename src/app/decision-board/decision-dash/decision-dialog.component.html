@@ -1,0 +1,82 @@
+<div fxLayout="column">
+    <mat-dialog-content>
+
+        <div class="decision-edit-container">
+            <mat-form-field>
+                <input matInput
+                       [(ngModel)]="data.title"
+                       placeholder="Title"
+                       (change)="onDecisionChange()"/>
+            </mat-form-field>
+            <mat-form-field>
+              <textarea matInput
+                        cdkTextareaAutosize
+                        cdkAutosizeMinRows="2"
+                        cdkAutosizeMaxRows="7"
+                        placeholder="Decision"
+                        #contentCtrl="cdkTextareaAutosize"
+                        [(ngModel)]="data.content"
+                        [ngModelOptions]="{standalone: true}"
+                        (change)="onDecisionChange()">
+              </textarea>
+            </mat-form-field>
+            <mat-form-field *ngIf="data.threeMonthResult">
+              <textarea matInput
+                        cdkTextareaAutosize
+                        cdkAutosizeMinRows="2"
+                        cdkAutosizeMaxRows="7"
+                        placeholder="Decision"
+                        #contentCtrl="cdkTextareaAutosize"
+                        [(ngModel)]="data.threeMonthResult"
+                        [ngModelOptions]="{standalone: true}"
+                        (change)="onDecisionChange()">
+              </textarea>
+            </mat-form-field>
+
+            <mat-form-field>
+                <textarea matInput
+                          matTextareaAutosize
+                          [(ngModel)]="data.result"
+                          placeholder="Result"
+                          (change)="onDecisionChange()">
+                </textarea>
+            </mat-form-field>
+            <div fxFlexAlign="start">
+                <star-rating [starType]="'svg'"
+                             [rating]="data.rating"
+                             [hoverEnabled]="true"
+                             (starClickChange)="onRatingClick($event)"
+                             (ratingChange)="onRatingChange($event)"
+                             (hoverRatingChange)="onHoverRatingChange($event)">
+                </star-rating>
+            </div>
+        </div>
+        <div fxLayout="row">
+            <button mat-icon-button
+                    [matMenuTriggerFor]="decisionMenu"
+                    color="white">
+                <mat-icon>more_vert</mat-icon>
+            </button>
+            <div fxFlex></div>
+            <button mat-button
+                    (click)="onDoneClick()">DONE
+            </button>
+        </div>
+        <mat-menu #decisionMenu="matMenu">
+            <button mat-menu-item
+                    (click)="onDeleteClick()">
+                <span>Delete</span>
+
+            </button>
+            <button mat-menu-item>
+                <span>Set Values</span>
+            </button>
+            <button mat-menu-item>
+                <span>Share</span>
+            </button>
+        </mat-menu>
+    </mat-dialog-content>
+</div>
+<!--
+<mat-dialog-content>hello</mat-dialog-content>
+-->

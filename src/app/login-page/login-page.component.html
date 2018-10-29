@@ -1,0 +1,40 @@
+<!--<div fxLayout="column"  fxLayoutAlign="center center" >
+<mat-card fxLayout="column" class="login-card" fxLayoutAlign="center center" >
+  <mat-card-content >
+    <div fxLayout="column"  fxLayoutAlign="space-around center">
+      <h2>HCP Dashboard</h2>
+      <img src="../../assets/watermeadow_logo_small.png"/>
+    </div>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-raised-button
+            color="primary"
+            (click)="signIn()">Sign In
+    </button>
+  </mat-card-actions>
+</mat-card>
+  <div fxFlex></div>
+</div>-->
+
+  <div fxLayout="column"  fxLayoutAlign="center center" >
+    <mat-card fxLayout="column" class="login-card" fxLayoutAlign="center center" >
+      <mat-card-content >
+        <div fxLayout="column"  fxLayoutAlign="space-around center">
+          <h2>HCP Dashboard</h2>
+          <img src="../../assets/watermeadow_logo_small.png"/>
+        </div>
+      </mat-card-content>
+      <mat-card-actions>
+        <!--<button mat-raised-button
+                color="primary"
+                (click)="signIn()">Sign In
+        </button>-->
+        <button
+                mat-raised-button
+                color="primary"
+                (click)="auth.googleLogin('homepage')">Sign In
+        </button>
+      </mat-card-actions>
+    </mat-card>
+    <div fxFlex></div>
+  </div>

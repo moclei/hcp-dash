@@ -1,0 +1,45 @@
+:host {
+  display: block;
+}
+
+.grid {
+  margin: 0 auto;
+}
+
+.stripe-1 {
+  color: white;
+  background: repeating-linear-gradient(
+                  45deg,
+                  #EEEEEE,
+                  #EEEEEE 10px,
+                  #DEDEDE 10px,
+                  #DEDEDE 20px
+  );
+}
+
+.card {
+  display: inline-block;
+  margin-bottom: 1rem;
+  width: 18rem;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.anni-title {
+  text-align: center;
+}
+
+.anni-count {
+  text-align: center;
+  padding-top: 8px;
+}
+
+.decision-edit-container mat-form-field {
+  width: 100%;
+}
+
+mat-dialog-content {
+  overflow: visible;
+}

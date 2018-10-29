@@ -1,0 +1,253 @@
+
+<div fxLayout="column"
+  fxLayoutGap="16px">
+
+  <div fxLayout="row"
+       fxLayoutAlign="space-between end"
+      style="padding-top: 20px">
+    <h2 class="mat-h2">Make Readies</h2>
+      <div *ngIf="auth.user | async as user;"
+           fxLayout="row"
+           fxLayoutAlign="center end"
+           fxLayoutGap="16px">
+        <mat-slide-toggle
+                class="example-margin"
+                (change)="changeMRStream()">
+          Show Completed
+        </mat-slide-toggle>
+        <div *ngIf="user.isEditor">
+          <mat-form-field style="margin-bottom: -1.25em">
+            <mat-select
+              placeholder="Filter by property"
+              (selectionChange)="onSelectProperty($event.value)">
+              <mat-option
+                *ngFor="let property of this.properties"
+                value={{property.sheetName}}>
+                {{ property.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <button mat-raised-button
+                (click)="onNewMakeReadyHandler()">NEW
+        </button>
+      </div>
+
+  </div>
+
+  <div class="example-table-container mat-elevation-z8">
+    <div *ngIf="this.loading; else loaded">
+      <mat-progress-bar
+              color="accent"
+              mode="indeterminate">
+      </mat-progress-bar>
+    </div>
+      <ng-template #loaded>
+      </ng-template>
+
+    <table mat-table
+      class="example-table"
+      #table
+      [dataSource]="matDataSource"
+      matSort
+      multiTemplateDataRows>
+
+      <!-- Name -->
+      <ng-container matColumnDef="propertyName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Property & Address
+        </th>
+        <td mat-cell
+            *matCellDef="let element">{{element.propertyName}}, #{{element.unit.unitName}}
+        </td>
+      </ng-container>
+      <!-- Floorplan -->
+      <ng-container matColumnDef="floorPlan">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Floorplan
+        </th>
+        <td mat-cell
+            *matCellDef="let element">{{element.unit.floorplan}}
+        </td>
+      </ng-container>
+      <!-- Type -->
+      <ng-container matColumnDef="mrType">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Type
+        </th>
+        <td mat-cell
+            *matCellDef="let element"> {{element.scope.mrType}}
+        </td>
+      </ng-container>fxHide.lt-md
+      <!-- Date Created -->
+      <ng-container
+        matColumnDef="createdAt">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header> Created On
+        </th>
+        <td mat-cell
+          *matCellDef="let element"> {{fieldValueAsDate(element.createdAt) | date:'shortDate'}}
+        </td>
+      </ng-container>
+
+      <!-- Make Ready Price -->
+      <ng-container matColumnDef="contractorName">
+        <th mat-header-cell
+            *matHeaderCellDef mat-sort-header>Contractor Name</th>
+        <td mat-cell
+            *matCellDef="let element">{{element.contracts[0].contractor}}</td>
+      </ng-container>
+
+      <!-- Progress -->
+      <ng-container matColumnDef="progress">
+        <th mat-header-cell
+            *matHeaderCellDef>
+          Progress
+        </th>
+        <td mat-cell
+            class="mr-progress-row"
+            *matCellDef="let element">
+
+
+          <div *ngIf="element.checklist as cl; else noChecklist;" class="arrowlist-container">
+            <div class="wrapper">
+              <div class="arrow-steps clearfix">
+                <div class="step"
+                     [class.current]="cl.makeReadyRequested && cl.materialsSubmitted">
+                  <span matTooltip="Requested and Submitted for PO">
+                    {{cl.makeReadyRequestedDate ? (fieldValueAsDate(cl.makeReadyRequestedDate) | date: 'M/d') : '--'}}
+                  </span>
+
+                </div>
+                <div class="step"
+                     [class.current]="cl.makeReadyApproved && cl.materialsOrdered">
+                  <span matTooltip="PO Approved and Materials Ordered">
+                    {{cl.materialsOrderedDate ? (fieldValueAsDate(cl.materialsOrderedDate) | date: 'M/d') : '--'}}
+                  </span>
+                </div>
+                <div class="step"
+                     [class.current]="cl.contractorScheduled">
+                  <span matTooltip="Contractor Scheduled">
+                    {{cl.contractorScheduledDate ? (fieldValueAsDate(cl.contractorScheduledDate) | date: 'M/d') : '--'}}
+                  </span>
+                </div>
+                <div class="step"
+                     [class.current]="cl.materialsDelivered && cl.contractorStarted">
+                  <span matTooltip="Contractor Started">
+                    {{cl.contractorStartedDate ? (fieldValueAsDate(cl.contractorStartedDate) | date: 'M/d') : '--'}}
+                  </span>
+                </div>
+                <div class="step"
+                     [class.current]="cl.contractorFinished">
+                  <span matTooltip="Contractor Finished and Invoice Submitted">
+                    {{cl.contractorFinishedDate ? (fieldValueAsDate(cl.contractorFinishedDate) | date: 'M/d') : '--'}}
+                  </span>
+                </div>
+                <div  *ngIf="element.moveOutDate">
+                  <div class="below"
+                  [style.left]="getMoveOutDotSpot(element)">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <ng-template #noChecklist>
+            <div class="arrowlist-container">
+            <div class="wrapper">
+              <div class="arrow-steps clearfix">
+                <div class="step">
+                  <span>--</span>
+                </div>
+                <div class="step">
+                  <span>--</span>
+                </div>
+                <div class="step">
+                  <span>--</span>
+                </div>
+                <div class="step">
+                  <span>--</span>
+                </div>
+                <div class="step">
+                  <span>--</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          </ng-template>
+
+        </td>
+      </ng-container>
+
+      <!-- Number of Days -->
+      <ng-container
+              matColumnDef="numDays">
+        <th mat-header-cell *matHeaderCellDef>Days</th>
+        <td mat-cell *matCellDef="let element">
+              <span class="app-colored-circle"
+                    [class.is-over-time]="isOverTime(numDays(element), element)">{{numDays(element)}}
+              </span>
+        </td>
+      </ng-container>
+
+      <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+      <ng-container matColumnDef="expandedDetail">
+        <td mat-cell *matCellDef="let element" [attr.colspan]="dispColumnsActive.length">
+          <div
+            class="example-element-detail"
+            [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'"
+            fxLayout="row"
+            fxLayoutGap="8px">
+            <div class="example-element-diagram">
+              <div class="example-element-position"> {{element.propertyName}} </div>
+              <div class="example-element-symbol"> {{element.unit.unitName}} </div>
+              <div class="example-element-name"> {{element.scope.mrType}} </div>
+              <div class="example-element-weight">by {{element.preparerName}} </div>
+            </div>
+            <div class="example-element-diagram"
+                 fxLayout="column">
+              <b>Scope: </b> {{element.scope.scopeDescription}}
+              <b>Granite: </b> {{element.scope.granite ? 'Yes' : 'No'}}
+              <b>Shower Tile: </b> {{element.scope.showerTile ? 'Yes' : 'No'}}
+              <b>Microwave: </b> {{element.scope.microwave ? 'Yes' : 'No'}}
+            </div>
+            <div class="example-element-diagram"
+                 fxLayout="column">
+              <b>Actions: </b>
+              <button mat-button
+                      routerLink="/mr-checklist/{{element.id}}">Go To Checklist
+              </button>
+              <button mat-button
+                      color="warn"
+                      (click)="openDialog(element)">Remove
+              </button>
+              <button mat-button
+                      (click)="onReSendHandler(element)">Re-send Email
+              </button>
+            </div>
+          </div>
+        </td>
+      </ng-container>
+
+     <!-- <tr mat-header-row
+          *matHeaderRowDef="['propertyName', 'floorPlan', 'mrType', 'createdAt', 'numDays', 'contractorName', 'progress']"
+          class="example-first-header-row"
+          >
+      </tr>
+      -->
+      <tr mat-header-row *matHeaderRowDef="dispColumnsActive" class="example-first-header-row"></tr>
+      <tr mat-row *matRowDef="let element; columns: dispColumnsActive; "
+          class="example-element-row"
+          (click)="expandedElement === element ? expandedElement = null : expandedElement = element"
+          [class.example-expanded-row]="expandedElement === element"></tr>
+
+      <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+
+
+    </table>
+    <mat-paginator #paginator
+                   [pageSize]="10"
+                   [pageSizeOptions]="[5, 10, 20]">
+    </mat-paginator>
+
+  </div>
+
+</div>
