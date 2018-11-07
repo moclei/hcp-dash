@@ -53,19 +53,21 @@
                     </div>
                     <div class="test-box">
                         <div class="tick">
-                <span [ngStyle]="{top: getHundredPercentHeight(b)}">100% ({{b.grossPotential | currency:'USD':'symbol':'1.0-0'}})
-                </span>
+                            <span [ngStyle]="{top: getHundredPercentHeight(b)}">100% ({{b.grossPotential | currency:'USD':'symbol':'1.0-0'}})
+                                <br/> Your max bonus this month: {{(b.grossPotential*0.01) | currency:'USD':'symbol':'1.0-0'}}
+                            </span>
                         </div>
                         <div class="tick">
 
-                <span [ngStyle]="{top: '0em', left: '5px'}">90% ({{(b.grossPotential * (1-b.thresholdPercent)) | currency:'USD':'symbol':'1.0-0' }})
-                  <br/>
-                  This is your threshold
-                </span>
+                            <span [ngStyle]="{top: '0em', left: '5px'}">90% ({{(b.grossPotential * (1-b.thresholdPercent)) | currency:'USD':'symbol':'1.0-0' }})
+                              <br/>
+                                <div style="font-size: 10px;">Above this line you make a bonus.</div>
+                            </span>
                         </div>
                         <div class="tick"
                              [ngStyle]="{top: getCollectedHeight(b)+'px', left: '-10px'}">
                 <span [ngStyle]="{left: '190px'}">
+
                   Your Collections: {{b.collectedMTD  | currency:'USD':'symbol':'1.0-0'}}
                   <br/>
                   {{ returnSentence(b)}}
@@ -93,10 +95,12 @@
 
                 </div>
                 <div>
-                    <span [ngStyle]="{font: '0.2em'}">*Bonus estimates are subject to change. These are preliminary numbers and must be verified. Please use this as a guideline only.</span>
+                    <span style="font-size: 10px;">*Bonus estimates are subject to change. These are preliminary numbers and must be verified. Please use this as a guideline only.</span>
                 </div>
             </mat-card-content>
         </mat-card>
+
+        <!--
         <mat-card>
             <mat-card-content>
                 <div fxLayout="row"
@@ -145,6 +149,8 @@
                 </div>
             </mat-card-content>
         </mat-card>
+        -->
+
     </div>
     <div fxFlex="20"></div>
 </div>

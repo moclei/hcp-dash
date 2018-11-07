@@ -29,6 +29,7 @@ import Timestamp = firebase.firestore.Timestamp;
 import FieldValue = firebase.firestore.FieldValue;
 import {SlideInOutAnimation} from '../../animations';
 import {AppscriptService} from '../../services/appscript.service';
+import {differenceBy} from 'lodash';
 
 @Component({
     selector: 'app-makeready-table',
@@ -69,6 +70,9 @@ export class MakereadyTableComponent implements OnInit, AfterViewInit, OnDestroy
     toggleShowRemoved = false;
     propertySelected: string;
     user: User;
+    appfolioData$: Subscription;
+    missingMRs: Array<any>;
+    searchingAppfolio: boolean = false;
 
     constructor(makereadyService: MakeReadyService,
                 auth: AuthService,
@@ -86,6 +90,11 @@ export class MakereadyTableComponent implements OnInit, AfterViewInit, OnDestroy
         this.loading = true;
     }
     ngOnInit() {
+        /*this.makereadyService.getAppfolioObservable().subscribe( results => {
+            this.appfolioData = results;
+            console.log('Results from cloud function: ' + JSON.stringify(results));
+        })
+*/
     }
     setDataSource(user) {
         this.makereadyService.getMakeReadiesStream().subscribe( data => {
@@ -99,10 +108,56 @@ export class MakereadyTableComponent implements OnInit, AfterViewInit, OnDestroy
             this.matDataSource.sort = this.sort;
             this.loading = false;
         });
+        this.changeAppfolioObservable('');
     }
     changeMRStream() {
         this.toggleShowRemoved = !this.toggleShowRemoved;
         this.matDataSource.filter = this.propertySelected + ';' + this.toggleShowRemoved;
+    }
+    changeAppfolioObservable(propertyName) {
+        let makereadies$ = this.makereadyService.getMakeReadiesForProperty(propertyName);
+        if(makereadies$ != null) {
+            this.makereadyService.getMakeReadiesForProperty(propertyName).subscribe(data => {
+                if (this.appfolioData$) {
+                    this.appfolioData$.unsubscribe();
+                }
+                this.searchingAppfolio = true;
+                this.appfolioData$ = this.makereadyService.getAppfolioObservable(propertyName).subscribe(results => {
+                    // this.appfolioData = results;
+                    console.log('results.length; ' + results.length);
+                    let appfolio = [];
+                    let mrbuilders = [];
+                    for (let i = 0; i < data.length; i++) {
+                        let mrDate = this.fieldValueAsDate(data[i].createdAt);
+                        mrbuilders.push({'unit': data[i].unit.unitName, 'date': mrDate, 'data:': {}});
+                    }
+                    for (let j = 0; j < results.length; j++) {
+                        if (results[j]["Unit"] !== "") {
+                            appfolio.push({
+                                'unit': results[j]['Unit'],
+                                'date': results[j]['Date'],
+                                'data:': results[j]
+                            });
+                        }
+                    }
+
+                    let unmatched = differenceBy(appfolio, mrbuilders, 'unit');
+                    // let matched = differenceBy(unmatched, appfolio, 'unit')
+                    console.log('appfolio:');
+                    console.table(appfolio);
+                    console.log('mrbuilders:');
+                    console.table(mrbuilders);
+
+                    console.log('unmatched:');
+                    console.table(unmatched);
+                    this.missingMRs = unmatched;
+                    this.searchingAppfolio = false;
+                    /*console.log('matched:');
+                    console.table(matched);*/
+                    // console.log('Unmatched from cloud function: ' + JSON.stringify(unmatched));
+                })
+            });
+        }
     }
     createFilter() {
         return function(data, filter): boolean {
@@ -129,6 +184,8 @@ export class MakereadyTableComponent implements OnInit, AfterViewInit, OnDestroy
         if (this.matDataSource.paginator) {
             this.matDataSource.paginator.firstPage();
         }
+        this.missingMRs = null;
+        this.changeAppfolioObservable(this.propertySelected);
     }
     /*  setCreatedAt(data) {
         const timestamp = data.timestamp;
@@ -164,6 +221,9 @@ export class MakereadyTableComponent implements OnInit, AfterViewInit, OnDestroy
             this.user = user;
             this.propertySelected = user.propertyFilter;
             this.setDataSource(user);
+            if(this.propertySelected !== '') {
+                this.changeAppfolioObservable(this.propertySelected);
+            }
         });
     }
     openDialog(makeready): void {

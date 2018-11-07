@@ -55,7 +55,7 @@ export class BonusComponent implements OnInit {
             this.propertySelected = this.auth.getFilterName(user);
             this.bonusService.getBonusStream().subscribe(
                 (bonuses) => {
-                    console.log('this.bonusService.getBonuses().subscribe: ' + bonuses);
+                    // console.log('this.bonusService.getBonuses().subscribe: ' + bonuses);
                     this.bonusesArray = bonuses;
                     if (this.propertySelected === '') {
                         this.propertySelected = 'Alamo';
@@ -114,6 +114,10 @@ export class BonusComponent implements OnInit {
     setWaterHeight(bonus: Bonus) {
         const percent = (bonus.collectedMTD / bonus.grossPotential);
         console.log('setting water height: percent = ' + percent);
+        // attempting to make percents less than 90 look smaller
+        if (percent < 0.9) {
+            this.percentCurrent = percent * 0.9;
+        }
         this.percentCurrent = percent;
     }
     setLastMonthWaterHeight(bonus: Bonus) {

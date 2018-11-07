@@ -28,8 +28,7 @@ export class GoogleHttpService {
     /*
       .map(GoogleHttpService.toJsonResponse)
       .catch(response => Observable.throw({message: response.status, code: response.status, error: response.json()} ));
-*/
-
+    */
   }
   public post(url: string, key: string, requestBody: any, options?: HttpParams): Observable<any> {
     console.log('HttpRequest to Google API, post');

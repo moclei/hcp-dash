@@ -208,3 +208,9 @@ tr.example-element-row:not(.example-expanded-row):active {
   font-weight: lighter;
   margin: 8px 0;
 }
+
+mat-spinner.small-spinner svg {
+  width: 40px !important;
+  height: 40px !important;
+}
+

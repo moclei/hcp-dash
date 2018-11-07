@@ -5,6 +5,7 @@ import {Observable} from 'rxjs';
 import * as firebase from 'firebase/app';
 import {map} from 'rxjs/operators';
 import {AuthService} from '../services/auth.service';
+import {CloudFunctionsService} from '../services/cloud-functions.service';
 
 @Injectable({
     providedIn: 'root'
@@ -12,13 +13,16 @@ import {AuthService} from '../services/auth.service';
 export class MakeReadyService {
 
     private makeReadyCollection: AngularFirestoreCollection<MakeReady>;
+    private propertyCollection: AngularFirestoreCollection;
     makeReadys: Observable<MakeReadyId[]>;
     mr$: Observable<any>;
+    propertyMr$: Observable<any>;
     auth: AuthService;
     nowDate: Date;
 
     constructor(private readonly afs: AngularFirestore,
-                auth: AuthService) {
+                auth: AuthService,
+                private functionsService: CloudFunctionsService) {
         this.auth = auth;
         this.nowDate = new Date();
         this.makeReadyCollection = afs.collection<MakeReady>('makereadies',
@@ -37,6 +41,32 @@ export class MakeReadyService {
                     });
                 })
         );
+    }
+    getMakeReadiesForProperty(propertyName): Observable<MakeReadyId[]> {
+        let now, lastMonth = now = new Date();
+        lastMonth.setDate(now.getDate() - 30);
+        if(propertyName !== '') {
+            this.propertyCollection = this.afs.collection<MakeReady>('makereadies',
+                ref => ref
+                    .where('propertyName', '==', propertyName)
+                    .where('createdAt', '>', firebase.firestore.Timestamp.fromDate(lastMonth)));
+            this.propertyMr$ = this.propertyCollection.snapshotChanges();
+            return this.propertyMr$.pipe(
+                map(mrs => {
+                    return mrs.map(mr => {
+                        const data = mr.payload.doc.data() as MakeReady;
+                        const id = mr.payload.doc.id;
+                        return {id, ...data} as MakeReadyId;
+                    });
+                })
+            );
+        } else {
+            return null
+        }
+
+    }
+    getAppfolioObservable(propertyName): Observable<any> {
+        return this.functionsService.get('https://us-central1-hcpdash-frontend.cloudfunctions.net/expressTest/moveOuts', propertyName);
     }
     addMakeReady(makeReady: MakeReady) {
         const jsonMR = JSON.parse(JSON.stringify(makeReady));

@@ -100,7 +100,7 @@ export class AuthService {
         },
         {
             'email': 'riviera@hcptexas.com',
-            'filterName': 'Riviera:Sulphur'
+            'filterName': 'Riviera'
         },
         {
             'email': 'springvale@hcptexas.com',
