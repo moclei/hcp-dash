@@ -1,6 +1,6 @@
 import {Component, OnInit, Input} from '@angular/core';
 import {Location} from '@angular/common';
-import {Checklist, MakeReadyId} from '../makeready.model';
+import {Checklist, MakeReady} from '../makeready.model';
 import {MakeReadyService} from '../makeready.service';
 import {ActivatedRoute} from '@angular/router';
 import * as firebase from 'firebase';
@@ -18,8 +18,8 @@ import {MatDatepickerInputEvent} from '@angular/material';
     animations: [SlideInOutAnimation]
 })
 export class MakereadyChecklistComponent implements OnInit {
-    $mr: Observable<MakeReadyId>;
-    mr: MakeReadyId;
+    $mr: Observable<MakeReady>;
+    mr: MakeReady;
     cl: Checklist;
     id: string;
     loneFormGroup: FormGroup;

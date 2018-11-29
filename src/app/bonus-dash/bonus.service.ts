@@ -5,16 +5,19 @@ import * as firebase from 'firebase/app';
 import {map, concatAll, concat, mergeMap} from 'rxjs/operators';
 import {Bonus, BonusId} from './bonus.model';
 import {UnitLoadService} from '../services/unit-load.service';
-import {MakeReady, MakeReadyId} from '../makeready-dash/makeready.model';
 import {CloudFunctionsService} from '../services/cloud-functions.service';
+import Timestamp = firebase.firestore.Timestamp;
 
 @Injectable({
     providedIn: 'root'
 })
 export class BonusService {
     private bonusCollection: AngularFirestoreCollection<Bonus>;
+    private incomesCollection: AngularFirestoreCollection<any>;
     bonuses: Observable<any>;
+    incomesObs: Observable<any>;
     bonusesArr: Array<BonusId>;
+    incomesArr: Array<any>;
     filteredBonuses: Array<Bonus>;
     unitService: UnitLoadService;
     incomes = [];
@@ -44,9 +47,10 @@ export class BonusService {
 
     constructor(private readonly afs: AngularFirestore,
                 unitService: UnitLoadService,
-                private functionsService: CloudFunctionsService,) {
+                private functionsService: CloudFunctionsService) {
         this.unitService = unitService;
         this.bonusCollection = afs.collection<Bonus>('bonuses');
+        this.incomesCollection = afs.collection<Bonus>('incomesMTD');
         // this.initCurrentBonuses();
     }
     getBonusStream(): Observable<BonusId[]> {
@@ -62,6 +66,41 @@ export class BonusService {
         );
     }
 
+    getIncomeForProperty(propertyName: string): Observable<any> {
+        this.incomesObs = this.incomesCollection.snapshotChanges();
+        return this.incomesObs.pipe(
+            map(results => {
+                console.log('getIncomeForProperty results.length: ' + results.length);
+                const unsortedResults = [];
+                for (let i = 0; i < results.length; i++) {
+                    const data = results[i].payload.doc.data();
+                    // console.log('results[i]:  ' + data + ', JSON(results) ' + JSON.stringify(data) );
+                    // console.log('results[i].property:  ' + data.property + ' ==? ' + propertyName);
+                    if (data.property === propertyName) {
+                        const id = results[i].payload.doc.id;
+                        console.log('getIncomeForProperty: ' + data);
+                        unsortedResults.push({id, ...data});
+                        // return {id, ...data};
+                    }
+                }
+                unsortedResults.sort(function(a, b) {
+                    const aDate = a.date as Timestamp;
+                    const bDate = b.date as Timestamp;
+                    if (aDate.toDate() > bDate.toDate()) {
+                        return 1;
+                    } else if (aDate.toDate() < bDate.toDate()) {
+                        return -1;
+                    } else {
+                        return 0;
+                    }
+                });
+                console.log('unsortedResults: ');
+                console.table(unsortedResults);
+                return unsortedResults[unsortedResults.length - 1];
+            })
+        );
+    }
+/*
     initCurrentBonuses() {
         const now = new Date();
         const currentMonth = now.getMonth();
@@ -74,7 +113,7 @@ export class BonusService {
                     this.addMonth(currentMonth, currentYear);
                 }
             });
-    }
+    }*/
     setBonus(bonus: BonusId) {
         console.log('bonus: ' + bonus);
         bonus.updatedAt = this.timestamp;
@@ -86,20 +125,24 @@ export class BonusService {
                 console.error('Error updating document: ', error);
             });
     }
+    /*
     getIncomeObservables(): Observable<any> {
         return from(['a', 'b', 'c']).pipe(
-            mergeMap(id => <Observable<any>> this.functionsService.get('https://us-central1-hcpdash-frontend.cloudfunctions.net/expressTest/dailyIncomev2', id))
+            mergeMap(id => <Observable<any>> this.functionsService
+                .get('https://us-central1-hcpdash-frontend.cloudfunctions.net/expressTest/dailyIncomev2', id))
         );
     }
     getGPRObservables(): Observable<any> {
         return from(['a', 'b', 'c']).pipe(
-            mergeMap(id => <Observable<any>> this.functionsService.get('https://us-central1-hcpdash-frontend.cloudfunctions.net/expressTest/grossPotentialsv2', id))
+            mergeMap(id => <Observable<any>> this.functionsService
+                .get('https://us-central1-hcpdash-frontend.cloudfunctions.net/expressTest/grossPotentialsv2', id))
         );
     }
-
+    */
+/*
     updateIncomes(){
-        let now = new Date();
-        let thisMonth = now.getMonth();
+        const now = new Date();
+        const thisMonth = now.getMonth();
         this.getBonusesForUpdating().then(
             (bonuses: BonusId[]) => {
                 this.getIncomeObservables().subscribe( results => {
@@ -111,8 +154,9 @@ export class BonusService {
                             if (bonus.propertyName === result.propertyName
                                 && bonus.forMonth === thisMonth
                                 && bonus.collectedMTD !== result.collectedMTD) {
-                                console.log('Found matching bonus - ' + result.propertyName + ', collectedMTD amount was: ' + result.collectedMTD);
-
+                                console.log('Found matching bonus - '
+                                    + result.propertyName
+                                    + ', collectedMTD amount was: ' + result.collectedMTD);
                                 bonus.collectedMTD = result.collectedMTD;
                                 bonus.outstandingMTD = bonus.grossPotential - bonus.collectedMTD;
                                 bonus.collectedPercent = (bonus.collectedMTD / bonus.grossPotential);
@@ -123,7 +167,7 @@ export class BonusService {
                             }
                         }
                     }
-                })
+                });
             });
 
     }
@@ -155,9 +199,10 @@ export class BonusService {
                 })
             });
     }
-
+*/
+/*
     getBonusesForUpdating() {
-        return new Promise(resolve=>{
+        return new Promise(resolve => {
             this.getBonusStream().subscribe(
                     (bonuses: BonusId[]) => {
                         resolve(bonuses);
@@ -166,10 +211,9 @@ export class BonusService {
     }
     getBonusByProperty(propertyName: string): Observable<BonusId[]>{
          const currMonth = new Date().getMonth();
-        let queryRef = this.afs.collection('bonuses', ref => ref.where("propertyName", "==", propertyName)
-            .where("forMonth", "==", currMonth));
-        let propertyDoc = queryRef.snapshotChanges();
-        let foundProperty;
+        const queryRef = this.afs.collection('bonuses', ref => ref.where('propertyName', '==', propertyName)
+            .where('forMonth', '==', currMonth));
+        const propertyDoc = queryRef.snapshotChanges();
         return propertyDoc.pipe(
             map(bonusForProp => {
                 return bonusForProp.map(bonus => {
@@ -187,7 +231,7 @@ export class BonusService {
     getLoadedBonuses(): Array<Bonus> {
         return this.bonusesArr;
     }
-
+*/
     checkBonusMonth(bonus) {
         const now = new Date();
         if (bonus.forMonth === now.getMonth()) {

@@ -263,12 +263,14 @@ export class DecisionAnniversaryDialogComponent implements OnInit {
     templateUrl: 'decision-dialog.component.html',
     styleUrls: ['./decision-dash.component.scss']
 })
-export class DecisionDialogComponent {
+export class DecisionDialogComponent implements OnInit {
     onRatingClickResult: ClickEvent;
     onHoverRatingChangeResult: HoverRatingChangeEvent;
     onRatingChangeResult: RatingChangeEvent;
     changeMade = false;
     decisionService: DecisionService;
+    createdAt: Date;
+    updatedAt: Date;
 
     constructor(
         public dialogRef: MatDialogRef<DecisionDialogComponent>,
@@ -276,6 +278,16 @@ export class DecisionDialogComponent {
         decisionService: DecisionService) {
         this.decisionService = decisionService;
         dialogRef.disableClose = false;
+    }
+    ngOnInit() {
+        if (this.data.createdAt) {
+            this.createdAt = (this.data.createdAt as Timestamp).toDate();
+        } else {
+            this.createdAt = new Date();
+        }
+        if (this.data.updatedAt) {
+            this.updatedAt = (this.data.updatedAt as Timestamp).toDate();
+        }
     }
 
     onDoneClick(): void {

@@ -184,8 +184,8 @@ export class MakereadyBuilderComponent implements OnInit {
             this.scope.costOfUpgrades += this.microwaveContract.price;
         }
         this.processing = true;
-        let expirationTime = this.user.expirationTime;
-        let nowTime = new Date().getTime();
+        const expirationTime = this.user.expirationTime;
+        const nowTime = new Date().getTime();
         if (nowTime >= expirationTime) {
             this.auth.googleLogin(null).then(result => {
                 this.auth.user.subscribe(user => {

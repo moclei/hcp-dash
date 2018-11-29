@@ -7,7 +7,7 @@ import {
     ViewChild
 } from '@angular/core';
 import {
-    MAT_DIALOG_DATA,
+    MAT_DIALOG_DATA, MatDatepickerInputEvent,
     MatDialog,
     MatDialogRef,
     MatPaginator, MatSnackBar,
@@ -15,11 +15,11 @@ import {
     MatTableDataSource
 } from '@angular/material';
 import {Subscription} from 'rxjs/Subscription';
-import {Observable} from 'rxjs/index';
+import {Observable} from 'rxjs';
 import {FormBuilder} from '@angular/forms';
 import {PapaParseService} from 'ngx-papaparse';
 import {AuthService, User} from '../../services/auth.service';
-import {MakeReady, MakeReadyId, Unit} from '../makeready.model';
+import {MakeReady, Unit} from '../makeready.model';
 import {MakeReadyService} from '../makeready.service';
 import {UnitLoadService} from '../../services/unit-load.service';
 import {Router} from '@angular/router';
@@ -29,7 +29,7 @@ import Timestamp = firebase.firestore.Timestamp;
 import FieldValue = firebase.firestore.FieldValue;
 import {SlideInOutAnimation} from '../../animations';
 import {AppscriptService} from '../../services/appscript.service';
-import {differenceBy} from 'lodash';
+import {differenceBy, intersectionBy} from 'lodash';
 
 @Component({
     selector: 'app-makeready-table',
@@ -46,7 +46,7 @@ import {differenceBy} from 'lodash';
 export class MakereadyTableComponent implements OnInit, AfterViewInit, OnDestroy {
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild(MatSort) sort: MatSort;
-    expandedElement: MakeReadyId;
+    expandedElement: MakeReady;
     auth: AuthService;
     $user: Observable<User>;
     properties: Array<any>;
@@ -61,18 +61,20 @@ export class MakereadyTableComponent implements OnInit, AfterViewInit, OnDestroy
     ];
     // 'scheduled','delivered','paid'
     makereadies: Observable<MakeReady[]>;
+    moveouts: Observable<any>;
+    moveouts$: Subscription;
     matDataSource: MatTableDataSource<MakeReady>;
     unitSelected: Unit;
     parsedUnits: Array<any>;
     loading: boolean;
     makereadyService: MakeReadyService;
-    mrData: MakeReadyId[];
+    mrData: MakeReady[];
     toggleShowRemoved = false;
     propertySelected: string;
     user: User;
-    appfolioData$: Subscription;
+    // appfolioData$: Subscription;
     missingMRs: Array<any>;
-    searchingAppfolio: boolean = false;
+    searchingAppfolio = false;
 
     constructor(makereadyService: MakeReadyService,
                 auth: AuthService,
@@ -108,12 +110,14 @@ export class MakereadyTableComponent implements OnInit, AfterViewInit, OnDestroy
             this.matDataSource.sort = this.sort;
             this.loading = false;
         });
-        this.changeAppfolioObservable('');
+        // this.changeAppfolioObservable('');
+        this.changeMoveoutsObservable('');
     }
     changeMRStream() {
         this.toggleShowRemoved = !this.toggleShowRemoved;
         this.matDataSource.filter = this.propertySelected + ';' + this.toggleShowRemoved;
     }
+    /*
     changeAppfolioObservable(propertyName) {
         let makereadies$ = this.makereadyService.getMakeReadiesForProperty(propertyName);
         if(makereadies$ != null) {
@@ -132,16 +136,17 @@ export class MakereadyTableComponent implements OnInit, AfterViewInit, OnDestroy
                         mrbuilders.push({'unit': data[i].unit.unitName, 'date': mrDate, 'data:': {}});
                     }
                     for (let j = 0; j < results.length; j++) {
-                        if (results[j]["Unit"] !== "") {
+                        if (results[j]['Unit'] !== '') {
                             appfolio.push({
                                 'unit': results[j]['Unit'],
                                 'date': results[j]['Date'],
+                                'type': results[j]['Event'],
                                 'data:': results[j]
                             });
                         }
                     }
 
-                    let unmatched = differenceBy(appfolio, mrbuilders, 'unit');
+                    const unmatched = differenceBy(appfolio, mrbuilders, 'unit');
                     // let matched = differenceBy(unmatched, appfolio, 'unit')
                     console.log('appfolio:');
                     console.table(appfolio);
@@ -152,10 +157,77 @@ export class MakereadyTableComponent implements OnInit, AfterViewInit, OnDestroy
                     console.table(unmatched);
                     this.missingMRs = unmatched;
                     this.searchingAppfolio = false;
+                    // console.log('Unmatched from cloud function: ' + JSON.stringify(unmatched));
+                })
+            });
+        }
+    }
+*/
+    changeMoveoutsObservable(propertyName) {
+        const makereadies = this.makereadyService.getMakeReadiesForProperty(propertyName);
+        if (makereadies != null) {
+            makereadies.subscribe(data => {
+                if (this.moveouts$) {
+                    this.moveouts$.unsubscribe();
+                }
+                this.searchingAppfolio = true;
+                this.moveouts$ = this.makereadyService.getMoveOutsForProperty(propertyName).subscribe(result => {
+                    // this.appfolioData = results;
+                    // console.log('result; ' + JSON.stringify(result));
+                    const appfolio = [];
+                    const mrbuilders = [];
+                    const moveOuts = result.moveOuts;
+                    for (let j = 0; j < moveOuts.length; j++) {
+                        if (moveOuts[j]['Unit'] !== '') {
+                            appfolio.push({
+                                'unit': moveOuts[j]['Unit'],
+                                'date': moveOuts[j]['Date'],
+                                'type': moveOuts[j]['Event'],
+                                'data:': moveOuts[j]
+                            });
+                        }
+                    }
+                    for (let i = 0; i < data.length; i++) {
+                        const mrDate = this.fieldValueAsDate(data[i].createdAt);
+                        mrbuilders.push({'unit': data[i].unit.unitName, 'date': mrDate, 'data': data[i]});
+                    }
+
+                    /*
+                    this.mr.moveOutDate = new Timestamp.fromDate(event.value);
+                    this.makereadyService.setMakeReady(this.mr, this.id).then(msg => {
+                        console.log('onStepChange, saving mr: ' + msg);
+                    });*/
+
+                    const unmatched = differenceBy(appfolio, mrbuilders, 'unit');
+                    const matched = intersectionBy(mrbuilders, appfolio, 'unit');
+                    // let matched = differenceBy(unmatched, appfolio, 'unit')
+                    // console.log('appfolio:');
+                    // console.table(appfolio);
+                    // console.log('mrbuilders:');
+                    // console.table(mrbuilders);
+
+                    // console.log('unmatched:');
+                    // console.table(unmatched);
+                    // console.log('matched:');
+                    // console.table(matched);
+                    for (let x = 0; x < matched.length; x++) {
+                        const mr = matched[x];
+                       //  console.log('matched unit ' + mr.unit.unitName + ', id:' + mr.id + ', moveOutDate: ' + mr.moveOutDate);
+                        if (!mr.data.moveOutDate) {
+                            const moDate = new Date(mr.date);
+                            console.log('moDate: ' + moDate);
+                            mr.data.moveOutDate = Timestamp.fromDate(moDate);
+                            this.makereadyService.setMakeReady(mr.data, mr.data.id).then(msg => {
+                                console.log('Updated mr, saving mr: ' + msg);
+                            });
+                        }
+                    }
+                    this.missingMRs = unmatched;
+                    this.searchingAppfolio = false;
                     /*console.log('matched:');
                     console.table(matched);*/
                     // console.log('Unmatched from cloud function: ' + JSON.stringify(unmatched));
-                })
+                });
             });
         }
     }
@@ -185,7 +257,8 @@ export class MakereadyTableComponent implements OnInit, AfterViewInit, OnDestroy
             this.matDataSource.paginator.firstPage();
         }
         this.missingMRs = null;
-        this.changeAppfolioObservable(this.propertySelected);
+        // this.changeAppfolioObservable(this.propertySelected);
+        this.changeMoveoutsObservable(this.propertySelected);
     }
     /*  setCreatedAt(data) {
         const timestamp = data.timestamp;
@@ -221,9 +294,9 @@ export class MakereadyTableComponent implements OnInit, AfterViewInit, OnDestroy
             this.user = user;
             this.propertySelected = user.propertyFilter;
             this.setDataSource(user);
-            if(this.propertySelected !== '') {
+            /*if(this.propertySelected !== '') {
                 this.changeAppfolioObservable(this.propertySelected);
-            }
+            }*/
         });
     }
     openDialog(makeready): void {
@@ -250,7 +323,6 @@ export class MakereadyTableComponent implements OnInit, AfterViewInit, OnDestroy
         });
     }
     onNewMakeReadyHandler() {
-        // TODO go to makereadybuilder
         this.router.navigate(['./mr-builder']);
     }
     onReSendHandler(mr) {
@@ -288,26 +360,36 @@ export class MakereadyTableComponent implements OnInit, AfterViewInit, OnDestroy
     ngOnDestroy() {
         // this.makereadies$.unsubscribe();
     }
-    treatAsUTC(date): any {
-        const result = new Date(date);
-        result.setMinutes(result.getMinutes() - result.getTimezoneOffset());
-        return result;
-    }
-    numDays(mr) {
-        const createdAt = this.fieldValueAsDate(mr.createdAt);
-        const movedOutTS = mr.moveOutDate;
-        if (movedOutTS) {
-            const movedOut = mr.moveOutDate.toDate();
-            const now = new Date();
-            if (mr.checklist && mr.checklist.contractorFinished) {
-                return this.daysBetween(movedOut, this.fieldValueAsDate(mr.checklist.contractorFinishedDate));
-            } else {
-                return this.daysBetween(movedOut, now);
-            }
+    /*daysBetween(startDate, endDate) {
+        const millisecondsPerDay = 24 * 60 * 60 * 1000;
+        return Math.round((this.treatAsUTC(endDate) - this.treatAsUTC(startDate)) / millisecondsPerDay);
+    }*/
+    isOverTime(mr) {
+        if (mr.numDays > 4) {
+            return !mr.paid || mr.paid === false;
         } else {
-            return 0;
+            return false;
         }
     }
+    /*numDays(mr): string {
+        const createdAt = this.fieldValueAsDate(mr.createdAt);
+        const movedOutTS = mr.moveOutDate;
+        let movedOut;
+        if (movedOutTS) {
+            movedOut = mr.moveOutDate.toDate();
+        } else {
+            movedOut = mr.createdAt.toDate();
+        }
+        const now = new Date();
+        let days = '0';
+        if (mr.checklist && mr.checklist.contractorFinished) {
+            days =  '' + this.daysBetween(movedOut, this.fieldValueAsDate(mr.checklist.contractorFinishedDate));
+        } else {
+            days = '' + this.daysBetween(movedOut, now);
+        }
+        console.log('mr: ' + mr.unit.unitName + ', days: ' + days);
+        return days;
+    }*/
     getMoveOutDotSpot(mr) {
         const moveOutDate = mr.moveOutDate;
         let location = '4px';
@@ -365,16 +447,15 @@ export class MakereadyTableComponent implements OnInit, AfterViewInit, OnDestroy
         }
         return location;
     }
+    /* Old and inaccurate
     daysBetween(startDate: Date, endDate: Date) {
         const millisecondsPerDay: number = 24 * 60 * 60 * 1000;
         return Math.round((this.treatAsUTC(endDate) - this.treatAsUTC(startDate)) / millisecondsPerDay);
-    }
-    isOverTime(numDays: number, makeready) {
-        if (numDays > 4) {
-            return !makeready.paid || makeready.paid === false;
-        } else {
-            return false;
-        }
+    }*/
+    treatAsUTC(date): any {
+        const result = new Date(date);
+        result.setMinutes(result.getMinutes() - result.getTimezoneOffset());
+        return result;
     }
     fieldValueAsDate(val: FieldValue): Date {
         // console.log('val: ' + val + ', val type: ' + typeof val);

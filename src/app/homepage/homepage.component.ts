@@ -15,8 +15,9 @@ export class HomepageComponent implements OnInit {
     // console.log('homepage.component constructer -> passing authenticationService');
   }
   ngOnInit() {
-
+/*
       this.bonusService.updateGPRs();
       this.bonusService.updateIncomes();
+      */
   }
 }

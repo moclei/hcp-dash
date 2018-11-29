@@ -45,7 +45,10 @@
             <span class="mat-body">Missing units:</span>
             <mat-chip-list>
                 <mat-chip *ngFor="let mr of this.missingMRs"
-                color="accent">
+                    [color]="mr.type == 'Notice' ? '' : 'accent'"
+                          selected
+                    [matTooltip]="mr.date"
+                          matTooltipPosition="above">
                 {{ mr.unit }}</mat-chip>
             </mat-chip-list>
         </div>
@@ -216,7 +219,7 @@
                 <th mat-header-cell *matHeaderCellDef>Days</th>
                 <td mat-cell *matCellDef="let element">
               <span class="app-colored-circle"
-                    [class.is-over-time]="isOverTime(numDays(element), element)">{{numDays(element)}}
+                    [class.is-over-time]="isOverTime(element)">{{element.numDays}}
               </span>
                 </td>
             </ng-container>

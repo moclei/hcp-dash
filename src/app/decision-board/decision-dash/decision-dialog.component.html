@@ -20,26 +20,37 @@
                         (change)="onDecisionChange()">
               </textarea>
             </mat-form-field>
-            <mat-form-field *ngIf="data.threeMonthResult">
-              <textarea matInput
-                        cdkTextareaAutosize
-                        cdkAutosizeMinRows="2"
-                        cdkAutosizeMaxRows="7"
-                        placeholder="Decision"
-                        #contentCtrl="cdkTextareaAutosize"
-                        [(ngModel)]="data.threeMonthResult"
-                        [ngModelOptions]="{standalone: true}"
-                        (change)="onDecisionChange()">
-              </textarea>
-            </mat-form-field>
-
-            <mat-form-field>
+            <mat-form-field *ngIf="data.result">
                 <textarea matInput
                           matTextareaAutosize
                           [(ngModel)]="data.result"
                           placeholder="Result"
                           (change)="onDecisionChange()">
                 </textarea>
+            </mat-form-field>
+            <mat-form-field *ngIf="data.threeMonthResult">
+              <textarea matInput
+                        cdkTextareaAutosize
+                        cdkAutosizeMinRows="2"
+                        cdkAutosizeMaxRows="7"
+                        placeholder="Review after 3 Months"
+                        #contentCtrl="cdkTextareaAutosize"
+                        [(ngModel)]="data.threeMonthResult"
+                        [ngModelOptions]="{standalone: true}"
+                        (change)="onDecisionChange()">
+              </textarea>
+            </mat-form-field>
+            <mat-form-field *ngIf="data.sixMonthResult">
+              <textarea matInput
+                        cdkTextareaAutosize
+                        cdkAutosizeMinRows="2"
+                        cdkAutosizeMaxRows="7"
+                        placeholder="Review after 3 Months"
+                        #contentCtrl="cdkTextareaAutosize"
+                        [(ngModel)]="data.sixMonthResult"
+                        [ngModelOptions]="{standalone: true}"
+                        (change)="onDecisionChange()">
+              </textarea>
             </mat-form-field>
             <div fxFlexAlign="start">
                 <star-rating [starType]="'svg'"
@@ -51,6 +62,14 @@
                 </star-rating>
             </div>
         </div>
+        <section class="mat-typography decision-footnote">
+            <div>
+                <div class="mat-caption">Created on {{this.createdAt | date:'shortDate'}} by {{data.email}}</div>
+                <div *ngIf="this.updatedAt">
+                    <div class="mat-caption">Updated on {{this.updatedAt | date:'shortDate'}}</div>
+                </div>
+            </div>
+        </section>
         <div fxLayout="row">
             <button mat-icon-button
                     [matMenuTriggerFor]="decisionMenu"

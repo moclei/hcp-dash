@@ -21,6 +21,9 @@ import {StarRatingModule} from 'angular-star-rating';
 import {TimestampPipe} from '../pipes/timestamp.pipe';
 import {DecisionAnniversaryDialogComponent, DecisionDashComponent, DecisionDialogComponent} from './decision-dash/decision-dash.component';
 import {DecisionReviewComponent} from './decision-review/decision-review.component';
+import { DecisionReviewSliderComponent } from './decision-review/decision-review-slider/decision-review-slider.component';
+import { ReviewDirective } from './decision-review/review.directive';
+import { ReviewItemComponent } from './decision-review/review-item/review-item.component';
 
 const masonryProviders = [
     {provide: Masonry, useFactory: () => window['Masonry']}
@@ -59,14 +62,18 @@ const masonryProviders = [
         DecisionDialogComponent,
         TimestampPipe,
         DecisionDashComponent,
-        DecisionReviewComponent
+        DecisionReviewComponent,
+        DecisionReviewSliderComponent,
+        ReviewDirective,
+        ReviewItemComponent
     ],
     providers: [
         DecisionService
     ],
     entryComponents: [
         DecisionAnniversaryDialogComponent,
-        DecisionDialogComponent
+        DecisionDialogComponent,
+        ReviewItemComponent
     ]
 })
 export class DecisionBoardModule {

@@ -31,6 +31,9 @@ export class BonusComponent implements OnInit {
     private years: Array<number>;
 
     user: User;
+    private percentCurrentBelow: number;
+    private percentCurrentAbove: number;
+    private currentBase: number;
     constructor(auth: AuthService,
                 private unitsService: UnitLoadService,
                 bonusService: BonusService,
@@ -61,6 +64,7 @@ export class BonusComponent implements OnInit {
                         this.propertySelected = 'Alamo';
                     }
                     this.getCurrentBonus(this.propertySelected);
+
                     /*
                     this.filteredBonuses = this.bonusesArr.filter(bonus => {
                         return (bonus.forMonth === currentMonth && bonus.forYear === currentYear);
@@ -100,9 +104,14 @@ export class BonusComponent implements OnInit {
         this.lastMonthBonus = filteredLastMonthBonus[0];
         console.log('Filtered Bonus length and value: ' + this.filteredBonuses.length + ': ' + this.filteredBonuses[0]);
         this.selectedBonus = this.filteredBonuses[0];
-        if (this.selectedBonus) {
-            this.setWaterHeight(this.selectedBonus);
-        }
+        const incomeObj = this.bonusService.getIncomeForProperty(this.propertySelected);
+        incomeObj.subscribe( results => {
+            console.log('Setting selectedBonus.collectedMTD: ' + results.incomeMTD);
+            this.selectedBonus.collectedMTD = results.incomeMTD;
+            if (this.selectedBonus) {
+                this.setWaterHeight(this.selectedBonus);
+            }
+        });
         if (this.lastMonthBonus) {
             this.setLastMonthWaterHeight(this.lastMonthBonus);
         }
@@ -113,11 +122,21 @@ export class BonusComponent implements OnInit {
     }
     setWaterHeight(bonus: Bonus) {
         const percent = (bonus.collectedMTD / bonus.grossPotential);
+        this.percentCurrentBelow = (bonus.collectedMTD / (bonus.grossPotential * 0.9));
+        this.percentCurrentAbove = 0;
+        this.currentBase = this.percentCurrentBelow * 160;
+        if (this.percentCurrentBelow >= 1) {
+            console.log('Bonus threshold reached');
+            this.percentCurrentBelow = 1;
+            this.percentCurrentAbove = ((bonus.collectedMTD - bonus.grossPotential * 0.9)  / (bonus.grossPotential * 0.1));
+            this.currentBase = 160 + (this.percentCurrentAbove * 40);
+        }
+        console.log('this.currentBase: ' + this.currentBase);
+        console.log('this.percentCurrentBelow: ' + this.percentCurrentBelow);
+        console.log('this.percentCurrentAbove: ' + this.percentCurrentAbove);
+
         console.log('setting water height: percent = ' + percent);
         // attempting to make percents less than 90 look smaller
-        if (percent < 0.9) {
-            this.percentCurrent = percent * 0.9;
-        }
         this.percentCurrent = percent;
     }
     setLastMonthWaterHeight(bonus: Bonus) {
