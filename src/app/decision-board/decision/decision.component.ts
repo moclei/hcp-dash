@@ -6,6 +6,7 @@ import {ClickEvent, HoverRatingChangeEvent, RatingChangeEvent} from 'angular-sta
 import {CdkTextareaAutosize} from '@angular/cdk/text-field';
 import * as firebase from 'firebase';
 import Timestamp = firebase.firestore.Timestamp;
+import {AuthService} from '../../services/auth.service';
 
 
 @Component({
@@ -20,11 +21,14 @@ export class DecisionComponent implements OnInit {
   createdAt: Date;
   updatedAt: Date;
   decisionService: DecisionService;
+  auth: AuthService;
 
   constructor(
     public dialog: MatDialog,
-    decisionService: DecisionService) {
-      this.decisionService = decisionService;
+    decisionService: DecisionService,
+    auth: AuthService) {
+    this.auth = auth;
+    this.decisionService = decisionService;
   }
 /*
   openDialog(decision): void {

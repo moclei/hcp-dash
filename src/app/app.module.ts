@@ -33,6 +33,7 @@ import {
     MatSlideToggleModule,
     MatSnackBarModule
 } from '@angular/material';
+import {StarRatingModule} from 'angular-star-rating';
 import {AppComponent} from './app.component';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {HomepageComponent} from './homepage/homepage.component';
@@ -52,6 +53,7 @@ import {CoreModule} from './core/core.module';
 import {LoginPageComponent} from './login-page/login-page.component';
 import {DashService} from './services/dash-service.service';
 import {ContractorDashComponent, ContractorDialogComponent} from './contractor-dash/contractor-dash.component';
+import {VacancyDialogComponent} from './vacancy-dash/vacancy-dash.component';
 import {AppscriptService} from './services/appscript.service';
 import {FullnameValidatorDirective} from './fullname-validator.directive';
 import {UnitLoadService} from './services/unit-load.service';
@@ -65,14 +67,19 @@ import {SpeedyAppsComponent} from './speedy-apps/speedy-apps.component';
 import {PhonePipe} from './pipes/phone.pipe';
 import {MakereadyDashComponent} from './makeready-dash/makeready-dash.component';
 import {
-    MakeReadyDialogComponent,
     MakereadyTableComponent
 } from './makeready-dash/makeready-table/makeready-table.component';
 import {BonusDashComponent} from './bonus-dash/bonus-dash.component';
 import {BonusTableComponent, BonusTableDialogComponent} from './bonus-dash/bonus-table/bonus-table.component';
 import {BonusComponent} from './bonus-dash/bonus/bonus.component';
-import {MakereadyChecklistComponent} from './makeready-dash/makeready-checklist/makeready-checklist.component';
+import {
+    MakereadyChecklistComponent,
+    MakeReadyChecklistDialogComponent
+} from './makeready-dash/makeready-checklist/makeready-checklist.component';
 import {CurrencyPipe} from '@angular/common';
+import { VacancyDashComponent } from './vacancy-dash/vacancy-dash.component';
+import { ContractorDetailComponent } from './contractor-dash/contractor-detail/contractor-detail.component';
+import { ContractorAddComponent } from './contractor-dash/contractor-add/contractor-add.component';
 
 /*
 const gapiClientConfig: NgGapiClientConfig = {
@@ -100,19 +107,23 @@ const gapiClientConfig: NgGapiClientConfig = {
         MakereadyBuilderComponent,
         ContractorDashComponent,
         ContractorDialogComponent,
+        VacancyDialogComponent,
         FullnameValidatorDirective,
         PositiveNumberDirective,
         ThankYouVisitsComponent,
         SpeedyAppsComponent,
         PhonePipe,
-        MakeReadyDialogComponent,
+        MakeReadyChecklistDialogComponent,
         BonusTableDialogComponent,
         MakereadyDashComponent,
         MakereadyTableComponent,
         BonusDashComponent,
         BonusTableComponent,
         BonusComponent,
-        MakereadyChecklistComponent
+        MakereadyChecklistComponent,
+        VacancyDashComponent,
+        ContractorDetailComponent,
+        ContractorAddComponent
     ],
     imports: [
         BrowserModule,
@@ -158,6 +169,7 @@ const gapiClientConfig: NgGapiClientConfig = {
         MatOptionModule,
         PapaParseModule,
         AppRoutingModule,
+        StarRatingModule.forRoot(),
         TextMaskModule,
         CoreModule
     ],
@@ -172,8 +184,9 @@ const gapiClientConfig: NgGapiClientConfig = {
     ],
     entryComponents: [
         ContractorDialogComponent,
-        MakeReadyDialogComponent,
-        BonusTableDialogComponent
+        BonusTableDialogComponent,
+        MakeReadyChecklistDialogComponent,
+        VacancyDialogComponent
     ],
     bootstrap: [AppComponent]
 })

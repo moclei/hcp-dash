@@ -27,6 +27,7 @@ export class BonusComponent implements OnInit {
     lastMonthBonus: Bonus;
     monthSelected: number;
     yearSelected: number;
+    waterHeightSet = false;
     private months: Array<string>;
     private years: Array<number>;
 
@@ -37,7 +38,7 @@ export class BonusComponent implements OnInit {
     constructor(auth: AuthService,
                 private unitsService: UnitLoadService,
                 bonusService: BonusService,
-                private cp: CurrencyPipe) {
+                public cp: CurrencyPipe) {
         this.auth = auth;
         this.bonusService = bonusService;
     }
@@ -110,6 +111,7 @@ export class BonusComponent implements OnInit {
             this.selectedBonus.collectedMTD = results.incomeMTD;
             if (this.selectedBonus) {
                 this.setWaterHeight(this.selectedBonus);
+                this.waterHeightSet = true;
             }
         });
         if (this.lastMonthBonus) {

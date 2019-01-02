@@ -1,43 +1,47 @@
 <div fxLayout="column"
      fxLayoutAlign="space-around center"
-    fxLayoutGap="16px"
-class="stripe-1">
+     fxLayoutGap="16px"
+     class="stripe-1">
 
-  <div *ngIf="auth.user | async as user;">
-    <div *ngIf="user.isEditor">
-      <mat-form-field style="margin-bottom: -1.25em">
-        <mat-select
-                placeholder="Filter by property"
-                (selectionChange)="onSelectProperty($event.value)">
-          <mat-option
-                  *ngFor="let property of this.properties"
-                  value={{property.sheetName}}>
-            {{ property.name }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
+    <div *ngIf="auth.user | async as user;">
+        <div *ngIf="user.isEditor">
+            <mat-form-field style="margin-bottom: -1.25em">
+                <mat-select
+                        placeholder="Filter by property"
+                        (selectionChange)="onSelectProperty($event.value)">
+                    <mat-option
+                            *ngFor="let property of this.properties"
+                            value={{property.sheetName}}>
+                        {{ property.name }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
     </div>
-  </div>
-  <button mat-button (click)="showAnniversaries()">Go to reviews</button>
-  <app-decision-input></app-decision-input>
-  <div fxFlex="10"></div>
-
-  <div class="grid" #grid>
-    <div class="card" *ngFor="let decision of filteredDecisions">
-
-      <div class="card-body">
-        <app-decision (click)="openDialog(decision)"
-                      [decision]="decision"></app-decision>
-        <!--<mat-card>
-          <mat-card-content>
-            <h5 class="card-title">{{ card.title }}</h5>
-            <p class="card-text">{{ card.content }}</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
-          </mat-card-content>
-        </mat-card>-->
-
-      </div>
-
+    <div *ngIf="auth.user | async as user;">
+        <div *ngIf="user.isEditor">
+            <button mat-button (click)="showAnniversaries()">Go to reviews</button>
+        </div>
     </div>
-  </div>
+    <app-decision-input></app-decision-input>
+    <div fxFlex="10"></div>
+
+    <div class="grid" #grid>
+        <div class="card" *ngFor="let decision of filteredDecisions">
+
+            <div class="card-body">
+                <app-decision (click)="openDialog(decision)"
+                              [decision]="decision"></app-decision>
+                <!--<mat-card>
+                  <mat-card-content>
+                    <h5 class="card-title">{{ card.title }}</h5>
+                    <p class="card-text">{{ card.content }}</p>
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                  </mat-card-content>
+                </mat-card>-->
+
+            </div>
+
+        </div>
+    </div>
 </div>

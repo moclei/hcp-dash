@@ -208,3 +208,69 @@ tr.example-element-row:not(.example-expanded-row):active {
   font-weight: lighter;
   margin: 8px 0;
 }
+
+
+/** NEW progress list **/
+.circlelist-container {
+  min-width: 300px;
+  margin: 0;
+}
+.circlelist-progressbar {
+  counter-reset: step;
+  margin: 0;
+  padding: 0;
+}
+.circlelist-progressbar li {
+  list-style-type: none;
+  width: 19%;
+  float: left;
+  font-size: 11px;
+  position: relative;
+  text-align: center;
+  text-transform: uppercase;
+  color: #afafaf;
+}
+.circlelist-progressbar li:before {
+  width: 30px;
+  height: 30px;
+  /*content: counter(step);*/
+  content: "" attr(myAttr) "";
+  counter-increment: step;
+  line-height: 30px;
+  border: 2px solid red;
+  display: block;
+  text-align: center;
+  margin: 0 auto 2px auto;
+  border-radius: 50%;
+  background-color: white;
+  position: relative;
+  z-index: 2;
+}
+/*
+.circlelist-progressbar li:before .test{
+  content: '24';
+}*/
+.circlelist-progressbar li:after {
+  width: 100%;
+  height: 2px;
+  content: '';
+  position: absolute;
+  /*background-color: #7d7d7d;*/
+  background-color: #afafaf;
+  top: 15px;
+  left: -50%;
+  z-index: 1;
+}
+.circlelist-progressbar li:first-child:after {
+  content: none;
+}
+
+.circlelist-progressbar li.active {
+  color: black;
+}
+.circlelist-progressbar li.active:before {
+  border-color: #55b776;
+}
+.circlelist-progressbar li.active + li:after {
+  background-color: #55b776;
+}

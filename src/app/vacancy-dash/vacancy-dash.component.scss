@@ -5,7 +5,6 @@
   overflow: auto;
   width: 90vw;
   min-width: 450px;
-  max-height: 600px;
 }
 .mat-row:hover{
   background-color: #E0F2F1;
@@ -26,4 +25,15 @@ table {
 
 .mat-column-created {
   max-width: 124px;
+}
+
+.example-section {
+  display: flex;
+  align-content: center;
+  align-items: center;
+  height: 60px;
+}
+
+.example-margin {
+  margin: 10px;
 }

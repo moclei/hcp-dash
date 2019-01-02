@@ -1,0 +1,48 @@
+<h1 mat-dialog-title>Leave a Review of the Contractor!</h1>
+<div mat-dialog-content
+     fxLayout="column"
+     fxLayoutGap="8px">
+
+    <div fxLayout="column"
+         fxLayoutGap="16px">
+        <form [formGroup]="formGroup">
+            <mat-form-field style="margin-bottom: -1.25em">
+                <mat-select
+                        placeholder="Contractors Name"
+                        formControlName="contractorNameCtrl">
+                    <mat-option
+                            *ngFor="let c of this.contractors | async" [value]="c.name">
+                        {{c.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </form>
+        <div fxFlexAlign="start">
+            <star-rating [starType]="'svg'"
+                         [rating]="0"
+                         [hoverEnabled]="true"
+                         (starClickChange)="onRatingClick($event)"
+                         (ratingChange)="onRatingChange($event)"
+                         (hoverRatingChange)="onHoverRatingChange($event)">
+            </star-rating>
+        </div>
+        <div *ngIf="this.hoverRating">
+            <p>{{this.ratingMessages[this.hoverRating-1]}}</p>
+        </div>
+        <mat-form-field class="example-full-width">
+            <textarea matInput
+                    [(ngModel)]="reviewComment"
+                    placeholder="Leave a comment (optional)">
+            </textarea>
+        </mat-form-field>
+    </div>
+</div>
+
+<div mat-dialog-actions>
+    <button mat-raised-button
+            color="warn"
+            [disabled]="!isRated"
+            (click)="onRemoveHandler()">Submit</button>
+    <!--<button mat-button (click)="onNoClick()">Cancel</button>-->
+</div>
+

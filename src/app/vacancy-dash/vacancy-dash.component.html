@@ -1,0 +1,168 @@
+<div fxLayout="row"
+     fxLayoutAlign="center">
+    <div fxLayout="column"
+         fxLayoutGap="16px">
+        <div fxFlex="16px"></div>
+        <div fxLayout="row"
+             fxLayoutGap="8px"
+             fxLayoutAlign="space-between end">
+            <h1 class="mat-h1">Vacancies</h1>
+            <section class="example-section">
+                <label class="example-margin">Home Type:</label>
+                <mat-radio-group [(ngModel)]="housesSelected" (change)="applyFilter()">
+                    <mat-radio-button
+                            class="example-margin"
+                            value="">
+                        Apartment
+                    </mat-radio-button>
+                    <mat-radio-button class="example-margin" value="Houses">
+                        House
+                    </mat-radio-button>
+                </mat-radio-group>
+            </section>
+            <div>
+                <mat-form-field>
+                    <mat-select
+                            placeholder="Filter by city"
+                            [(value)]="this.citySelected"
+                            (selectionChange)="applyFilter()">
+                        <mat-option
+                                *ngFor="let city of this.cities"
+                                value={{city.name}}>
+                            {{ city.name }}
+                        </mat-option>
+                        <mat-option value="">All</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-select
+                            placeholder="Size"
+                            [(value)]="this.typeSelected"
+                            (selectionChange)="applyFilter()">
+                        <mat-option value="">All</mat-option>
+                        <mat-option
+                                *ngFor="let type of this.types"
+                                value={{type.filterName}}>
+                            {{ type.displayName }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-select
+                            placeholder="Availability"
+                            [(value)]="this.statusSelected"
+                            (selectionChange)="applyFilter()">
+                        <mat-option value="">All</mat-option>
+                        <mat-option
+                                *ngFor="let status of this.statuses"
+                                value={{status.filterName}}>
+                            {{ status.displayName }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div></div>
+        </div>
+
+        <div class="example-table-container mat-elevation-z8">
+            <div *ngIf="this.loading; else loaded">
+                <mat-progress-bar
+                        color="secondary"
+                        mode="indeterminate">
+                </mat-progress-bar>
+            </div>
+            <ng-template #loaded>
+            </ng-template>
+            <table
+                    mat-table
+                    class="example-table"
+                    #table
+                    [dataSource]="matDataSource"
+                    matSort>
+                <!-- Property -->
+                <ng-container matColumnDef="property">
+                    <th mat-header-cell
+                        *matHeaderCellDef
+                        mat-sort-header> Property
+                    </th>
+                    <td mat-cell
+                        *matCellDef="let element"
+                    > {{element.property}}
+                    </td>
+                </ng-container>
+                <!-- Unit -->
+                <ng-container matColumnDef="unit">
+                    <th mat-header-cell
+                        *matHeaderCellDef
+                        mat-sort-header> Unit
+                    </th>
+                    <td mat-cell
+                        *matCellDef="let element"
+                    > {{element.unit}}
+                    </td>
+                </ng-container>
+                <!-- Type -->
+                <ng-container matColumnDef="type">
+                    <th mat-header-cell
+                        *matHeaderCellDef
+                        mat-sort-header> Beds/Baths
+                    </th>
+                    <td mat-cell
+                        *matCellDef="let element"
+                    > {{element.type}}
+                    </td>
+                </ng-container>
+                <!-- Size -->
+                <ng-container
+                        matColumnDef="size">
+                    <th mat-header-cell
+                        *matHeaderCellDef> Size (Sq Ft)
+                    </th>
+                    <td mat-cell
+                        *matCellDef="let element"
+                    > {{element.size}}
+                    </td>
+                </ng-container>
+                <!-- Status -->
+                <ng-container
+                        matColumnDef="status">
+                    <th mat-header-cell
+                        *matHeaderCellDef> Status
+                    </th>
+                    <td mat-cell
+                        *matCellDef="let element"
+                    > {{getStatus(element)}}
+                    </td>
+                </ng-container>
+                <!-- Ready -->
+                <ng-container matColumnDef="ready">
+                    <th mat-header-cell
+                        *matHeaderCellDef> Ready
+                    </th>
+                    <td mat-cell
+                        *matCellDef="let element"
+                    > {{element.ready ? 'Yes' : 'No'}}
+                    </td>
+                </ng-container>
+                <!-- Scheduled Rent -->
+                <ng-container matColumnDef="scheduledRent">
+                    <th mat-header-cell
+                        *matHeaderCellDef> Scheduled Rent
+                    </th>
+                    <td mat-cell
+                        *matCellDef="let element"
+                    >
+                        ${{element.scheduledRent}}
+                    </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="dispColumnsActive"></tr>
+                <tr mat-row *matRowDef="let row; columns: dispColumnsActive; "></tr>
+            </table>
+            <mat-paginator #paginator
+                           [pageSize]="20"
+                           [pageSizeOptions]="[5, 10, 20, 60]">
+            </mat-paginator>
+        </div>
+        <div fxFlex="16px"></div>
+    </div>
+</div>

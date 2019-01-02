@@ -1,0 +1,259 @@
+<div fxLayout="column"
+     fxLayoutAlign="center center"
+     fxLayoutGap="16px"
+     *ngIf="$contractor | async as contractor; else loading">
+    <div class="checklist-container"
+         style="padding-top: 20px;">
+        <div fxLayout="row"
+             fxLayoutAlign="center">
+            <h1 class="mat-h1">Contractor Details</h1>
+        </div>
+        <mat-card>
+            <mat-card-content>
+                <div fxLayout="column"
+                     fxLayoutGap="8px">
+                    <div fxLayout="row" fxLayoutAlign="start">
+                        <button mat-stroked-button
+                                (click)="goBack()">Back to Table
+                        </button>
+                    </div>
+
+                    <div class="moc-material-card"
+                         fxLayout="row"
+                         fxLayoutGap="16px"
+                         fxLayoutAlign="space-between">
+                        <div fxLayout="column">
+                            <div class="example-element-symbol"> {{contractor.name}}</div>
+                            <div class="example-element-position"> {{contractor.phoneNumber}}</div>
+                            <div class="example-element-name"> Status: {{contractor.status}}</div>
+                            <div *ngIf="contractor.numReviews > 0">
+                                <star-rating
+                                        [starType]="'svg'"
+                                        [rating]="contractor.totalScore / contractor.numReviews"
+                                        [readOnly]="true"
+                                        class="decision-star-rating">
+                                </star-rating>
+                            </div>
+                            <div *ngIf="contractor.createdAt">
+                                <b>Date Created: </b> {{asTimeStamp(contractor.createdAt).toDate() | date:'shortDate'}}
+                            </div>
+                           <!-- <div>
+                                <button mat-button (click)="updateContractorIds()">Update Contractors</button>
+                            </div>
+                            <div>
+                                <button mat-button (click)="modifyContractorNames()">Update Contractors</button>
+                            </div>-->
+                        </div>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+
+        <mat-card>
+            <mat-card-content>
+                <div fxLayout="column"
+                     fxLayoutGap="8px">
+                    <h1 class="mat-h1">Jobs Details</h1>
+
+                    <div class="example-table-container mat-elevation-z8">
+                        <table mat-table
+                               class="example-table"
+                               #table [dataSource]="matDataSource"
+                               matSort multiTemplateDataRows>
+                    <!--
+                            email: string;
+                            propertyName: string;
+                            preparerName: string;
+                            unit: Unit;
+                            scope: Scope;
+                                scopeDescription: String;
+                                mrType: string;
+                                totalPrice: number;
+                                finalRate: number;
+                                isFullTexture: boolean;
+                            checklist?: Checklist;
+                                contractorStartedDate?: FieldValue;
+                                contractorFinishedDate?: FieldValue;
+                            createdAt?: FieldValue;
+                            moveOutDate?: Timestamp;
+                            removed?: boolean;
+                            removedAt?: FieldValue;f
+                            rating?: number;
+                            reviewComment?: string;
+                            -->
+                            <!-- Name
+                            <ng-container matColumnDef="contractorName">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Contractor Name
+                                </th>
+                                <td mat-cell
+                                    *matCellDef="let element">{{element.contractorName}}
+                                </td>
+                            </ng-container>-->
+                            <!-- Property & Unit -->
+                            <ng-container matColumnDef="propertyUnit">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Property & Unit
+                                </th>
+                                <td mat-cell
+                                    *matCellDef="let element">{{element.propertyName}}, #{{element.unit.unitName}}
+                                </td>
+                            </ng-container>
+                            <!-- Type -->
+                            <ng-container matColumnDef="jobType">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Type
+                                </th>
+                                <td mat-cell
+                                    *matCellDef="let element"> {{element.scope.mrType}}
+                                </td>
+                            </ng-container>
+                            <!-- Date Created -->
+                            <ng-container matColumnDef="createdAt">
+                                <th mat-header-cell
+                                        *matHeaderCellDef
+                                        mat-sort-header> Created On</th>
+                                <td mat-cell
+                                    *matCellDef="let element"> {{fieldValueAsDate(element.createdAt) | date:'shortDate'}}
+                                </td>
+                            </ng-container>
+                            <!-- Date Started -->
+                            <ng-container matColumnDef="startDate">
+                                <th mat-header-cell
+                                    *matHeaderCellDef
+                                    mat-sort-header> Started On</th>
+                                <td mat-cell
+                                    *matCellDef="let element"> {{fieldValueAsDate(element.checklist.contractorStartedDate) | date:'shortDate'}}
+                                </td>
+                            </ng-container>
+                            <!-- Date Ended -->
+                            <ng-container matColumnDef="endDate">
+                                <th mat-header-cell
+                                    *matHeaderCellDef
+                                    mat-sort-header> Ended On</th>
+                                <td mat-cell
+                                    *matCellDef="let element"> {{fieldValueAsDate(element.checklist.contractorFinishedDate) | date:'shortDate'}}
+                                </td>
+                            </ng-container>
+                            <!-- Comments -->
+                            <ng-container matColumnDef="comments">
+                                <th mat-header-cell
+                                    *matHeaderCellDef
+                                    mat-sort-header> Comments</th>
+                                <td mat-cell
+                                    *matCellDef="let element"> {{(element.review && element.review.reviewComment) ? element.review.reviewComment : 'None'}}
+                                </td>
+                            </ng-container>
+                            <!-- Rating -->
+                            <ng-container matColumnDef="rating">
+                                <th mat-header-cell
+                                    *matHeaderCellDef
+                                    mat-sort-header>Rating</th>
+                                <td mat-cell
+                                    *matCellDef="let element"> {{(element.review && element.review.rating) ? element.review.rating : '0'}}
+                                </td>
+                            </ng-container>
+                            <!-- Created By -->
+                            <ng-container matColumnDef="createdBy">
+                                <th mat-header-cell
+                                    *matHeaderCellDef
+                                    mat-sort-header>Created By</th>
+                                <td mat-cell
+                                    *matCellDef="let element"> {{element.preparerName}}
+                                </td>
+                            </ng-container>
+                            <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+                            <ng-container matColumnDef="expandedDetail">
+                                <td mat-cell *matCellDef="let element" [attr.colspan]="dispColumnsActive.length">
+                                    <div class="example-element-detail"
+                                            [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'"
+                                            fxLayout="row"
+                                            fxLayoutGap="8px">
+                                        <div class="example-element-diagram">
+                                            <div class="example-element-position"> {{element.propertyName}}</div>
+                                            <div class="example-element-symbol"> {{element.unit.unitName}}</div>
+                                            <div class="example-element-name"> {{element.scope.mrType}}</div>
+                                            <div class="example-element-weight">by {{element.preparerName}}</div>
+                                        </div>
+                                        <div class="example-element-diagram"
+                                             fxLayout="column">
+                                            <b>Scope: </b> {{element.scope.scopeDescription}}
+                                            <b>Granite: </b> {{element.scope.granite ? 'Yes' : 'No'}}
+                                            <b>Shower Tile: </b> {{element.scope.showerTile ? 'Yes' : 'No'}}
+                                            <b>Microwave: </b> {{element.scope.microwave ? 'Yes' : 'No'}}
+                                        </div>
+                                        <div class="example-element-diagram"
+                                             fxLayout="column">
+                                            <b>Actions: </b>
+                                            <button mat-button
+                                                    (click)="editRating(element)">Edit Rating and Comment
+                                            </button>
+                                            <button mat-button
+                                                    color="warn"
+                                                    (click)="reassignJob(element)">Reassign
+                                            </button>
+                                            <!--<button mat-button
+                                                    (click)="onReSendHandler(element)">Re-send Email
+                                            </button>-->
+                                        </div>
+                                    </div>
+                                    <!--<div
+                                            class="example-element-detail"
+                                            [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'"
+                                            fxLayout="row"
+                                            fxLayoutGap="8px">
+                                        <div class="example-element-diagram">
+                                            <div class="example-element-position"> {{element.propertyName}}</div>
+                                            <div class="example-element-symbol"> {{element.unit.unitName}}</div>
+                                            <div class="example-element-name"> {{element.scope.mrType}}</div>
+                                            <div class="example-element-weight">by {{element.preparerName}}</div>
+                                        </div>
+                                        <div class="example-element-diagram"
+                                             fxLayout="column">
+                                            <b>Scope: </b> {{element.scope.scopeDescription}}
+                                            <b>Granite: </b> {{element.scope.granite ? 'Yes' : 'No'}}
+                                            <b>Shower Tile: </b> {{element.scope.showerTile ? 'Yes' : 'No'}}
+                                            <b>Microwave: </b> {{element.scope.microwave ? 'Yes' : 'No'}}
+                                        </div>
+                                        <div class="example-element-diagram"
+                                             fxLayout="column">
+                                            <b>Actions: </b>
+                                            <button mat-button
+                                                    routerLink="/mr-checklist/{{element.id}}">Go To Checklist
+                                            </button>
+                                            <button mat-button
+                                                    color="warn"
+                                                    (click)="openDialog(element)">Remove
+                                            </button>
+                                            <button mat-button
+                                                    (click)="onReSendHandler(element)">Re-send Email
+                                            </button>
+                                        </div>
+                                    </div>-->
+                                </td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="dispColumnsActive" class="example-first-header-row"></tr>
+
+                            <tr mat-row *matRowDef="let element; columns: dispColumnsActive; "
+                                class="example-element-row"
+                                (click)="expandedElement === element ? expandedElement = null : expandedElement = element"
+                                [class.example-expanded-row]="expandedElement === element"></tr>
+
+                            <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+
+                        </table>
+                        <mat-paginator #paginator
+                                       [pageSize]="10"
+                                       [pageSizeOptions]="[5, 10, 20]">
+                        </mat-paginator>
+                    </div>
+
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+
+</div>
+<ng-template #loading>
+    <mat-progress-spinner color="primary">
+        Loading...
+    </mat-progress-spinner>
+</ng-template>

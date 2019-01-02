@@ -11,6 +11,7 @@ export class MakeReady {
     unit: Unit;
     scope: Scope;
     contracts: Contract[];
+    review?: Review;
     checklist?: Checklist;
     updatedAt?: FieldValue;
     createdAt?: FieldValue;
@@ -44,6 +45,12 @@ export class MakeReady {
 export interface MakeReadyId extends MakeReady {
     id: string;
 }*/
+export interface Review {
+    rating: number;
+    reviewComment: string;
+    contractorId: string;
+    includeInTotal: boolean;
+}
 
 export interface Contract {
     contractor: string;

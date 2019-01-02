@@ -7,8 +7,7 @@
         <mat-toolbar
                 color="primary"
                 class="app-toolbar">
-            <button
-                    mat-icon-button
+            <button mat-icon-button
                     (click)="snav.toggle()">
                 <mat-icon
                         color="white"
@@ -16,12 +15,10 @@
                 </mat-icon>
             </button>
             <img class="dash-logo"
-                 src="../../assets/watermeadow_logo_for_login_sm.png"
-            />
-            <button ngClass="header-text"
-                    mat-button
-                    routerLink="homepage">HCP Dashboard
-            </button>
+                 src="../../assets/watermeadow_logo_for_login_sm.png"/>
+            <h1 class="header-text"
+                    (click)="clickHeader()">HCP Dashboard
+            </h1>
 
             <div fxFlex></div>
             <div fxLayoutAlign="row"
@@ -29,27 +26,27 @@
                  fxShow
                  fxHide.lt-sm>
                 <button mat-button
-                        routerLink="/resources">Resources
+                        routerLink="/mr-table">Make Ready List
                 </button>
                 <button mat-button
                         routerLink="/contractors">Contractors
                 </button>
-                    <a mat-button
-                       target="_blank"
-                       href="https://hcp.appfolio.com/">Appfolio
-                    </a>
                 <button mat-button
                         fxHide.lt-md
-                        routerLink="/directory">Directory
+                        routerLink="/vacancy-dash">Vacancies
                 </button>
                 <button mat-button
                         fxHide.lt-md
-                        routerLink="/map">Maps
+                        routerLink="/decisions">Decisions
                 </button>
                 <button mat-button
                         fxHide.lt-md
-                        routerLink="/calendar">Calendar
+                        routerLink="/resources">Resources
                 </button>
+                <a mat-button
+                   target="_blank"
+                   href="https://hcp.appfolio.com/">Appfolio
+                </a>
             </div>
             <div fxHide
                  fxShow.lt-sm>
@@ -66,18 +63,18 @@
                 </button>
                 <button
                         mat-menu-item
-                        routerLink="calendar">
-                    <span>Calendar</span>
+                        routerLink="mr-table">
+                    <span>Make Ready's</span>
                 </button>
                 <button
                         mat-menu-item
-                        routerLink="directory">
-                    <span>Directory</span>
+                        routerLink="contractors">
+                    <span>Contractors</span>
                 </button>
                 <button
                         mat-menu-item
-                        routerLink="map">
-                    <span>Maps</span>
+                        routerLink="decisions">
+                    <span>Decisions</span>
                 </button>
                 <a
                         target="_blank"
@@ -124,6 +121,20 @@
         <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'"
                      [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
             <mat-nav-list *ngIf="auth.user | async as user;">
+                <mat-list role="list">
+                    <mat-list-item role="listitem">
+                        <h4>Resources</h4>
+                    </mat-list-item>
+                    <mat-list-item role="listitem" routerLink="/resources">Company Resources
+                    </mat-list-item>
+                    <mat-list-item role="listitem" routerLink="/directory">Directory
+                    </mat-list-item>
+                    <mat-list-item role="listitem" routerLink="/map">Maps of Locations
+                    </mat-list-item>
+                    <mat-list-item role="listitem" routerLink="/calendar">Company Calendar
+                    </mat-list-item>
+                </mat-list>
+                <mat-divider></mat-divider>
                 <mat-list role="list">
                     <mat-list-item role="listitem">
                         <h4>Forms</h4>
@@ -200,7 +211,8 @@
                  class="app-sidenav-content">
                 <router-outlet></router-outlet>
                 <div fxFlex></div>
-                <mat-toolbar color="primary">
+                <mat-toolbar color="primary"
+                class="app-toolbar">
                     <span class="example-spacer"></span>
                     <span>Every Little Bit Matters</span>
                 </mat-toolbar>

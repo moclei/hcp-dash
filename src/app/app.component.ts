@@ -6,6 +6,7 @@ import {AuthService, User} from './services/auth.service';
 import {Observable} from 'rxjs/Observable';
 import {CloudFunctionsService} from './services/cloud-functions.service';
 import {BonusService} from './bonus-dash/bonus.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -25,6 +26,7 @@ export class AppComponent implements OnDestroy {
   constructor(private changeDetectorRef: ChangeDetectorRef,
               media: MediaMatcher,
               auth: AuthService,
+              private router: Router,
               private dashService: DashService) {
         this.auth = auth;
         this.userProfile = auth.user;
@@ -51,6 +53,9 @@ export class AppComponent implements OnDestroy {
   }
   ngOnDestroy(): void {
     this.mobileQuery.removeListener(this._mobileQueryListener);
+  }
+  clickHeader() {
+      this.router.navigate(['/homepage']);
   }
   /*
     executeCloudFunction(propertyName: string) {

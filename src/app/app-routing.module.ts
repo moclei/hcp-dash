@@ -15,6 +15,9 @@ import {SpeedyAppsComponent} from './speedy-apps/speedy-apps.component';
 import {MakereadyDashComponent} from './makeready-dash/makeready-dash.component';
 import {BonusDashComponent} from './bonus-dash/bonus-dash.component';
 import {MakereadyChecklistComponent} from './makeready-dash/makeready-checklist/makeready-checklist.component';
+import {VacancyDashComponent} from './vacancy-dash/vacancy-dash.component';
+import {ContractorDetailComponent} from './contractor-dash/contractor-detail/contractor-detail.component';
+import {ContractorAddComponent} from './contractor-dash/contractor-add/contractor-add.component';
 
 
 const routes: Routes = [
@@ -77,6 +80,16 @@ const routes: Routes = [
         component: ContractorDashComponent
     },
     {
+        path: 'contractor-detail/:id',
+        component: ContractorDetailComponent,
+        canActivate: [AuthGuard]
+    },
+    {
+        path: 'contractor-add',
+        component: ContractorAddComponent,
+        canActivate: [AuthGuard]
+    },
+    {
         path: 'bonus',
         component: BonusDashComponent
     },
@@ -87,6 +100,10 @@ const routes: Routes = [
     {
         path: 'bonus-dash',
         component: BonusDashComponent
+    },
+    {
+        path: 'vacancy-dash',
+        component: VacancyDashComponent
     },
     {
         path: '',

@@ -1,5 +1,4 @@
 import {AfterViewInit, Component, Inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {MakeReadyDialogComponent} from '../../makeready-dash/makeready-table/makeready-table.component';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef, MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
 import {AuthService} from '../../services/auth.service';
 import {UnitLoadService} from '../../services/unit-load.service';
@@ -78,7 +77,7 @@ export class BonusTableComponent implements OnInit, AfterViewInit, OnDestroy {
             position: dialogPos
         });
         dialogRef.afterClosed().subscribe(result => {
-            // console.log('The dialog was closed, result: ' + result);
+            console.log('The dialog was closed, result: ' + result);
         });
     }
     onSelectChange() {
@@ -143,7 +142,7 @@ export class BonusTableDialogComponent implements OnInit {
     updatedAt: Date;
 
     constructor(
-        public dialogRef: MatDialogRef<MakeReadyDialogComponent>,
+        public dialogRef: MatDialogRef<BonusTableDialogComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any,
         auth: AuthService,
         bonusService: BonusService,

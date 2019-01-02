@@ -59,7 +59,6 @@ export class MakereadyTableComponent implements OnInit, AfterViewInit, OnDestroy
         'progress',
         'numDays'
     ];
-    // 'scheduled','delivered','paid'
     makereadies: Observable<MakeReady[]>;
     moveouts: Observable<any>;
     moveouts$: Subscription;
@@ -72,7 +71,6 @@ export class MakereadyTableComponent implements OnInit, AfterViewInit, OnDestroy
     toggleShowRemoved = false;
     propertySelected: string;
     user: User;
-    // appfolioData$: Subscription;
     missingMRs: Array<any>;
     searchingAppfolio = false;
 
@@ -92,11 +90,6 @@ export class MakereadyTableComponent implements OnInit, AfterViewInit, OnDestroy
         this.loading = true;
     }
     ngOnInit() {
-        /*this.makereadyService.getAppfolioObservable().subscribe( results => {
-            this.appfolioData = results;
-            console.log('Results from cloud function: ' + JSON.stringify(results));
-        })
-*/
     }
     setDataSource(user) {
         this.makereadyService.getMakeReadiesStream().subscribe( data => {
@@ -110,59 +103,12 @@ export class MakereadyTableComponent implements OnInit, AfterViewInit, OnDestroy
             this.matDataSource.sort = this.sort;
             this.loading = false;
         });
-        // this.changeAppfolioObservable('');
         this.changeMoveoutsObservable('');
     }
     changeMRStream() {
         this.toggleShowRemoved = !this.toggleShowRemoved;
         this.matDataSource.filter = this.propertySelected + ';' + this.toggleShowRemoved;
     }
-    /*
-    changeAppfolioObservable(propertyName) {
-        let makereadies$ = this.makereadyService.getMakeReadiesForProperty(propertyName);
-        if(makereadies$ != null) {
-            this.makereadyService.getMakeReadiesForProperty(propertyName).subscribe(data => {
-                if (this.appfolioData$) {
-                    this.appfolioData$.unsubscribe();
-                }
-                this.searchingAppfolio = true;
-                this.appfolioData$ = this.makereadyService.getAppfolioObservable(propertyName).subscribe(results => {
-                    // this.appfolioData = results;
-                    console.log('results.length; ' + results.length);
-                    let appfolio = [];
-                    let mrbuilders = [];
-                    for (let i = 0; i < data.length; i++) {
-                        let mrDate = this.fieldValueAsDate(data[i].createdAt);
-                        mrbuilders.push({'unit': data[i].unit.unitName, 'date': mrDate, 'data:': {}});
-                    }
-                    for (let j = 0; j < results.length; j++) {
-                        if (results[j]['Unit'] !== '') {
-                            appfolio.push({
-                                'unit': results[j]['Unit'],
-                                'date': results[j]['Date'],
-                                'type': results[j]['Event'],
-                                'data:': results[j]
-                            });
-                        }
-                    }
-
-                    const unmatched = differenceBy(appfolio, mrbuilders, 'unit');
-                    // let matched = differenceBy(unmatched, appfolio, 'unit')
-                    console.log('appfolio:');
-                    console.table(appfolio);
-                    console.log('mrbuilders:');
-                    console.table(mrbuilders);
-
-                    console.log('unmatched:');
-                    console.table(unmatched);
-                    this.missingMRs = unmatched;
-                    this.searchingAppfolio = false;
-                    // console.log('Unmatched from cloud function: ' + JSON.stringify(unmatched));
-                })
-            });
-        }
-    }
-*/
     changeMoveoutsObservable(propertyName) {
         const makereadies = this.makereadyService.getMakeReadiesForProperty(propertyName);
         if (makereadies != null) {
@@ -260,27 +206,7 @@ export class MakereadyTableComponent implements OnInit, AfterViewInit, OnDestroy
         // this.changeAppfolioObservable(this.propertySelected);
         this.changeMoveoutsObservable(this.propertySelected);
     }
-    /*  setCreatedAt(data) {
-        const timestamp = data.timestamp;
-        if (timestamp) {
-            const dateStr = timestamp.split(',')[0];
-            const dateObj = new Date(dateStr);
-            if (!data.hasOwnProperty('createdAt')) {
-                // console.log('NOT-createdAt');
-                data.createdAt = Timestamp.fromDate(dateObj);
-                this.makereadyService.setMakeReady(data).then(() => {
-                    // console.log('updated');
-                });
-            }
-        } else {
-            // console.log('timestamp-no');
-        }
-    }*/
-    /*setRemoved(data) {
-        data.removed = false;
-        console.log('setRemoved');
-        this.makereadyService.setMakeReady(data);
-    }*/
+
     onRemoveHandler(data, removedReason: string) {
         data.removedAt = this.makereadyService.date_created;
         data.removed = true;
@@ -297,29 +223,6 @@ export class MakereadyTableComponent implements OnInit, AfterViewInit, OnDestroy
             /*if(this.propertySelected !== '') {
                 this.changeAppfolioObservable(this.propertySelected);
             }*/
-        });
-    }
-    openDialog(makeready): void {
-        // console.log('open removeDialog(element) ');
-        const dialogPos = {top: '10vh'};
-        const dialogRef = this.dialog.open(MakeReadyDialogComponent, {
-            width: '450px',
-            data: makeready,
-            position: dialogPos
-        });
-        dialogRef.afterClosed().subscribe(result => {
-            this.matDataSource.filter = this.propertySelected + 'false';
-            // console.log('The dialog was closed, result: ' + result);
-        });
-    }
-    onCheckboxChange(isChecked: boolean, which: string, element: any) {
-        // console.log('makeready-table. ' + element.unitName + ' ' + which + ': ' + isChecked);
-        const makeready = element.mr;
-        makeready[which] = isChecked;
-        makeready[which + 'Date'] = this.makereadyService.date_created;
-        this.makereadyService.setMakeReady(makeready).then(msg => {
-            console.log('onCheckboxChange, make ready saved ' + element.unitName + ' ' + which + ': ' + isChecked
-                + ', save message: ' + msg);
         });
     }
     onNewMakeReadyHandler() {
@@ -360,10 +263,15 @@ export class MakereadyTableComponent implements OnInit, AfterViewInit, OnDestroy
     ngOnDestroy() {
         // this.makereadies$.unsubscribe();
     }
-    /*daysBetween(startDate, endDate) {
+    daysBetween(startD, endD) {
         const millisecondsPerDay = 24 * 60 * 60 * 1000;
-        return Math.round((this.treatAsUTC(endDate) - this.treatAsUTC(startDate)) / millisecondsPerDay);
-    }*/
+        // console.log('startDate: ' + startD + ', endDate: ' + endD);
+        let numDays = Math.round((this.treatAsUTC(endD) - this.treatAsUTC(startD)) / millisecondsPerDay);
+        if (numDays === -1) {
+            numDays = 0;
+        }
+        return numDays;
+    }
     isOverTime(mr) {
         if (mr.numDays > 4) {
             return !mr.paid || mr.paid === false;
@@ -371,87 +279,6 @@ export class MakereadyTableComponent implements OnInit, AfterViewInit, OnDestroy
             return false;
         }
     }
-    /*numDays(mr): string {
-        const createdAt = this.fieldValueAsDate(mr.createdAt);
-        const movedOutTS = mr.moveOutDate;
-        let movedOut;
-        if (movedOutTS) {
-            movedOut = mr.moveOutDate.toDate();
-        } else {
-            movedOut = mr.createdAt.toDate();
-        }
-        const now = new Date();
-        let days = '0';
-        if (mr.checklist && mr.checklist.contractorFinished) {
-            days =  '' + this.daysBetween(movedOut, this.fieldValueAsDate(mr.checklist.contractorFinishedDate));
-        } else {
-            days = '' + this.daysBetween(movedOut, now);
-        }
-        console.log('mr: ' + mr.unit.unitName + ', days: ' + days);
-        return days;
-    }*/
-    getMoveOutDotSpot(mr) {
-        const moveOutDate = mr.moveOutDate;
-        let location = '4px';
-        if (mr.checklist) {
-            const makeReadyRequestedDate = mr.checklist.makeReadyRequestedDate;
-            const materialsOrderedDate = mr.checklist.materialsOrderedDate;
-            const contractorScheduledDate = mr.checklist.contractorScheduledDate;
-            const contractorStartedDate = mr.checklist.contractorStartedDate;
-            const contractorFinishedDate = mr.checklist.contractorFinishedDate;
-
-            if (contractorFinishedDate) {
-                if (moveOutDate > contractorStartedDate) {
-                    if (moveOutDate <= contractorFinishedDate) {
-                        location = '270px';
-                    } else {
-                        location = '330px';
-                    }
-                }
-            }
-            if (contractorStartedDate) {
-                if (moveOutDate > contractorScheduledDate) {
-                    if (moveOutDate <= contractorStartedDate) {
-                        location = '210px';
-                    } else if (!contractorFinishedDate) {
-                        location = '260px';
-                    }
-                }
-            }
-            if (contractorScheduledDate) {
-                if (moveOutDate > materialsOrderedDate) {
-                    if (moveOutDate <= contractorScheduledDate) {
-                        location = '140px';
-                    } else if (!contractorStartedDate) {
-                        location = '200px';
-                    }
-                }
-            }
-            if (materialsOrderedDate) {
-                if (moveOutDate > makeReadyRequestedDate) {
-                    if (moveOutDate <= materialsOrderedDate) {
-                        location = '70px';
-                    } else if (!contractorScheduledDate) {
-                        location = '130px';
-                    }
-                }
-            }
-            if (makeReadyRequestedDate) {
-                if (moveOutDate <= makeReadyRequestedDate) {
-                    location = '4px';
-                } else if (!materialsOrderedDate) {
-                    // console.log('makeReadyRequestedDate was before moveoutDate');
-                    location = '60px';
-                }
-            }
-        }
-        return location;
-    }
-    /* Old and inaccurate
-    daysBetween(startDate: Date, endDate: Date) {
-        const millisecondsPerDay: number = 24 * 60 * 60 * 1000;
-        return Math.round((this.treatAsUTC(endDate) - this.treatAsUTC(startDate)) / millisecondsPerDay);
-    }*/
     treatAsUTC(date): any {
         const result = new Date(date);
         result.setMinutes(result.getMinutes() - result.getTimezoneOffset());
@@ -467,7 +294,7 @@ export class MakereadyTableComponent implements OnInit, AfterViewInit, OnDestroy
         }
     }
 }
-
+/*
 @Component({
     selector: 'app-makeready-dialog',
     templateUrl: 'makeready-table-dialog.component.html',
@@ -522,3 +349,4 @@ export class MakeReadyDialogComponent implements OnInit {
     ngOnInit() {
     }
 }
+*/

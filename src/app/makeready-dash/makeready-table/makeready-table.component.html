@@ -133,7 +133,7 @@
                 </td>
             </ng-container>
 
-            <!-- Progress -->
+            <!-- Progress
             <ng-container matColumnDef="progress">
                 <th mat-header-cell
                     *matHeaderCellDef>
@@ -212,6 +212,137 @@
 
                 </td>
             </ng-container>
+            -->
+
+
+
+
+
+
+
+            <!-- Progress -->
+            <ng-container matColumnDef="progress">
+                <th mat-header-cell
+                    *matHeaderCellDef>
+                    Progress (Request > Order > Schedule > Start > Finish)
+                </th>
+                <td mat-cell
+                    class="mr-progress-row"
+                    *matCellDef="let element">
+
+
+                    <div *ngIf="element.checklist as cl; else noChecklist;" class="circlelist-container">
+                        <ul class="circlelist-progressbar">
+                            <!--<span matTooltip="Requested {{fieldValueAsDate(cl.makeReadyRequestedDate) | date: 'M/d'}}">-->
+                                <li matTooltip="Requested {{fieldValueAsDate(cl.makeReadyRequestedDate) | date: 'M/d'}}"
+                                        attr.myAttr="{{daysBetween(fieldValueAsDate(element.createdAt), fieldValueAsDate(cl.makeReadyRequestedDate))}}"  [class.active]="cl.makeReadyRequested && cl.materialsSubmitted"></li>
+                            <!--</span>
+                            <span matTooltip="Ordered {{fieldValueAsDate(cl.materialsOrderedDate) | date: 'M/d'}}">-->
+                                <li matTooltip="Ordered {{fieldValueAsDate(cl.materialsOrderedDate) | date: 'M/d'}}"
+                                        attr.myAttr="{{daysBetween(fieldValueAsDate(cl.makeReadyRequestedDate), fieldValueAsDate(cl.materialsOrderedDate))}}" [class.active]="cl.makeReadyApproved && cl.materialsOrdered"></li>
+                           <!-- </span>
+                            <span matTooltip="Scheduled {{fieldValueAsDate(cl.contractorScheduledDate) | date: 'M/d'}}">-->
+                                <li matTooltip="Scheduled {{fieldValueAsDate(cl.contractorScheduledDate) | date: 'M/d'}}"
+                                        attr.myAttr="{{daysBetween(fieldValueAsDate(cl.materialsOrderedDate), fieldValueAsDate(cl.contractorScheduledDate))}}" [class.active]="cl.contractorScheduled"></li>
+                            <!--</span>
+                            <span matTooltip="Started {{fieldValueAsDate(cl.contractorStartedDate) | date: 'M/d'}}">-->
+                                <li matTooltip="Started {{fieldValueAsDate(cl.contractorStartedDate) | date: 'M/d'}}"
+                                        attr.myAttr="{{daysBetween(fieldValueAsDate(cl.contractorScheduledDate), fieldValueAsDate(cl.contractorStartedDate))}}" [class.active]="cl.materialsDelivered && cl.contractorStarted"></li>
+                            <!--</span>
+                            <span matTooltip="Finished {{fieldValueAsDate(cl.contractorFinishedDate) | date: 'M/d'}}">-->
+                                <li matTooltip="Finished {{fieldValueAsDate(cl.contractorFinishedDate) | date: 'M/d'}}"
+                                        attr.myAttr="{{daysBetween(fieldValueAsDate(cl.contractorStartedDate), fieldValueAsDate(cl.contractorFinishedDate))}}" [class.active]="cl.contractorFinished"></li>
+                           <!-- </span>-->
+
+                        </ul>
+                    </div>
+                    <ng-template #noChecklist>
+                        <div class="circlelist-container">
+                            <ul class="circlelist-progressbar">
+                                <li></li>
+                                <li></li>
+                                <li></li>
+                                <li></li>
+                                <li></li>
+                            </ul>
+                        </div>
+                    </ng-template>
+
+                    <!--
+                    <div *ngIf="element.checklist as cl; else noChecklist;" class="arrowlist-container">
+                        <div class="wrapper">
+                            <div class="arrow-steps clearfix">
+                                <div class="step"
+                                     [class.current]="cl.makeReadyRequested && cl.materialsSubmitted">
+                  <span matTooltip="Requested and Submitted for PO">
+                    {{cl.makeReadyRequestedDate ? (fieldValueAsDate(cl.makeReadyRequestedDate) | date: 'M/d') : '--'}}
+                  </span>
+
+                                </div>
+                                <div class="step"
+                                     [class.current]="cl.makeReadyApproved && cl.materialsOrdered">
+                  <span matTooltip="PO Approved and Materials Ordered">
+                    {{cl.materialsOrderedDate ? (fieldValueAsDate(cl.materialsOrderedDate) | date: 'M/d') : '--'}}
+                  </span>
+                                </div>
+                                <div class="step"
+                                     [class.current]="cl.contractorScheduled">
+                  <span matTooltip="Contractor Scheduled">
+                    {{cl.contractorScheduledDate ? (fieldValueAsDate(cl.contractorScheduledDate) | date: 'M/d') : '--'}}
+                  </span>
+                                </div>
+                                <div class="step"
+                                     [class.current]="cl.materialsDelivered && cl.contractorStarted">
+                  <span matTooltip="Contractor Started">
+                    {{cl.contractorStartedDate ? (fieldValueAsDate(cl.contractorStartedDate) | date: 'M/d') : '--'}}
+                  </span>
+                                </div>
+                                <div class="step"
+                                     [class.current]="cl.contractorFinished">
+                  <span matTooltip="Contractor Finished and Invoice Submitted">
+                    {{cl.contractorFinishedDate ? (fieldValueAsDate(cl.contractorFinishedDate) | date: 'M/d') : '--'}}
+                  </span>
+                                </div>
+                                <div *ngIf="element.moveOutDate">
+                                    <div class="below"
+                                         [style.left]="getMoveOutDotSpot(element)">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <ng-template #noChecklist>
+                        <div class="arrowlist-container">
+                            <div class="wrapper">
+                                <div class="arrow-steps clearfix">
+                                    <div class="step">
+                                        <span>--</span>
+                                    </div>
+                                    <div class="step">
+                                        <span>--</span>
+                                    </div>
+                                    <div class="step">
+                                        <span>--</span>
+                                    </div>
+                                    <div class="step">
+                                        <span>--</span>
+                                    </div>
+                                    <div class="step">
+                                        <span>--</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-template>
+                    -->
+                </td>
+            </ng-container>
+
+
+
+
+
+
 
             <!-- Number of Days -->
             <ng-container

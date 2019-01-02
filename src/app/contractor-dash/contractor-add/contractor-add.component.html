@@ -1,0 +1,80 @@
+<mat-card>
+    <mat-card-title>
+        <h1 mat-dialog-title>New Contractor</h1>
+    </mat-card-title>
+    <mat-card-content>
+        <div fxLayout="column"
+             fxLayoutAlign="start start"
+             fxLayoutGap="8px">
+            <button mat-raised-button (click)="location.back()">Back</button>
+            <form [formGroup]="formGroup"
+                  class="add-form">
+                <div fxLayout="column"
+                     fxLayoutGap="8px">
+                    <mat-form-field>
+                        <input matInput
+                               placeholder="Contractor's First Name"
+                               formControlName="firstName">
+                        <mat-hint align="end">First as it appears on ID</mat-hint>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <input matInput
+                               placeholder="Contractor's Last Name"
+                               formControlName="lastName">
+                        <mat-hint align="end">Last as it appears on ID</mat-hint>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <input matInput
+                               placeholder="Contractor's Phone"
+                               formControlName="phoneNumber">
+                        <mat-hint align="end">Including area code</mat-hint>
+                    </mat-form-field>
+                    <button mat-raised-button
+                            [disabled]="!formGroup.valid"
+                            color="warn"
+                            (click)="onSubmit()">Search
+                    </button>
+                    <div *ngIf="exactMatches.length > 0">
+                        <span>Exact match found for {{this.name}}. Please use the existing contractor entry.</span>
+                        <mat-list>
+                            <mat-list-item *ngFor="let match of exactMatches">
+                                {{match.name}}
+                            </mat-list-item>
+                        </mat-list>
+                        <mat-checkbox
+                                formControlName="isNewCheck">
+                            No, my contractor is new
+                        </mat-checkbox>
+                    </div>
+                    <div *ngIf="exactMatches.length == 0 && fuzzyMatches.length > 0">
+                        <span>Similar names found for {{this.name}}. Has your contractor already been added?</span>
+                        <mat-list>
+                            <mat-list-item *ngFor="let fuzzy of fuzzyMatches">
+                                {{fuzzy.name}}
+                            </mat-list-item>
+                        </mat-list>
+                        <mat-checkbox
+                                formControlName="isNewCheck">
+                            No, my contractor is new
+                        </mat-checkbox>
+                    </div>
+                    <div *ngIf="this.searchDone && exactMatches.length == 0 && fuzzyMatches.length == 0">
+                        <span>No existing entry found. Go ahead and add</span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </mat-card-content>
+    <mat-card-actions>
+        <div *ngIf="this.searchDone">
+            <button mat-raised-button
+                    [disabled]="!formGroup.valid || (exactMatches.length > 0 && !formGroup.value.isNewCheck ) || (fuzzyMatches.length > 0 && !formGroup.value.isNewCheck )"
+                    color="warn"
+                    (click)="onAdd()">Add
+            </button>
+            <button mat-button
+                    (click)="onCancel()">Cancel
+            </button>
+        </div>
+    </mat-card-actions>
+</mat-card>

@@ -1,0 +1,122 @@
+<div *ngIf="auth.user | async as user;">
+    <div *ngIf="!user.isEditor; else editor">
+        <h2 mat-dialog-title>{{data.name}}</h2>
+        <div mat-dialog-content
+             class="outer-dialog inner-dialog-content"
+             fxLayout="column"
+             fxLayoutAlign="center start">
+            <section class="mat-typography">
+                <p></p>
+                <h3 *ngIf="data.phoneNumber">Phone: {{data.phoneNumber}}</h3>
+                <h3 *ngIf="!data.phoneNumber">No contact number recorded. Call the last property they worked at.</h3>
+                <p *ngIf="data.status=='Active'">{{data.status}}: Currently working at {{data.currentProperty}}
+                    {{data.unit.unitName}}</p>
+                <p *ngIf="data.status=='Inactive'">{{data.status}}: Last job was at{{data.currentProperty}}
+                    {{data.unit.unitName}}</p>
+                <p *ngIf="data.status=='Bad'">{{data.status}}: Do Not Hire</p>
+            </section>
+
+        </div>
+
+        <div mat-dialog-actions>
+            <button mat-button [mat-dialog-close]>Ok</button>
+        </div>
+    </div>
+
+    <ng-template #editor>
+        <h2 mat-dialog-title>Edit Contractor: {{data.name}}</h2>
+        <form
+                [formGroup]="editFormGroup"
+                class="mr-form">
+            <div
+                    fxLayout="column">
+                <div
+                        fxLayout="column"
+                        fxLayoutAlign="start">
+
+                    <mat-form-field>
+                        <input
+                                matInput
+                                placeholder="Contractor's Name (First and Last)"
+                                formControlName="nameCtrl"
+                                appFullnameValidator>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <input
+                                matInput
+                                placeholder="Phone Number"
+                                formControlName="phoneCtrl">
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-select
+                                placeholder="Filter by status"
+                                formControlName="statusCtrl">
+                            <mat-option
+                                    *ngFor="let status of this.statuses"
+                                    value={{status.filterName}}>
+                                {{ status.displayName }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-select
+                                placeholder="Property"
+                                formControlName="propertyCtrl"
+                                (selectionChange)="setPropertySelected($event.value)">
+                            <mat-option
+                                    *ngFor="let property of this.properties"
+                                    value={{property.sheetName}}>
+                                {{ property.name }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field
+                            class="bigger-width">
+                        <mat-select
+                                placeholder="Address"
+                                formControlName="unitCtrl"
+                                (selectionChange)="setUnitSelected($event.value)">
+                            <mat-option
+                                    *ngFor="let unit of parsedUnits"
+                                    value={{unit.unitName}}>
+                                {{ unit.unitName }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field
+                            class="bigger-width">
+                        <mat-select
+                                placeholder="Make Ready Type (Last or current job)"
+                                formControlName="mrTypeCtrl">
+                            <mat-option
+                                    *ngFor="let type of mrTypes"
+                                    value={{type.description}}>
+                                {{ type.description }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div fxLayout="row" fxLayoutGap="16px">
+                    <div>First added on {{this.createdAt | date}}</div>
+                    <div>Last updated on {{this.updatedAt | date}}</div>
+                </div>
+
+                <div fxLayout="row" fxLayoutGap="16px" style="padding-top: 24px">
+                    <button
+                            mat-raised-button
+                            color="accent"
+                            (click)="onEditSaveClickHandler()"
+                            [disabled]="!editFormGroup.valid">
+                        Save
+                    </button>
+                    <button
+                            mat-raised-button
+                            (click)="onEditCancelClickHandler()"
+                            color="accent">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        </form>
+    </ng-template>
+</div>

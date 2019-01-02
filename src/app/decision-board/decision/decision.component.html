@@ -21,6 +21,11 @@
           class="decision-star-rating">
         </star-rating>
       </div>
+      <div *ngIf="auth.user | async as user;">
+        <div *ngIf="user.isEditor">
+          <p><b>{{decision.email }}</b></p>
+        </div>
+      </div>
     </div>
   </mat-card-content>
 </mat-card>

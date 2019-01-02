@@ -47,6 +47,40 @@ export class MakeReadyService {
                 })
         );
     }
+
+    getMRStreamForProperty(propertyName: string): Observable<MakeReady[]> {
+        if (propertyName) {
+            const mrForPropColl = this.afs.collection<MakeReady>('makereadies',
+                ref => ref
+                    .where('propertyName', '==', propertyName)
+                    .orderBy('createdAt', 'desc'));
+            // this.mr$ = this.makeReadyCollection.snapshotChanges();
+            return mrForPropColl.snapshotChanges().pipe(
+                map(mrs => {
+                    return mrs.map(mr => {
+                        const data = mr.payload.doc.data() as MakeReady;
+                        const id = mr.payload.doc.id;
+                        const mrObj = {id, ...data} as MakeReady;
+                        this.setNumDays(mrObj);
+                        return mrObj;
+                    });
+                })
+            );
+        } else {
+            this.mr$ = this.makeReadyCollection.snapshotChanges();
+            return this.mr$.pipe(
+                map(mrs => {
+                    return mrs.map(mr => {
+                        const data = mr.payload.doc.data() as MakeReady;
+                        const id = mr.payload.doc.id;
+                        const mrObj = {id, ...data} as MakeReady;
+                        this.setNumDays(mrObj);
+                        return mrObj;
+                    });
+                })
+            );
+        }
+    }
     getMakeReadiesForProperty(propertyName): Observable<MakeReady[]> {
         const now = new Date();
         const lastMonth = new Date();
@@ -161,7 +195,7 @@ export class MakeReadyService {
     }
 */
     setMakeReady(makeReady: MakeReady, id?: string) {
-        // console.log('makeReady: ' + makeReady );
+        console.log('[MakeReadyService, setMakeReady] makeReady.id: ' + makeReady.id );
         makeReady.updatedAt = this.date_created;
         const updateId = id ?  id : makeReady.id;
         return this.makeReadyCollection.doc(updateId).update(makeReady)

@@ -52,8 +52,16 @@ ul.checklist {
 
 .unit-card {
     width: 400px;
-
 }
+
+.moc-material-card {
+  border: 1px solid black;
+  border-radius: 18px;
+  padding: 8px;
+  font-weight: lighter;
+  margin: 8px 0;
+}
+
 
 $brand-success: #5cb85c;
 $loader-size: 7em;

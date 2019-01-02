@@ -4,17 +4,37 @@ import {Unit} from '../makeready-dash/makeready.model';
 
 
 export interface Contractor {
-  name: string;
-  currentProperty: string;
-  unit: Unit;
-  makeReadyType: Array<string>;
-  scheduledStartDate: Date;
-  scheduledFinishDate: Date;
-  phoneNumber: string;
-  status: string;
-  updatedAt?: FieldValue;
-  createdAt?: FieldValue;
+    name: string;
+    firstName: string;
+    lastName: string;
+    firstNameSoundex: string;
+    lastNameSoundex: string;
+    phoneNumber: string;
+    status: string;
+    numReviews: number;
+    totalScore: number;
+    createdBy: string;
+    updatedAt?: FieldValue;
+    createdAt?: FieldValue;
 }
 
-export interface ContractorId extends Contractor { id: string; }
+/*
+export interface Job {
+    contractor: Contractor;
+    contractorName: string;
+    property: string;
+    unit: Unit;
+    jobType: Array<string>;
+    startDate: Date;
+    endDate: Date;
+    comments: string;
+    rating: number;
+    createdBy: string;
+    updatedAt?: FieldValue;
+    createdAt?: FieldValue;
+}*/
+
+export interface ContractorId extends Contractor {
+    id: string;
+}
 

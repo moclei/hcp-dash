@@ -30,6 +30,7 @@ import {MakeReadyService} from '../makeready.service';
 export class MakereadyBuilderComponent implements OnInit {
     userProfile: Observable<User>;
     user: User;
+    processed = false;
     paintType = ['Light touch up', 'Touch up paint', 'Full paint'];
     textureType = ['Light texture coverups', 'Patch texture', 'Full texture'];
     sheetrockType = ['Small sheetrock hole repair(s) (if any)', 'Patch sheetrock hole(s)', 'Repair all sheetrock'];
@@ -161,6 +162,7 @@ export class MakereadyBuilderComponent implements OnInit {
             this.scope.costOfUpgrades += this.microwaveContract.price;
         }
         this.makeReady.setContracts([this.contract, this.graniteContract, this.showerTileContract, this.microwaveContract]);
+        this.processed = true;
     }
 
     onSubmit() {
@@ -329,7 +331,8 @@ export class MakereadyBuilderComponent implements OnInit {
     createMicrowaveContract(): Contract {
         let contract = <Contract>{};
         contract.contractor = this.sixthFormGroup.value.microwaveContractorNameCtrl;
-        contract.startDate = this.sixthFormGroup.value.microwaveDatePickerCtrl ? this.sixthFormGroup.value.microwaveDatePickerCtrl.toLocaleDateString() : '                            ';
+        contract.startDate = this.sixthFormGroup.value.microwaveDatePickerCtrl ?
+            this.sixthFormGroup.value.microwaveDatePickerCtrl.toLocaleDateString() : '                            ';
         contract.timeToComplete = '1 Day';
         contract.poNumber = '                       ';
         contract.scope = this.microwaveTotalScope;
@@ -339,12 +342,13 @@ export class MakereadyBuilderComponent implements OnInit {
     }
     finalizeMicrowaveContract() {
         this.microwaveContract.contractor = this.sixthFormGroup.value.microwaveContractorNameCtrl
-        this.microwaveContract.startDate = this.sixthFormGroup.value.microwaveDatePickerCtrl ? this.sixthFormGroup.value.microwaveDatePickerCtrl.toLocaleDateString() : '                            ';
+        this.microwaveContract.startDate = this.sixthFormGroup.value.microwaveDatePickerCtrl ?
+            this.sixthFormGroup.value.microwaveDatePickerCtrl.toLocaleDateString() : '                            ';
         this.microwaveContract.scope = this.microwaveTotalScope;
         this.microwaveContract.price = this.sixthFormGroup.value.microwavePriceCtrl;
     }
     createGraniteContract(): Contract {
-        let contract = <Contract>{};
+        const contract = <Contract>{};
         contract.contractor = '';
         contract.startDate = '';
         contract.timeToComplete = '1 Day';
@@ -357,7 +361,8 @@ export class MakereadyBuilderComponent implements OnInit {
     }
     finalizeGraniteContract() {
         this.graniteContract.contractor = this.sixthFormGroup.value.graniteContractorNameCtrl;
-        this.graniteContract.startDate = this.sixthFormGroup.value.graniteDatePickerCtrl ? this.sixthFormGroup.value.graniteDatePickerCtrl.toLocaleDateString() : '                            ';
+        this.graniteContract.startDate = this.sixthFormGroup.value.graniteDatePickerCtrl ?
+            this.sixthFormGroup.value.graniteDatePickerCtrl.toLocaleDateString() : '                            ';
         this.graniteContract.scope = this.graniteFinalScope;
         // this.graniteContract.price = this.sixthFormGroup.value.granitePriceCtrl;
     }
@@ -374,23 +379,27 @@ export class MakereadyBuilderComponent implements OnInit {
     }
     finalizeShowerTileContract() {
         this.showerTileContract.contractor = this.sixthFormGroup.value.showerTileContractorNameCtrl;
-        this.showerTileContract.startDate = this.sixthFormGroup.value.showerTileDatePickerCtrl ? this.sixthFormGroup.value.showerTileDatePickerCtrl.toLocaleDateString() : '                            ';
+        this.showerTileContract.startDate = this.sixthFormGroup.value.showerTileDatePickerCtrl ?
+            this.sixthFormGroup.value.showerTileDatePickerCtrl.toLocaleDateString() : '                            ';
         this.showerTileContract.scope = this.showerTileScope;
         this.showerTileContract.price = this.sixthFormGroup.value.showerTilePriceCtrl;
     }
     createExtras() {
         const switchesQty = (!this.secondFormGroup.value.switchesQuantityCtrl ? 0 : this.secondFormGroup.value.switchesQuantityCtrl);
-        const ceilingFansQty = (!this.secondFormGroup.value.ceilingFansQuantityCtrl ? 0 : this.secondFormGroup.value.ceilingFansQuantityCtrl);
+        const ceilingFansQty = (!this.secondFormGroup.value.ceilingFansQuantityCtrl?
+            0 : this.secondFormGroup.value.ceilingFansQuantityCtrl);
         const blindsQty = (!this.secondFormGroup.value.blindsQuantityCtrl ? 0 : this.secondFormGroup.value.blindsQuantityCtrl);
         const faucetsQty = (!this.secondFormGroup.value.faucetsQuantityCtrl ? 0 : this.secondFormGroup.value.faucetsQuantityCtrl);
-        const lightFixturesQty = (!this.secondFormGroup.value.lightFixturesQuantityCtrl ? 0 : this.secondFormGroup.value.lightFixturesQuantityCtrl);
+        const lightFixturesQty = (!this.secondFormGroup.value.lightFixturesQuantityCtrl ?
+            0 : this.secondFormGroup.value.lightFixturesQuantityCtrl);
         const intDoorQty = (!this.secondFormGroup.value.intDoorsQtyCtrl ? 0 : this.secondFormGroup.value.intDoorsQtyCtrl);
         const intDoorJambQty = (!this.secondFormGroup.value.intDoorsJambQtyCtrl ? 0 : this.secondFormGroup.value.intDoorsJambQtyCtrl);
         const extDoorQty = (!this.secondFormGroup.value.extDoorsQuantityCtrl ? 0 : this.secondFormGroup.value.extDoorsQuantityCtrl);
-        const extDoorsJambQty = (!this.secondFormGroup.value.extDoorsJambQuantityCtrl ? 0 : this.secondFormGroup.value.extDoorsJambQuantityCtrl);
+        const extDoorsJambQty = (!this.secondFormGroup.value.extDoorsJambQuantityCtrl ?
+            0 : this.secondFormGroup.value.extDoorsJambQuantityCtrl);
         const mirrorDoorsQty = 0;
 
-        let extrasObj = {
+        const extrasObj = {
             'switches': this.secondFormGroup.value.switchesCtrl,
             'switchesQty': switchesQty,
             'switchesPrice': 2,
@@ -447,7 +456,7 @@ export class MakereadyBuilderComponent implements OnInit {
         };
 
         let costOfExtras = 0;
-        let extrasAsArray = [];
+        const extrasAsArray = [];
         if (extrasObj.switches) {
             extrasAsArray.push({
                 'description': 'Rocker switches x ' + switchesQty,
@@ -634,7 +643,7 @@ export class MakereadyBuilderComponent implements OnInit {
         return extrasObj;
     }
     createFlooring() {
-        let flooring: Flooring = {
+        const flooring: Flooring = {
             flooringNeeded: this.secondFormGroup.value.flooringCtrl,
             carpetReplace: this.secondFormGroup.value.carpetReplace,
             carpetReplaceQty: this.secondFormGroup.value.carpetReplaceQty,
@@ -666,7 +675,7 @@ export class MakereadyBuilderComponent implements OnInit {
         return flooring;
     }
     createApplianceList(): Array<any> {
-        var applianceList = [];
+        const applianceList = [];
         if (this.fourthFormGroup.value.stoveCtrl) {
             applianceList.push('New Stove');
         }
@@ -691,11 +700,11 @@ export class MakereadyBuilderComponent implements OnInit {
         });
         this.userProfile.subscribe(user => {
             this.user = user;
-            let currentUser = this.user.email;
-            let propertyGuess = '';
+            const currentUser = this.user.email;
+            const propertyGuess = '';
             this.setPropertyDropdownInitial(this.user.email);
             if (currentUser) {
-                for (var i = 0; i < this.properties.length; i++) {
+                for (let i = 0; i < this.properties.length; i++) {
                     if (this.properties[i].email === currentUser) {
                         this.firstFormGroup.patchValue({
                             'propertyCtrl': this.properties[i].email

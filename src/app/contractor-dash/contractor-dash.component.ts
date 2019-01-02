@@ -8,6 +8,9 @@ import {Unit} from '../makeready-dash/makeready.model';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {UnitLoadService} from '../services/unit-load.service';
 import {PapaParseService} from 'ngx-papaparse';
+import {Router} from '@angular/router';
+import {SlideInOutAnimation} from '../animations';
+import {MakeReadyService} from '../makeready-dash/makeready.service';
 
 @Component({
     selector: 'app-contractor-dash',
@@ -31,9 +34,10 @@ export class ContractorDashComponent implements OnInit {
     statuses = [
         {displayName: 'Working', filterName: 'Active'},
         {displayName: 'Not Working', filterName: 'Inactive'},
-        {displayName: 'Do Not Use', filterName: 'Bad'}
+        {displayName: 'Do Not Use', filterName: 'Bad'},
+        {displayName: 'New', filterName: 'New'}
     ];
-    dispColumnsActive = [
+   /* dispColumnsActive = [
         'name',
         'phoneNumber',
         'status',
@@ -42,6 +46,13 @@ export class ContractorDashComponent implements OnInit {
         'makeReadyType',
         'scheduledStartDate',
         'scheduledFinishDate'
+    ];*/
+    dispColumnsActive = [
+        'name',
+        'phoneNumber',
+        'status',
+        'rating',
+        'numReviews'
     ];
     contractors: Observable<Contractor[]>;
     addFormGroup: FormGroup;
@@ -52,7 +63,6 @@ export class ContractorDashComponent implements OnInit {
     unitSelected: Unit;
     propertySelected: string;
     parsedUnits: Array<any>;
-    addingContractor = false;
     contractorsArray: Array<Contractor>;
     loading: false;
 
@@ -61,6 +71,7 @@ export class ContractorDashComponent implements OnInit {
                 private _formBuilder: FormBuilder,
                 auth: AuthService,
                 private papa: PapaParseService,
+                private router: Router,
                 private unitsService: UnitLoadService) {
         this.properties = [{name: 'All', sheetName: ''}, ...unitsService.properties];
         this.auth = auth;
@@ -89,36 +100,11 @@ export class ContractorDashComponent implements OnInit {
             console.log('The dialog was closed, result: ' + result);
         });
     }
-    onAddShowHandler() {
-        this.addingContractor = true;
+    goToDetail(contractor) {
+        this.router.navigate(['./contractor-detail/' + contractor.id]);
     }
-    onAddClickHandler() {
-        const name = this.addFormGroup.value.nameCtrl;
-        const currentProperty = this.addFormGroup.value.propertyCtrl;
-        const unit = this.unitSelected;
-        const makeReadyType = this.addFormGroup.value.mrTypeCtrl;
-        const phoneNumber = this.addFormGroup.value.phoneCtrl;
-        const status = 'Active';
-        const now = new Date();
-        const contractor = {
-            'name': name,
-            'currentProperty': currentProperty,
-            'unit': unit,
-            'makeReadyType': makeReadyType,
-            'scheduledStartDate': now,
-            'scheduledFinishDate': now,
-            'phoneNumber': phoneNumber,
-            'status': status,
-            'updatedAt': null,
-            'createdAt': this.contractorService.timestamp
-        };
-        this.contractorService.addContractor(contractor);
-        this.addFormGroup.reset();
-        this.addingContractor = false;
-    }
-    onCancelAddClickHandler() {
-        this.addFormGroup.reset();
-        this.addingContractor = false;
+    goToAdd() {
+        this.router.navigate(['./contractor-add/']);
     }
     applyFilter(filterValue: string) {
         console.log('filterValue: ' + filterValue);
@@ -262,9 +248,13 @@ export class ContractorDialogComponent implements OnInit {
             , () => {
             });
     }
+
     setUnitSelected(unitSelected) {
         console.log('setting Unit Selected: ' + JSON.stringify(unitSelected));
-        const selectedIndex = this.parsedUnits.findIndex(x => x.unitName === unitSelected);
+        const selectedIndex = this.parsedUnits.findIndex(x => {
+            // console.log('checking if x.unitName: ' + x.unitName + ' === ' + ' unitSelected: ' + unitSelected);
+            return x.unitName === unitSelected;
+        });
         const unit = this.parsedUnits[selectedIndex];
         let legalName = '';
         let county = '';
@@ -305,3 +295,5 @@ export class ContractorDialogComponent implements OnInit {
         this.dialogRef.close();
     }
 }
+
+

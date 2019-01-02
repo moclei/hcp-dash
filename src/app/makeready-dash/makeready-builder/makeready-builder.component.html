@@ -1,1390 +1,1048 @@
 <mat-card class="card-stepper">
-  <mat-card-actions
-    style="padding-left: 16px;">
-    <button
-      mat-raised-button
-      color="accent"
-      (click)="onBackToTableHandler()">
-      BACK TO TABLE
-    </button>
-  </mat-card-actions>
-  <mat-card-content>
-    <mat-horizontal-stepper [linear]="true" #stepper="matHorizontalStepper">
-
-      <mat-step [stepControl]="firstFormGroup" #step1>
-        <form [formGroup]="firstFormGroup"
-          class="mr-form">
-          <ng-template
-            matStepLabel>Unit details
-          </ng-template>
-          <div
-            fxLayout="column"
-            fxLayoutGap="32px"
-            fxFlexOffset="16px"
-            fxFlex="100%">
-            <div
-              fxLayout="column"
-              fxLayoutGap="8px"
-              fxLayoutAlign="start">
-                <section class="mat-typography">
-                  <h2>Make Ready Builder</h2>
-                </section>
-              <div fxLayout="row">
-                <mat-form-field>
-                  <input
-                    matInput
-                    placeholder="Your Name (First and Last)"
-                    formControlName="nameCtrl"
-                    appFullnameValidator
-                    required>
-                </mat-form-field>
-              </div>
-                <mat-form-field>
-                  <mat-select
-                    placeholder="Property"
-                    formControlName="propertyCtrl"
-                    (selectionChange)="setPropertySelected($event)"
-                    required>
-                    <mat-option
-                      *ngFor="let property of properties"
-                      value={{property.sheetName}}>
-                      {{ property.name }}
-                    </mat-option>
-                  </mat-select>
-                </mat-form-field>
-                <mat-form-field
-                  class="bigger-width">
-                  <mat-select
-                    placeholder="Address"
-                    formControlName="unitCtrl"
-                    (selectionChange)="setUnitSelected($event)"
-                    required>
-                    <mat-option
-                      *ngFor="let unit of parsedUnits"
-                      value={{unit.unitName}}>
-                      {{ unit.unitName }}
-                    </mat-option>
-                  </mat-select>
-                </mat-form-field>
-            </div>
-            <div
-            fxLayout="row"
-            fxLayoutAlign="center">
-              <mat-card
-                *ngIf="unitSelected"
-                class="unit-card">
-                <section class="mat-typography">
-                  <mat-card-header>
-                    <mat-card-title>Unit details</mat-card-title>
-                  </mat-card-header>
-                  <mat-card-content>
-                    <p>Beds: {{unitSelected.bedrooms}}, Baths: {{unitSelected.bathrooms}}</p>
-                    <p>Floorplan: {{unitSelected.floorplan}}</p>
-                    <p>Size: {{unitSelected.size}} Sq. Ft.</p>
-                  </mat-card-content>
-                </section>
-              </mat-card>
-            </div>
-            <div
-              style="padding-top: 24px">
-              <button
+    <mat-card-actions
+            style="padding-left: 16px;">
+        <button
                 mat-raised-button
                 color="accent"
-                [disabled]="!firstFormGroup.valid"
-                matStepperNext>Next
-              </button>
-            </div>
-          </div>
-        </form>
-      </mat-step>
+                (click)="onBackToTableHandler()">
+            BACK TO TABLE
+        </button>
+    </mat-card-actions>
+    <mat-card-content>
+        <mat-horizontal-stepper [linear]="false" #stepper="matHorizontalStepper">
 
-      <mat-step [stepControl]="secondFormGroup" #step2>
-        <form [formGroup]="secondFormGroup">
-          <ng-template matStepLabel>General</ng-template>
-          <div fxLayout="column"
-               fxLayoutAlign="start start"
-               fxLayoutGap="24px"
-               fxFlexOffset="16px"
-               fxFlex.gt-md="75%"
-               fxFlex="100%">
-            <div>
-              <h1 class="display-1">General Make Ready Details</h1>
-            </div>
-
-            <div
-              fxLayoutGap="32px"
-              fxLayout="row wrap"
-              fxLayoutAlign="space-between start">
-              <div
-                fxLayoutGap="4px"
-                fxFlex="220px"
-                fxLayout="column"
-                fxLayoutAlign="start start">
-                <h4 class="step-header">Sheetrock:</h4>
-                <mat-radio-group
-                  formControlName="sheetrockCtrl"
-                  fxLayout="column"
-                  fxLayoutAlign="space-evenly"
-                  fxLayoutGap="4px">
-                  <mat-radio-button value="1">Light or No Damage</mat-radio-button>
-                  <mat-radio-button value="2">Small Holes, More Than One</mat-radio-button>
-                  <mat-radio-button value="3">Big Damages</mat-radio-button>
-                </mat-radio-group>
-              </div>
-              <div
-                fxLayoutGap="4px"
-                fxFlex="220px"
-                fxLayout="column"
-                fxLayoutAlign="start start">
-                <h4 class="step-header">Texture:</h4>
-                <mat-radio-group
-                  formControlName="textureCtrl"
-                  fxLayoutGap="4px"
-                  fxLayout="column"
-                  fxLayoutAlign="space-evenly">
-                  <mat-radio-button value="1">Texture Is Good</mat-radio-button>
-                  <mat-radio-button value="2">Texture Patches</mat-radio-button>
-                  <mat-radio-button value="3">Full Re-Texture</mat-radio-button>
-                </mat-radio-group>
-              </div>
-              <div fxLayoutGap="4px"
-                   fxFlex="220px"
-                   fxLayout="column"
-                   fxLayoutAlign="start start">
-                <h4 class="step-header">Paint:</h4>
-                <mat-radio-group
-                  formControlName="paintCtrl"
-                  fxLayoutGap="4px"
-                  fxLayout="column"
-                  fxLayoutAlign="space-evenly">
-                  <mat-radio-button value="1">Paint Is Good</mat-radio-button>
-                  <mat-radio-button value="2">Touch-up Paint</mat-radio-button>
-                  <mat-radio-button value="3">Full Paint</mat-radio-button>
-                </mat-radio-group>
-              </div>
-            </div>
-
-            <div>
-              <mat-expansion-panel>
-                <mat-expansion-panel-header>
-                  <mat-panel-title>
-                    Upgrades and Extras
-                  </mat-panel-title>
-                  <mat-panel-description>
-                    Pick what kind of extras and upgrades to do in the make ready.
-                  </mat-panel-description>
-                </mat-expansion-panel-header>
-                <div fxLayoutGap="4px" fxLayout="column">
-                  <div fxFlex="5"></div>
-
-                  <div fxLayout="row" fxLayoutAlign="space-between center">
-                    <div fxFlex="50">
-                      <mat-checkbox
-                        formControlName="switchesCtrl"
-                        (change)="extraChecked($event)"
-                        id="switchesCtrl">
-                        Rocker Switches
-                      </mat-checkbox>
+            <mat-step [stepControl]="firstFormGroup" #step1>
+                <form [formGroup]="firstFormGroup"
+                      class="mr-form">
+                    <ng-template matStepLabel>Unit details</ng-template>
+                    <div fxLayout="column"
+                         fxLayoutGap="32px"
+                         fxLayoutAlign="start start">
+                        <div fxLayout="column"
+                             fxLayoutGap="8px"
+                             fxLayoutAlign="start start">
+                            <h2 class="mat-h2">Make Ready Builder</h2>
+                            <mat-form-field>
+                                <input matInput
+                                       placeholder="Your Name (First and Last)"
+                                       formControlName="nameCtrl"
+                                       appFullnameValidator
+                                       required>
+                            </mat-form-field>
+                            <mat-form-field>
+                                <mat-select
+                                        placeholder="Property"
+                                        formControlName="propertyCtrl"
+                                        (selectionChange)="setPropertySelected($event)"
+                                        required>
+                                    <mat-option
+                                            *ngFor="let property of properties"
+                                            value={{property.sheetName}}>
+                                        {{ property.name }}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <mat-form-field class="bigger-width">
+                                <mat-select
+                                        placeholder="Address"
+                                        formControlName="unitCtrl"
+                                        (selectionChange)="setUnitSelected($event)"
+                                        required>
+                                    <mat-option
+                                            *ngFor="let unit of parsedUnits"
+                                            value={{unit.unitName}}>
+                                        {{ unit.unitName }}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <mat-card *ngIf="unitSelected"
+                                  class="unit-card">
+                            <section class="mat-typography">
+                                <mat-card-header>
+                                    <mat-card-title>Unit details</mat-card-title>
+                                </mat-card-header>
+                                <mat-card-content>
+                                    <p>Beds: {{unitSelected.bedrooms}}, Baths: {{unitSelected.bathrooms}}</p>
+                                    <p>Floorplan: {{unitSelected.floorplan}}</p>
+                                    <p>Size: {{unitSelected.size}} Sq. Ft.</p>
+                                </mat-card-content>
+                            </section>
+                        </mat-card>
+                        <button mat-raised-button
+                                color="accent"
+                                [disabled]="!firstFormGroup.valid"
+                                matStepperNext>Next
+                        </button>
                     </div>
-                    <div fxFlex="40">
-                      <mat-form-field>
-                        <input
-                          matInput
-                          type="number"
-                          appPositiveNumber
-                          formControlName="switchesQuantityCtrl"
-                          placeholder="How Many?">
-                      </mat-form-field>
-                    </div>
-                    <div fxFlex="10"></div>
-                  </div>
+                </form>
+            </mat-step>
 
-                  <div fxLayout="row" fxLayoutAlign="space-between center">
-                    <div fxFlex="50">
-                      <mat-checkbox
-                        formControlName="ceilingFansCtrl"
-                        (change)="extraChecked($event)"
-                        id="ceilingFansCtrl">
-                        Ceiling Fans
-                      </mat-checkbox>
-                    </div>
-                    <div fxFlex="40">
-                      <mat-form-field>
-                        <input
-                          type="number"
-                          appPositiveNumber
-                          matInput
-                          placeholder="How Many?"
-                          formControlName="ceilingFansQuantityCtrl">
-                      </mat-form-field>
-                    </div>
-                    <div fxFlex="10"></div>
-                  </div>
-
-                  <div fxLayout="row" fxLayoutAlign="space-between center">
-                    <div fxFlex="50">
-                      <mat-checkbox formControlName="blindsCtrl" (change)="extraChecked($event)" id="blindsCtrl">Faux
-                        Wood Blinds
-                      </mat-checkbox>
-                    </div>
-                    <div fxFlex="40">
-                      <mat-form-field>
-                        <input
-                          type="number"
-                          appPositiveNumber
-                          matInput
-                          placeholder="How Many?"
-                          formControlName="blindsQuantityCtrl">
-                      </mat-form-field>
-                    </div>
-                    <div fxFlex="10"></div>
-                  </div>
-
-                  <div fxLayout="row" fxLayoutAlign="space-between center">
-                    <div fxFlex="50">
-                      <mat-checkbox formControlName="faucetsCtrl" (change)="extraChecked($event)" id="faucetsCtrl">
-                        Faucet Replacements
-                      </mat-checkbox>
-                    </div>
-                    <div fxFlex="40">
-                      <mat-form-field>
-                        <input
-                          type="number"
-                          appPositiveNumber
-                          matInput placeholder="How Many?"
-                          formControlName="faucetsQuantityCtrl">
-                      </mat-form-field>
-                    </div>
-                    <div fxFlex="10"></div>
-                  </div>
-
-                  <div fxLayout="row" fxLayoutAlign="space-between center">
-                    <div fxFlex="50">
-                      <mat-checkbox formControlName="lightFixturesCtrl" (change)="extraChecked($event)"
-                                    id="lightFixturesCtrl">Light Fixture Install/Replace
-                      </mat-checkbox>
-                    </div>
-                    <div fxFlex="40">
-                      <mat-form-field>
-                        <input
-                          type="number"
-                          appPositiveNumber
-                          matInput
-                          placeholder="How Many?"
-                          formControlName="lightFixturesQuantityCtrl">
-                      </mat-form-field>
-                    </div>
-                    <div fxFlex="10"></div>
-                  </div>
-
-                </div>
-              </mat-expansion-panel>
-            </div>
-
-            <div fxLayout="column">
-              <mat-expansion-panel>
-                <mat-expansion-panel-header>
-                  <mat-panel-title>
-                    Doors
-                  </mat-panel-title>
-                  <mat-panel-description>
-                    A door panel is simply the door part, the door jamb includes the frame.
-                  </mat-panel-description>
-                </mat-expansion-panel-header>
-                <div fxLayoutGap="4px" fxLayout="column">
-
-                  <div fxFlex="5"></div>
-
-                  <div fxLayout="row" fxLayoutAlign="space-between center">
-                    <div fxFlex="50">
-                      <mat-checkbox
-                        formControlName="intDoorsCtrl"
-                        (change)="extraChecked($event)"
-                        id="intDoorsCtrl">Door Replace (Interior, Door Only)
-                      </mat-checkbox>
-                    </div>
-                    <div fxFlex="30">
-                      <mat-form-field>
-                        <input
-                          type="number"
-                          appPositiveNumber
-                          matInput
-                          placeholder="How Many?"
-                          formControlName="intDoorsQtyCtrl">
-                      </mat-form-field>
-                    </div>
-                    <div fxFlex="20"></div>
-                  </div>
-
-                  <div fxLayout="row" fxLayoutAlign="space-between center">
-                    <div fxFlex="50">
-                      <mat-checkbox
-                        formControlName="intDoorsJambCtrl"
-                        (change)="extraChecked($event)"
-                        id="intDoorsJambCtrl">Door Replace (Interior, Door and Jamb)
-                      </mat-checkbox>
-                    </div>
-                    <div fxFlex="30">
-                      <mat-form-field>
-                        <input type="number"
-                               appPositiveNumber
-                               matInput
-                               placeholder="How Many?"
-                               formControlName="intDoorsJambQtyCtrl">
-                      </mat-form-field>
-                    </div>
-                    <div fxFlex="20"></div>
-                  </div>
-
-                  <div fxLayout="row" fxLayoutAlign="space-between center">
-                    <div fxFlex="50">
-                      <mat-checkbox formControlName="extDoorsCtrl" (change)="extraChecked($event)" id="extDoorsCtrl">
-                        Door Replace (Exterior, Door Only)
-                      </mat-checkbox>
-                    </div>
-                    <div fxFlex="30">
-                      <mat-form-field>
-                        <input
-                          type="number"
-                          matInput
-                          placeholder="How Many?"
-                          appPositiveNumber
-                          formControlName="extDoorsQuantityCtrl">
-                      </mat-form-field>
-                    </div>
-                    <div fxFlex="20"></div>
-                  </div>
-
-                  <div fxLayout="row" fxLayoutAlign="space-between center">
-                    <div fxFlex="50">
-                      <mat-checkbox
-                        formControlName="extDoorsJambCtrl"
-                        (change)="extraChecked($event)"
-                        id="extDoorsJambCtrl">Door Replace (Exterior, Door and Jamb)
-                      </mat-checkbox>
-                    </div>
-                    <div fxFlex="30">
-                      <mat-form-field>
-                        <input
-                          type="number"
-                          matInput
-                          placeholder="How Many?"
-                          appPositiveNumber
-                          formControlName="extDoorsJambQuantityCtrl">
-                      </mat-form-field>
-                    </div>
-                    <div fxFlex="20"></div>
-                  </div>
-
-                  <div
-                    fxLayout="row wrap"
-                    fxLayouGap="16px"
-                    fxLayoutAlign="start start"
-                    [@slideInOut]="animationState">
-
-                    <!-- CARPET REPLACE  -->
-
-                    <mat-card>
-                      <mat-card-content>
-                        <div
-                          fxLayout="column"
-                          fxLayoutGap="4px"
-                          fxLayoutAlign="space-evenly">
-                          <mat-checkbox
-                            formControlName="carpetReplace"
-                            (change)="enableFlooringType($event, 'carpetReplace')">Replace Carpet
-                          </mat-checkbox>
-                          <div
-                            [@slideInOut]="carpetReplaceState">
-
-                            <div>
-                              <mat-form-field>
-                                <input
-                                  matInput
-                                  placeholder="Size (Sq. Ft.)?"
-                                  type="number"
-                                  appPositiveNumber
-                                  formControlName="carpetReplaceQty">
-                              </mat-form-field>
-                              <mat-form-field class="full-width">
-                            <textarea
-                              matInput
-                              placeholder="Describe Where"
-                              formControlName="carpetReplaceDescription"></textarea>
-                              </mat-form-field>
+            <mat-step [stepControl]="secondFormGroup" #step2>
+                <form [formGroup]="secondFormGroup">
+                    <ng-template matStepLabel>General</ng-template>
+                    <div fxLayout="column"
+                         fxLayoutAlign="start start"
+                         fxLayoutGap="24px">
+                        <h1 class="display-1">General Make Ready Details</h1>
+                        <div fxLayout="row wrap"
+                             fxLayoutGap="32px"
+                             fxLayoutAlign="space-between start">
+                            <div fxLayout="column"
+                                 fxLayoutGap="4px"
+                                 fxFlex="220px"
+                                 fxLayoutAlign="start start">
+                                <h4 class="step-header">Sheetrock:</h4>
+                                <mat-radio-group
+                                        formControlName="sheetrockCtrl"
+                                        fxLayout="column"
+                                        fxLayoutAlign="space-evenly"
+                                        fxLayoutGap="4px">
+                                    <mat-radio-button value="1">Light or No Damage</mat-radio-button>
+                                    <mat-radio-button value="2">Small Holes, More Than One</mat-radio-button>
+                                    <mat-radio-button value="3">Big Damages</mat-radio-button>
+                                </mat-radio-group>
                             </div>
-                          </div>
-                        </div>
-                      </mat-card-content>
-                    </mat-card>
-                    <!-- END OF CARPET REPLACE  -->
-
-                    <!-- CARPET SHAMPOO  -->
-                    <mat-card>
-                      <div
-                        fxLayout="column"
-                        fxLayoutGap="4px"
-                        fxLayoutAlign="space-evenly">
-
-                        <mat-checkbox
-                          formControlName="carpetShampoo"
-                          (change)="enableFlooringType($event, 'carpetShampoo')">
-                          Shampoo Carpet
-                        </mat-checkbox>
-                        <div
-                          [@slideInOut]="carpetShampooState">
-
-                          <div>
-                            <mat-form-field>
-                              <input
-                                matInput
-                                placeholder="How Many Rooms?"
-                                type="number"
-                                appPositiveNumber
-                                formControlName="carpetShampooQty">
-                            </mat-form-field>
-                            <mat-form-field class="full-width">
-                      <textarea
-                        matInput
-                        placeholder="Description of stains (optional)"
-                        formControlName="carpetShampooDescription"></textarea>
-                            </mat-form-field>
-                          </div>
-                        </div>
-                      </div>
-                    </mat-card>
-                    <!-- END OF CARPET SHAMPOO  -->
-
-
-                    <!-- TILE INSTALL  -->
-                    <mat-card>
-                      <div
-                        fxLayout="column"
-                        fxLayoutGap="4px"
-                        fxLayoutAlign="space-evenly">
-
-                        <mat-checkbox
-                          formControlName="installTile"
-                          (change)="enableFlooringType($event, 'installTile')">Install Tile
-                        </mat-checkbox>
-                        <div
-                          [@slideInOut]="tileInstallState">
-
-
-                          <div>
-                            <mat-form-field>
-                              <input
-                                matInput
-                                placeholder="How Many Sq. Ft.?"
-                                type="number"
-                                appPositiveNumber
-                                formControlName="installTileQty">
-                            </mat-form-field>
-                            <mat-form-field class="full-width">
-                      <textarea
-                        matInput
-                        placeholder="Where to install? (Which rooms)"
-                        formControlName="installTileDescription"></textarea>
-                            </mat-form-field>
-                          </div>
-
-
-                        </div>
-                      </div>
-                    </mat-card>
-                    <!-- END OF TILE INSTALL  -->
-
-                    <!-- TILE REPAIR  -->
-                    <mat-card>
-                      <div
-                        fxLayout="column"
-                        fxLayoutGap="4px"
-                        fxLayoutAlign="space-evenly">
-
-                        <mat-checkbox
-                          formControlName="repairTile"
-                          (change)="enableFlooringType($event, 'repairTile')">Repair Tile
-                        </mat-checkbox>
-                        <div
-                          [@slideInOut]="tileRepairState">
-
-                          <div>
-                            <mat-form-field>
-                              <input
-                                matInput
-                                placeholder="How Many Tiles?"
-                                type="number"
-                                appPositiveNumber
-                                formControlName="repairTileQty">
-                            </mat-form-field>
-                            <mat-form-field class="full-width">
-                        <textarea
-                          matInput
-                          placeholder="Where? (Which rooms)"
-                          formControlName="repairTileDescription"></textarea>
-                            </mat-form-field>
-                          </div>
-                        </div>
-                      </div>
-                    </mat-card>
-                    <!-- END OF TILE REPAIR  -->
-
-
-                    <!-- PLANK INSTALL  -->
-                    <mat-card>
-                      <div
-                        fxLayout="column"
-                        fxLayoutGap="4px"
-                        fxLayoutAlign="space-evenly">
-
-                        <mat-checkbox
-                          formControlName="installPlank"
-                          (change)="enableFlooringType($event, 'installPlank')"> Install Vinyl Plank
-                        </mat-checkbox>
-                        <div
-                          [@slideInOut]="plankInstallState">
-
-
-                          <div>
-                            <mat-form-field>
-                              <input
-                                matInput
-                                placeholder="How Many Sq. Ft.?"
-                                type="number"
-                                appPositiveNumber
-                                formControlName="installPlankQty">
-                            </mat-form-field>
-                            <mat-form-field class="full-width">
-                        <textarea
-                          matInput
-                          placeholder="Where? (Which rooms)"
-                          formControlName="installPlankDescription"></textarea>
-                            </mat-form-field>
-                          </div>
-
-
+                            <div fxLayout="column"
+                                 fxLayoutGap="4px"
+                                 fxFlex="220px"
+                                 fxLayoutAlign="start start">
+                                <h4 class="step-header">Texture:</h4>
+                                <mat-radio-group
+                                        formControlName="textureCtrl"
+                                        fxLayoutGap="4px"
+                                        fxLayout="column"
+                                        fxLayoutAlign="space-evenly">
+                                    <mat-radio-button value="1">Texture Is Good</mat-radio-button>
+                                    <mat-radio-button value="2">Texture Patches</mat-radio-button>
+                                    <mat-radio-button value="3">Full Re-Texture</mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+                            <div fxLayout="column"
+                                 fxLayoutGap="4px"
+                                 fxFlex="220px"
+                                 fxLayoutAlign="start start">
+                                <h4 class="step-header">Paint:</h4>
+                                <mat-radio-group
+                                        formControlName="paintCtrl"
+                                        fxLayoutGap="4px"
+                                        fxLayout="column"
+                                        fxLayoutAlign="space-evenly">
+                                    <mat-radio-button value="1">Paint Is Good</mat-radio-button>
+                                    <mat-radio-button value="2">Touch-up Paint</mat-radio-button>
+                                    <mat-radio-button value="3">Full Paint</mat-radio-button>
+                                </mat-radio-group>
+                            </div>
                         </div>
 
-                      </div>
-                    </mat-card>
-                    <!-- END OF PLANK INSTALL  -->
+                        <mat-expansion-panel>
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        Upgrades and Extras
+                                    </mat-panel-title>
+                                    <mat-panel-description>
+                                        Pick what kind of extras and upgrades to do in the make ready.
+                                    </mat-panel-description>
+                                </mat-expansion-panel-header>
+                                <div fxLayout="column"
+                                     fxLayoutGap="4px" >
+                                    <div fxFlex="5"></div>
+                                    <div fxLayout="row"
+                                         fxLayoutAlign="start center"
+                                         fxLayoutGap="8px">
+                                            <mat-checkbox
+                                                    formControlName="switchesCtrl"
+                                                    (change)="extraChecked($event)"
+                                                    id="switchesCtrl">
+                                                Rocker Switches
+                                            </mat-checkbox>
+                                            <mat-form-field>
+                                                <input matInput
+                                                       type="number"
+                                                       appPositiveNumber
+                                                       formControlName="switchesQuantityCtrl"
+                                                       placeholder="How Many?">
+                                            </mat-form-field>
+                                    </div>
 
-                    <!-- PLANK REPAIR  -->
-                    <mat-card>
-                      <div
-                        fxLayout="column"
-                        fxLayoutGap="4px"
-                        fxLayoutAlign="space-evenly">
+                                    <div fxLayout="row"
+                                         fxLayoutAlign="start center"
+                                         fxLayoutGap="8px">
+                                            <mat-checkbox
+                                                    formControlName="ceilingFansCtrl"
+                                                    (change)="extraChecked($event)"
+                                                    id="ceilingFansCtrl">
+                                                Ceiling Fans
+                                            </mat-checkbox>
+                                            <mat-form-field>
+                                                <input
+                                                        type="number"
+                                                        appPositiveNumber
+                                                        matInput
+                                                        placeholder="How Many?"
+                                                        formControlName="ceilingFansQuantityCtrl">
+                                            </mat-form-field>
+                                    </div>
 
-                        <mat-checkbox
-                          formControlName="repairPlank"
-                          (change)="enableFlooringType($event, 'repairPlank')">Repair Vinyl Plank
-                        </mat-checkbox>
-                        <div
-                          [@slideInOut]="plankRepairState">
+                                    <div fxLayout="row"
+                                         fxLayoutAlign="start center"
+                                         fxLayoutGap="8px">
+                                            <mat-checkbox formControlName="blindsCtrl" (change)="extraChecked($event)"
+                                                          id="blindsCtrl">Faux
+                                                Wood Blinds
+                                            </mat-checkbox>
+                                            <mat-form-field>
+                                                <input
+                                                        type="number"
+                                                        appPositiveNumber
+                                                        matInput
+                                                        placeholder="How Many?"
+                                                        formControlName="blindsQuantityCtrl">
+                                            </mat-form-field>
+                                    </div>
 
-                          <div>
-                            <mat-form-field>
-                              <input
-                                matInput
-                                placeholder="How Many Sq. Ft.?"
-                                type="number"
-                                appPositiveNumber
-                                formControlName="repairPlankQty">
-                            </mat-form-field>
-                            <mat-form-field class="full-width">
-                        <textarea
-                          matInput
-                          placeholder="Where? (Which rooms)"
-                          formControlName="repairPlankDescription"></textarea>
-                            </mat-form-field>
-                          </div>
-                        </div>
-                      </div>
-                    </mat-card>
-                    <!-- END OF PLANK REPAIR  -->
+                                    <div fxLayout="row"
+                                         fxLayoutAlign="start center"
+                                         fxLayoutGap="8px">
+                                            <mat-checkbox formControlName="faucetsCtrl" (change)="extraChecked($event)"
+                                                          id="faucetsCtrl">
+                                                Faucet Replacements
+                                            </mat-checkbox>
+                                            <mat-form-field>
+                                                <input
+                                                        type="number"
+                                                        appPositiveNumber
+                                                        matInput placeholder="How Many?"
+                                                        formControlName="faucetsQuantityCtrl">
+                                            </mat-form-field>
+                                    </div>
 
-                  </div>
+                                    <div fxLayout="row"
+                                         fxLayoutAlign="start center"
+                                         fxLayoutGap="8px">
+                                            <mat-checkbox formControlName="lightFixturesCtrl"
+                                                          (change)="extraChecked($event)"
+                                                          id="lightFixturesCtrl">Light Fixture Install/Replace
+                                            </mat-checkbox>
+                                            <mat-form-field>
+                                                <input
+                                                        type="number"
+                                                        appPositiveNumber
+                                                        matInput
+                                                        placeholder="How Many?"
+                                                        formControlName="lightFixturesQuantityCtrl">
+                                            </mat-form-field>
+                                    </div>
+                                </div>
+                            </mat-expansion-panel>
 
-                </div>
-              </mat-expansion-panel>
-            </div>
+                            <mat-expansion-panel>
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        Door Replacements
+                                    </mat-panel-title>
+                                    <mat-panel-description>
+                                        Choose between Door only or Door + Jamb.
+                                    </mat-panel-description>
+                                </mat-expansion-panel-header>
+                                <div fxLayout="column"
+                                     fxLayoutGap="4px">
+                                    <div fxFlex="5"></div>
+                                    <div fxLayout="row"
+                                         fxLayoutAlign="start center"
+                                        fxLayoutGap="8px">
+                                            <mat-checkbox
+                                                    formControlName="intDoorsCtrl"
+                                                    (change)="extraChecked($event)"
+                                                    id="intDoorsCtrl">Interior, Door Only
+                                            </mat-checkbox>
+                                            <mat-form-field>
+                                                <input
+                                                        type="number"
+                                                        appPositiveNumber
+                                                        matInput
+                                                        placeholder="How Many?"
+                                                        formControlName="intDoorsQtyCtrl">
+                                            </mat-form-field>
+                                    </div>
+                                    <div fxLayout="row"
+                                         fxLayoutAlign="start center"
+                                         fxLayoutGap="8px">
+                                            <mat-checkbox
+                                                    formControlName="intDoorsJambCtrl"
+                                                    (change)="extraChecked($event)"
+                                                    id="intDoorsJambCtrl">Interior, Door and Jamb
+                                            </mat-checkbox>
+                                            <mat-form-field>
+                                                <input type="number"
+                                                       appPositiveNumber
+                                                       matInput
+                                                       placeholder="How Many?"
+                                                       formControlName="intDoorsJambQtyCtrl">
+                                            </mat-form-field>
+                                    </div>
+                                    <div fxLayout="row"
+                                         fxLayoutAlign="start center"
+                                         fxLayoutGap="8px">
+                                            <mat-checkbox formControlName="extDoorsCtrl" (change)="extraChecked($event)"
+                                                          id="extDoorsCtrl">
+                                                Exterior, Door Only
+                                            </mat-checkbox>
+                                            <mat-form-field>
+                                                <input
+                                                        type="number"
+                                                        matInput
+                                                        placeholder="How Many?"
+                                                        appPositiveNumber
+                                                        formControlName="extDoorsQuantityCtrl">
+                                            </mat-form-field>
+                                    </div>
+                                    <div fxLayout="row"
+                                         fxLayoutAlign="start center"
+                                         fxLayoutGap="8px">
+                                            <mat-checkbox
+                                                    formControlName="extDoorsJambCtrl"
+                                                    (change)="extraChecked($event)"
+                                                    id="extDoorsJambCtrl">Exterior, Door and Jamb
+                                            </mat-checkbox>
+                                            <mat-form-field>
+                                                <input
+                                                        type="number"
+                                                        matInput
+                                                        placeholder="How Many?"
+                                                        appPositiveNumber
+                                                        formControlName="extDoorsJambQuantityCtrl">
+                                            </mat-form-field>
+                                    </div>
+                                </div>
+                            </mat-expansion-panel>
 
-            <mat-expansion-panel>
-              <mat-expansion-panel-header>
-                <mat-panel-title>
-                  Flooring
-                </mat-panel-title>
-                <mat-panel-description>
-                  Flooring repair/replace/cleaning
-                </mat-panel-description>
-              </mat-expansion-panel-header>
-              <div
-                fxLayout="row wrap"
-                fxLayouGap="16px"
-                fxLayoutAlign="start start">
+                        <mat-expansion-panel>
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>
+                                    Flooring
+                                </mat-panel-title>
+                                <mat-panel-description>
+                                    Flooring repair/replace/cleaning
+                                </mat-panel-description>
+                            </mat-expansion-panel-header>
+                            <div
+                                    fxLayout="row wrap"
+                                    fxLayouGap="16px"
+                                    fxLayoutAlign="start start">
 
-                <!-- CARPET REPLACE  -->
+                                <!-- CARPET REPLACE  -->
 
-                <mat-card>
-                  <mat-card-content>
-                    <div
-                      fxLayout="column"
-                      fxLayoutGap="4px"
-                      fxLayoutAlign="space-evenly">
-                      <mat-checkbox
-                        formControlName="carpetReplace"
-                        (change)="enableFlooringType($event, 'carpetReplace')">Replace Carpet
-                      </mat-checkbox>
-                      <div
-                        [@slideInOut]="carpetReplaceState">
+                                <mat-card>
+                                    <mat-card-content>
+                                        <div
+                                                fxLayout="column"
+                                                fxLayoutGap="4px"
+                                                fxLayoutAlign="space-evenly">
+                                            <mat-checkbox
+                                                    formControlName="carpetReplace"
+                                                    (change)="enableFlooringType($event, 'carpetReplace')">Replace
+                                                Carpet
+                                            </mat-checkbox>
+                                            <div
+                                                    [@slideInOut]="carpetReplaceState">
 
-                        <div>
-                          <mat-form-field>
-                            <input
-                              matInput
-                              placeholder="Size (Sq. Ft.)?"
-                              type="number"
-                              appPositiveNumber
-                              formControlName="carpetReplaceQty">
-                          </mat-form-field>
-                          <mat-form-field class="full-width">
+                                                <div>
+                                                    <mat-form-field>
+                                                        <input
+                                                                matInput
+                                                                placeholder="Size (Sq. Ft.)?"
+                                                                type="number"
+                                                                appPositiveNumber
+                                                                formControlName="carpetReplaceQty">
+                                                    </mat-form-field>
+                                                    <mat-form-field class="full-width">
                             <textarea
+                                    matInput
+                                    placeholder="Describe Where"
+                                    formControlName="carpetReplaceDescription"></textarea>
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </mat-card-content>
+                                </mat-card>
+                                <!-- END OF CARPET REPLACE  -->
+
+                                <!-- CARPET SHAMPOO  -->
+                                <mat-card>
+                                    <div
+                                            fxLayout="column"
+                                            fxLayoutGap="4px"
+                                            fxLayoutAlign="space-evenly">
+
+                                        <mat-checkbox
+                                                formControlName="carpetShampoo"
+                                                (change)="enableFlooringType($event, 'carpetShampoo')">
+                                            Shampoo Carpet
+                                        </mat-checkbox>
+                                        <div
+                                                [@slideInOut]="carpetShampooState">
+
+                                            <div>
+                                                <mat-form-field>
+                                                    <input
+                                                            matInput
+                                                            placeholder="How Many Rooms?"
+                                                            type="number"
+                                                            appPositiveNumber
+                                                            formControlName="carpetShampooQty">
+                                                </mat-form-field>
+                                                <mat-form-field class="full-width">
+                      <textarea
                               matInput
-                              placeholder="Describe Where"
-                              formControlName="carpetReplaceDescription"></textarea>
-                          </mat-form-field>
+                              placeholder="Description of stains (optional)"
+                              formControlName="carpetShampooDescription"></textarea>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </mat-card>
+                                <!-- END OF CARPET SHAMPOO  -->
+
+
+                                <!-- TILE INSTALL  -->
+                                <mat-card>
+                                    <div
+                                            fxLayout="column"
+                                            fxLayoutGap="4px"
+                                            fxLayoutAlign="space-evenly">
+
+                                        <mat-checkbox
+                                                formControlName="installTile"
+                                                (change)="enableFlooringType($event, 'installTile')">Install Tile
+                                        </mat-checkbox>
+                                        <div
+                                                [@slideInOut]="tileInstallState">
+
+
+                                            <div>
+                                                <mat-form-field>
+                                                    <input
+                                                            matInput
+                                                            placeholder="How Many Sq. Ft.?"
+                                                            type="number"
+                                                            appPositiveNumber
+                                                            formControlName="installTileQty">
+                                                </mat-form-field>
+                                                <mat-form-field class="full-width">
+                      <textarea
+                              matInput
+                              placeholder="Where to install? (Which rooms)"
+                              formControlName="installTileDescription"></textarea>
+                                                </mat-form-field>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+                                </mat-card>
+                                <!-- END OF TILE INSTALL  -->
+
+                                <!-- TILE REPAIR  -->
+                                <mat-card>
+                                    <div
+                                            fxLayout="column"
+                                            fxLayoutGap="4px"
+                                            fxLayoutAlign="space-evenly">
+
+                                        <mat-checkbox
+                                                formControlName="repairTile"
+                                                (change)="enableFlooringType($event, 'repairTile')">Repair Tile
+                                        </mat-checkbox>
+                                        <div
+                                                [@slideInOut]="tileRepairState">
+
+                                            <div>
+                                                <mat-form-field>
+                                                    <input
+                                                            matInput
+                                                            placeholder="How Many Tiles?"
+                                                            type="number"
+                                                            appPositiveNumber
+                                                            formControlName="repairTileQty">
+                                                </mat-form-field>
+                                                <mat-form-field class="full-width">
+                        <textarea
+                                matInput
+                                placeholder="Where? (Which rooms)"
+                                formControlName="repairTileDescription"></textarea>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </mat-card>
+                                <!-- END OF TILE REPAIR  -->
+
+
+                                <!-- PLANK INSTALL  -->
+                                <mat-card>
+                                    <div
+                                            fxLayout="column"
+                                            fxLayoutGap="4px"
+                                            fxLayoutAlign="space-evenly">
+
+                                        <mat-checkbox
+                                                formControlName="installPlank"
+                                                (change)="enableFlooringType($event, 'installPlank')"> Install Vinyl
+                                            Plank
+                                        </mat-checkbox>
+                                        <div
+                                                [@slideInOut]="plankInstallState">
+
+
+                                            <div>
+                                                <mat-form-field>
+                                                    <input
+                                                            matInput
+                                                            placeholder="How Many Sq. Ft.?"
+                                                            type="number"
+                                                            appPositiveNumber
+                                                            formControlName="installPlankQty">
+                                                </mat-form-field>
+                                                <mat-form-field class="full-width">
+                        <textarea
+                                matInput
+                                placeholder="Where? (Which rooms)"
+                                formControlName="installPlankDescription"></textarea>
+                                                </mat-form-field>
+                                            </div>
+
+
+                                        </div>
+
+                                    </div>
+                                </mat-card>
+                                <!-- END OF PLANK INSTALL  -->
+
+                                <!-- PLANK REPAIR  -->
+                                <mat-card>
+                                    <div
+                                            fxLayout="column"
+                                            fxLayoutGap="4px"
+                                            fxLayoutAlign="space-evenly">
+
+                                        <mat-checkbox
+                                                formControlName="repairPlank"
+                                                (change)="enableFlooringType($event, 'repairPlank')">Repair Vinyl Plank
+                                        </mat-checkbox>
+                                        <div
+                                                [@slideInOut]="plankRepairState">
+
+                                            <div>
+                                                <mat-form-field>
+                                                    <input
+                                                            matInput
+                                                            placeholder="How Many Sq. Ft.?"
+                                                            type="number"
+                                                            appPositiveNumber
+                                                            formControlName="repairPlankQty">
+                                                </mat-form-field>
+                                                <mat-form-field class="full-width">
+                        <textarea
+                                matInput
+                                placeholder="Where? (Which rooms)"
+                                formControlName="repairPlankDescription"></textarea>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </mat-card>
+                                <!-- END OF PLANK REPAIR  -->
+
+                            </div>
+                        </mat-expansion-panel>
+
+                        <div fxLayout="row" fxLayoutGap="16px" style="padding-top: 24px">
+                            <button mat-raised-button color="accent" matStepperPrevious>Back</button>
+                            <button mat-raised-button color="accent" matStepperNext>Next</button>
                         </div>
-                      </div>
                     </div>
-                  </mat-card-content>
-                </mat-card>
-                <!-- END OF CARPET REPLACE  -->
+                </form>
+            </mat-step>
 
-                <!-- CARPET SHAMPOO  -->
-                <mat-card>
-                  <div
-                    fxLayout="column"
-                    fxLayoutGap="4px"
-                    fxLayoutAlign="space-evenly">
+            <mat-step [stepControl]="thirdFormGroup" #step3>
+                <form [formGroup]="thirdFormGroup">
+                    <ng-template matStepLabel>Bathrooms</ng-template>
+                    <div fxLayout="column" fxLayoutGap="32px" fxFlexOffset="16px">
+                        <div fxLayoutGap="8px" fxLayout="column" fxLayoutAlign="start start">
 
-                    <mat-checkbox
-                      formControlName="carpetShampoo"
-                      (change)="enableFlooringType($event, 'carpetShampoo')">
-                      Shampoo Carpet
-                    </mat-checkbox>
-                    <div
-                      [@slideInOut]="carpetShampooState">
-
-                      <div>
-                        <mat-form-field>
-                          <input
-                            matInput
-                            placeholder="How Many Rooms?"
-                            type="number"
-                            appPositiveNumber
-                            formControlName="carpetShampooQty">
-                        </mat-form-field>
-                        <mat-form-field class="full-width">
-                      <textarea
-                        matInput
-                        placeholder="Description of stains (optional)"
-                        formControlName="carpetShampooDescription"></textarea>
-                        </mat-form-field>
-                      </div>
+                            <h4>Bathroom Details</h4>
+                            <div fxLayout="column" fxLayoutAlign="start" fxLayoutGap="4px">
+                                <h4 class="step-header">Bathtub:</h4>
+                                <mat-radio-group formControlName="tubCtrl" fxLayout="column"
+                                                 fxLayoutAlign="space-evenly"
+                                                 fxLayoutGap="4px">
+                                    <mat-radio-button value="1">Tub Is Good</mat-radio-button>
+                                    <mat-radio-button value="2">Resurface Tub</mat-radio-button>
+                                    <mat-radio-button value="3">Replace Tub</mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+                            <div fxLayout="column" fxLayoutAlign="start" fxLayoutGap="4px">
+                                <h4 class="step-header">Shower:</h4>
+                                <div>
+                                    <mat-radio-group formControlName="showerTileCtrl" fxLayout="column"
+                                                     fxLayoutAlign="space-evenly"
+                                                     fxLayoutGap="4px">
+                                        <mat-radio-button value="1">Shower Tile Is Good</mat-radio-button>
+                                        <mat-radio-button value="2">Shower Tile Needs Repairs</mat-radio-button>
+                                        <mat-radio-button value="3">Complete Shower Tile Replacement/Upgrade
+                                        </mat-radio-button>
+                                    </mat-radio-group>
+                                </div>
+                            </div>
+                            <div fxLayout="column" fxLayoutAlign="start" fxLayoutGap="4px">
+                                <h4 class="step-header">Vanity:</h4>
+                                <mat-checkbox formControlName="newMirrorCtrl">New Mirror</mat-checkbox>
+                                <mat-checkbox formControlName="graniteBathCtrl">Replace with Granite Countertop
+                                </mat-checkbox>
+                                <mat-checkbox formControlName="resurfaceBathCtrl">Resurface Countertop</mat-checkbox>
+                                <mat-checkbox formControlName="newVanityCtrl">New Vanity</mat-checkbox>
+                            </div>
+                            <div fxLayout="row" fxLayoutGap="16px" style="padding-top: 24px">
+                                <button mat-raised-button color="accent" matStepperPrevious>Back</button>
+                                <button mat-raised-button color="accent" matStepperNext>Next</button>
+                            </div>
+                        </div>
                     </div>
-                  </div>
-                </mat-card>
-                <!-- END OF CARPET SHAMPOO  -->
+                </form>
+            </mat-step>
+
+            <mat-step [stepControl]="fourthFormGroup" #step4>
+                <form [formGroup]="fourthFormGroup">
+                    <ng-template matStepLabel>Kitchen</ng-template>
+                    <div fxLayout="column" fxLayoutGap="32px" fxFlexOffset="16px">
+                        <div fxLayoutGap="8px" fxLayout="column" fxLayoutAlign="start start">
+
+                            <h4>Kitchen Details</h4>
+                            <div fxLayout="column" fxLayoutAlign="start" fxLayoutGap="4px">
+                                <h4 class="step-header">Countertop:</h4>
+                                <mat-radio-group formControlName="ktCounterCtrl" fxLayout="column" fxLayoutAlign="start"
+                                                 fxLayoutGap="4px">
+                                    <mat-radio-button value="1">Countertop Is Good</mat-radio-button>
+                                    <mat-radio-button value="2">Resurface Countertop</mat-radio-button>
+                                    <mat-radio-button value="3">Replace with Granite Countertop</mat-radio-button>
+                                </mat-radio-group>
+                            </div>
 
 
-                <!-- TILE INSTALL  -->
-                <mat-card>
-                  <div
-                    fxLayout="column"
-                    fxLayoutGap="4px"
-                    fxLayoutAlign="space-evenly">
-
-                    <mat-checkbox
-                      formControlName="installTile"
-                      (change)="enableFlooringType($event, 'installTile')">Install Tile
-                    </mat-checkbox>
-                    <div
-                      [@slideInOut]="tileInstallState">
-
-
-                      <div>
-                        <mat-form-field>
-                          <input
-                            matInput
-                            placeholder="How Many Sq. Ft.?"
-                            type="number"
-                            appPositiveNumber
-                            formControlName="installTileQty">
-                        </mat-form-field>
-                        <mat-form-field class="full-width">
-                      <textarea
-                        matInput
-                        placeholder="Where to install? (Which rooms)"
-                        formControlName="installTileDescription"></textarea>
-                        </mat-form-field>
-                      </div>
+                            <div fxLayoutGap="32px" fxLayout="row wrap" fxLayoutAlign="space-between start"
+                                 fxFlexOffset="16px">
+                                <div fxLayoutGap="8px" fxLayout="column" fxLayoutAlign="start space-evenly">
+                                    <h4 class="step-header">Appliances:</h4>
+                                    <div fxLayout="column" fxLayoutAlign="start" fxLayoutGap="4px">
+                                        <mat-checkbox formControlName="stoveCtrl">Replace Stove</mat-checkbox>
+                                        <mat-checkbox formControlName="fridgeCtrl">Replace Fridge</mat-checkbox>
+                                        <mat-checkbox formControlName="washingCtrl">Replace Dishwasher</mat-checkbox>
+                                        <mat-checkbox formControlName="microwaveCtrl">Replace Existing Microwave
+                                        </mat-checkbox>
+                                    </div>
+                                </div>
+                                <div fxLayoutGap="8px" fxLayout="column" fxLayoutAlign="start space-evenly">
+                                    <h4 class="step-header">Upgrades:</h4>
+                                    <div fxLayout="column" fxLayoutAlign="start" fxLayoutGap="4px">
+                                        <mat-checkbox formControlName="installMicrowaveCtrl">Install Microwave
+                                        </mat-checkbox>
+                                        <mat-checkbox formControlName="installKitchenSinkCtrl">Replace Kitchen Sink
+                                        </mat-checkbox>
+                                    </div>
+                                </div>
+                            </div>
 
 
+                        </div>
+                        <div fxLayout="row" fxLayoutGap="16px" style="padding-top: 24px">
+                            <button mat-raised-button color="accent" matStepperPrevious>Back</button>
+                            <button mat-raised-button color="accent" matStepperNext (click)="processMrType()">Next
+                            </button>
+                        </div>
                     </div>
-                  </div>
-                </mat-card>
-                <!-- END OF TILE INSTALL  -->
+                </form>
+            </mat-step>
 
-                <!-- TILE REPAIR  -->
-                <mat-card>
-                  <div
-                    fxLayout="column"
-                    fxLayoutGap="4px"
-                    fxLayoutAlign="space-evenly">
+            <mat-step [stepControl]="sixthFormGroup" #step6>
+                <form [formGroup]="sixthFormGroup">
+                    <ng-template matStepLabel>Review</ng-template>
 
-                    <mat-checkbox
-                      formControlName="repairTile"
-                      (change)="enableFlooringType($event, 'repairTile')">Repair Tile
-                    </mat-checkbox>
-                    <div
-                      [@slideInOut]="tileRepairState">
+                    <div fxLayout="column"
+                         fxLayoutGap="8px"
+                        *ngIf="this.processed">
+                        <h3 class="mat-h3">1. Please review your make ready:</h3>
+                        <div class="moc-material-card"
+                             fxLayout="column"
+                             fxLayoutGap="8px">
+                            <div *ngIf="this.scope" class="mat-body-1"><b>Description: &nbsp;</b> {{this.scope.scopeDescription}}</div>
+                            <div fxLayout="row wrap" class="mat-body-1">
+                                <b>Rate: &nbsp;</b>
+                                <div *ngIf="this.scope?.mrType==='Light'">
+                                    (Light - $65) &nbsp;
+                                </div>
+                                <div *ngIf="this.scope?.mrType==='Medium'">
+                                    (Medium - $0.25/sq.ft.) &nbsp;
+                                </div>
+                                <div *ngIf="this.scope?.mrType==='Heavy'">
+                                    (Heavy - $0.40/sq.ft.) &nbsp;
+                                </div>
+                                <div *ngIf="this.scope?.isFullTexture">
+                                    + (Full Texture, $0.25/sq.ft.)
+                                </div>
+                            </div>
+                            <div *ngIf="this.scope" fxLayout="row wrap" class="mat-body-1">
+                                Apartment Size = {{this.unitSelected?.size}} sq. ft.
+                            </div>
+                            <div *ngIf="this.scope" fxLayout="row wrap" class="mat-body-1">
+                                Make Ready Price = {{this.scope?.finalRate | currency}} x {{this.unitSelected?.size}}
+                                sq. ft. = {{this.scope?.basePrice | currency}}
+                            </div>
+                            <div *ngIf="this.scope?.costOfExtras > 0">
+                                <b>Extras:</b>
+                                <mat-list dense>
+                                    <!--<h3 matSubheader>Extras:</h3>-->
+                                    <mat-list-item *ngFor="let extra of this.scope?.extras.extrasAsArray">
+                                        <mat-icon mat-list-icon>add</mat-icon>
+                                        <p matLine>{{extra.description}}: {{extra.totalPrice | currency}}</p>
+                                    </mat-list-item>
+                                    <h3 mat-subheader>Total of Extras = {{this.scope?.costOfExtras | currency}}</h3>
+                                </mat-list>
+                            </div>
+                            <h3>Contract Total: {{this.scope?.totalPrice | currency}}</h3>
+                        </div>
 
-                      <div>
-                        <mat-form-field>
-                          <input
-                            matInput
-                            placeholder="How Many Tiles?"
-                            type="number"
-                            appPositiveNumber
-                            formControlName="repairTileQty">
-                        </mat-form-field>
-                        <mat-form-field class="full-width">
+                        <h3 class="mat-h3">2. Please review your Service Agreements:</h3>
+                        <div fxLayout="column"
+                             fxLayoutGap="16px">
+                            <div class="moc-material-card">
+                                <h4 class="mat-h4">Make Ready Service Agreement</h4>
+                                <div fxLayoutGap="4px"
+                                         fxLayout="column"
+                                         fxLayoutAlign="start start">
+                                            <mat-form-field>
+                                                <input matInput
+                                                       placeholder="Contractor's Name"
+                                                       formControlName="contractorCtrl"
+                                                       appFullnameValidator>
+                                            </mat-form-field>
+                                            <mat-form-field>
+                                                <input matInput
+                                                       type="text"
+                                                       placeholder="Price of Make Ready"
+                                                       formControlName="priceCtrl"
+                                                       [textMask]="{mask: currencyMask}"
+                                                       [(ngModel)]="this.makeReady.contracts[0].price">
+                                            </mat-form-field>
+                                            <mat-form-field>
+                                                <input matInput
+                                                       [matDatepicker]="picker"
+                                                       placeholder="Contract Start Date"
+                                                       formControlName="startDateCtrl">
+                                                <mat-datepicker-toggle
+                                                        matSuffix [for]="picker">
+                                                </mat-datepicker-toggle>
+                                                <mat-datepicker
+                                                        touchUi="true"
+                                                        #picker>
+                                                </mat-datepicker>
+                                            </mat-form-field>
+                                        </div>
+                                        <mat-form-field
+                                                class="full-width">
+                                            <textarea
+                                                    matInput
+                                                    cdkTextareaAutosize
+                                                    cdkAutosizeMinRows="2"
+                                                    cdkAutosizeMaxRows="7"
+                                                    #scopeOfWorkCtrl="cdkTextareaAutosize"
+                                                    [(ngModel)]="this.contract.scope"
+                                                    [ngModelOptions]="{standalone: true}">
+                                            </textarea>
+                                        </mat-form-field>
+                            </div>
+
+                            <div class="moc-material-card"
+                                 *ngIf="this.scope?.granite">
+                                <h4 class="mat-h4">Granite Service Agreement</h4>
+                                <div
+                                            fxLayoutGap="4px"
+                                            fxLayout="column"
+                                            fxLayoutAlign="start start">
+                                        <div
+                                                fxLayout="row">
+                                            <div fxLayout="column">
+                                                <mat-checkbox
+                                                        formControlName="granitePrepareCtrl"
+                                                        (change)="craftGraniteScopes($event, 'granitePrepareCtrl')">
+                                                    Prepare countertops for granite
+                                                </mat-checkbox>
+                                                <mat-checkbox
+                                                        formControlName="granitePickupCtrl"
+                                                        (change)="craftGraniteScopes($event, 'granitePickupCtrl')">
+                                                    Pickup granite
+                                                </mat-checkbox>
+                                            </div>
+                                        </div>
+                                        <mat-form-field>
+                                            <input
+                                                    matInput
+                                                    type="number"
+                                                    (input)="graniteLengthChange($event.target.value)"
+                                                    [(ngModel)]="this.makeReady.contracts[1].quantity"
+                                                    appPositiveNumber
+                                                    placeholder="Granite Length (Linear Feet)"
+                                                    formControlName="graniteLengthCtrl">
+                                        </mat-form-field>
+                                        <div
+                                                fxLayoutGap="4px"
+                                                fxLayout="row wrap"
+                                                fxLayoutAlign="start start">
+                                            <mat-form-field>
+                                                <input
+                                                        appFullnameValidator
+                                                        matInput
+                                                        placeholder="Contractor's Name"
+                                                        formControlName="graniteContractorNameCtrl">
+                                            </mat-form-field>
+                                            <mat-form-field>
+                                                <span matPrefix>$ &nbsp;</span>
+                                                <input
+                                                        matInput
+                                                        type="number"
+                                                        placeholder="Price"
+                                                        appPositiveNumber
+                                                        [(ngModel)]="this.makeReady.contracts[1].price"
+                                                        [ngModelOptions]="{standalone: true}"
+                                                >
+                                            </mat-form-field>
+                                            <mat-form-field>
+                                                <input
+                                                        matInput
+                                                        [matDatepicker]="graniteDatePicker"
+                                                        placeholder="Contract Start Date"
+                                                        formControlName="graniteDatePickerCtrl">
+                                                <mat-datepicker-toggle
+                                                        matSuffix
+                                                        [for]="graniteDatePicker">
+                                                </mat-datepicker-toggle>
+                                                <mat-datepicker
+                                                        touchUi="true"
+                                                        #graniteDatePicker>
+
+                                                </mat-datepicker>
+                                            </mat-form-field>
+                                        </div>
+                                        <mat-form-field
+                                                class="full-width">
                         <textarea
-                          matInput
-                          placeholder="Where? (Which rooms)"
-                          formControlName="repairTileDescription"></textarea>
-                        </mat-form-field>
-                      </div>
-                    </div>
-                  </div>
-                </mat-card>
-                <!-- END OF TILE REPAIR  -->
+                                matInput
+                                cdkTextareaAutosize
+                                cdkAutosizeMinRows="2"
+                                cdkAutosizeMaxRows="7"
+                                placeholder="Scope of Work"
+                                #scopeOfWorkCtrl="cdkTextareaAutosize"
+                                [(ngModel)]="this.graniteFinalScope"
+                                [ngModelOptions]="{standalone: true}">
+                        </textarea>
+                                        </mat-form-field>
+                                    </div>
+                            </div>
 
-
-                <!-- PLANK INSTALL  -->
-                <mat-card>
-                  <div
-                    fxLayout="column"
-                    fxLayoutGap="4px"
-                    fxLayoutAlign="space-evenly">
-
-                    <mat-checkbox
-                      formControlName="installPlank"
-                      (change)="enableFlooringType($event, 'installPlank')"> Install Vinyl Plank
-                    </mat-checkbox>
-                    <div
-                      [@slideInOut]="plankInstallState">
-
-
-                      <div>
-                        <mat-form-field>
-                          <input
-                            matInput
-                            placeholder="How Many Sq. Ft.?"
-                            type="number"
-                            appPositiveNumber
-                            formControlName="installPlankQty">
-                        </mat-form-field>
-                        <mat-form-field class="full-width">
+                            <div class="moc-material-card"
+                                 *ngIf="this.scope?.showerTile">
+                                <h4 class="mat-h4">Shower Tile Service Agreement</h4>
+                                <div fxLayout="column"
+                                         fxLayoutAlign="start start"
+                                         fxLayoutGap="8px">
+                                        <div fxLayoutGap="4px"
+                                             fxLayout="row wrap"
+                                             fxLayoutAlign="start start">
+                                            <mat-form-field>
+                                                <input
+                                                        matInput
+                                                        placeholder="Contractor's Name"
+                                                        appFullnameValidator
+                                                        formControlName="showerTileContractorNameCtrl">
+                                            </mat-form-field>
+                                            <mat-form-field>
+                                                <span matPrefix>$ &nbsp;</span>
+                                                <input
+                                                        matInput
+                                                        placeholder="Price"
+                                                        type="number"
+                                                        appPositiveNumber
+                                                        formControlName="showerTilePriceCtrl"
+                                                        [(ngModel)]="this.makeReady.contracts[2].price">
+                                            </mat-form-field>
+                                            <mat-form-field>
+                                                <input
+                                                        matInput
+                                                        [matDatepicker]="showerTileDatePicker"
+                                                        placeholder="Contract Start Date"
+                                                        formControlName="showerTileDatePickerCtrl">
+                                                <mat-datepicker-toggle
+                                                        matSuffix
+                                                        [for]="showerTileDatePicker">
+                                                </mat-datepicker-toggle>
+                                                <mat-datepicker
+                                                        touchUi="true"
+                                                        #showerTileDatePicker>
+                                                </mat-datepicker>
+                                            </mat-form-field>
+                                        </div>
+                                        <!--<mat-form-field
+                                          class="full-width">
+                                          <textarea
+                                            matInput
+                                            placeholder="Scope of Work"
+                                            formControlName="showerTileScopeCtrl"
+                                            [(ngModel)]="this.showerTileScope">
+                                          </textarea>
+                                        </mat-form-field>-->
+                                        <mat-form-field
+                                                class="full-width">
                         <textarea
-                          matInput
-                          placeholder="Where? (Which rooms)"
-                          formControlName="installPlankDescription"></textarea>
-                        </mat-form-field>
-                      </div>
+                                matInput
+                                cdkTextareaAutosize
+                                cdkAutosizeMinRows="2"
+                                cdkAutosizeMaxRows="7"
+                                placeholder="Scope of Work"
+                                #scopeOfWorkCtrl="cdkTextareaAutosize"
+                                [(ngModel)]="this.showerTileScope"
+                                [ngModelOptions]="{standalone: true}">
+                        </textarea>
+                                        </mat-form-field>
+                                    </div>
+                            </div>
 
+                            <div class="moc-material-card"
+                                 *ngIf="this.scope?.microwave">
+                                <h4 class="mat-h4">Microwave Service Agreement</h4>
+                                <div
+                                            fxLayout="column"
+                                            fxLayoutAlign="start start"
+                                            fxLayoutGap="8px">
+                                        <mat-checkbox
+                                                formControlName="microwaveShelfCtrl"
+                                                (change)="microwaveShelfCheck($event)">
+                                            Remove cabinet and install shelf for microwave
+                                        </mat-checkbox>
+                                        <div
+                                                fxLayoutGap="4px"
+                                                fxLayout="row wrap"
+                                                fxLayoutAlign="start start">
+                                            <mat-form-field>
+                                                <input
+                                                        appFullnameValidator
+                                                        matInput
+                                                        placeholder="Contractor's Name"
+                                                        formControlName="microwaveContractorNameCtrl">
+                                            </mat-form-field>
+                                            <mat-form-field>
+                                                <span matPrefix>$ &nbsp;</span>
+                                                <input
+                                                        matInput
+                                                        placeholder="Price"
+                                                        type="number"
+                                                        [(ngModel)]="this.makeReady.contracts[3].price"
+                                                        appPositiveNumber
+                                                        formControlName="microwavePriceCtrl">
+                                            </mat-form-field>
+                                            <mat-form-field>
+                                                <input
+                                                        matInput
+                                                        [matDatepicker]="microwaveDatePicker"
+                                                        placeholder="Contract Start Date"
+                                                        formControlName="microwaveDatePickerCtrl">
+                                                <mat-datepicker-toggle
+                                                        matSuffix
+                                                        [for]="microwaveDatePicker">
+                                                </mat-datepicker-toggle>
+                                                <mat-datepicker
+                                                        touchUi="true"
+                                                        #microwaveDatePicker>
+                                                </mat-datepicker>
+                                            </mat-form-field>
+                                        </div>
+                                        <mat-form-field
+                                                class="full-width">
+                                            <textarea
+                                                    matInput
+                                                    cdkTextareaAutosize
+                                                    cdkAutosizeMinRows="2"
+                                                    cdkAutosizeMaxRows="7"
+                                                    placeholder="Scope of Work"
+                                                    #scopeOfWorkCtrl="cdkTextareaAutosize"
+                                                    [(ngModel)]="this.microwaveTotalScope"
+                                                    [ngModelOptions]="{standalone: true}">
+                                            </textarea>
+                                        </mat-form-field>
+                                    </div>
+                            </div>
 
+                            <div *ngIf="this.scope?.flooring.flooringList.length > 0">
+                                <h4 class="mat-h4">Please review your flooring:</h4>
+                                <div class="moc-material-card">
+                                    <mat-list dense>
+                                        <mat-list-item *ngFor="let floor of this.flooring.flooringList">
+                                            <mat-icon mat-list-icon>rounded_corner</mat-icon>
+                                            {{floor['description']}}: {{floor['qty']}} Sq. Ft.
+                                        </mat-list-item>
+                                    </mat-list>
+                                </div>
+                            </div>
+
+                            <div *ngIf="this.scope?.applianceList.length > 0">
+                                <h4 class="mat-h4">Please review your appliances:</h4>
+                                <div class="moc-material-card">
+                                    <mat-list dense>
+                                        <mat-list-item *ngFor="let appliance of this.scope.applianceList">
+                                            <mat-icon mat-list-icon>kitchen</mat-icon>
+                                            {{appliance}}
+                                        </mat-list-item>
+                                    </mat-list>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutGap="16px" style="padding-top: 24px">
+                            <button mat-raised-button color="accent" matStepperPrevious>Back</button>
+                            <button mat-raised-button color="accent" matStepperNext (click)="onSubmit()">Submit</button>
+                        </div>
                     </div>
+                </form>
+            </mat-step>
 
-                  </div>
-                </mat-card>
-                <!-- END OF PLANK INSTALL  -->
+            <mat-step #stepLast>
+                <form [formGroup]="lastFormGroup">
+                    <ng-template matStepLabel>Done</ng-template>
 
-                <!-- PLANK REPAIR  -->
-                <mat-card>
-                  <div
-                    fxLayout="column"
-                    fxLayoutGap="4px"
-                    fxLayoutAlign="space-evenly">
+                    <mat-card *ngIf="this.processing; else finishedProcessing">
+                        <div fxLayout="column" fxLayoutAlign="center center">
+                            <mat-spinner></mat-spinner>
+                            <h1>Your make ready is processing!</h1>
+                            <p>This should take approximately 30 seconds.</p>
+                        </div>
+                    </mat-card>
+                    <ng-template #finishedProcessing>
+                        <mat-card>
+                            <div fxLayout="column" fxLayoutAlign="center center">
+                                <mat-icon style="font-size: 48px">check</mat-icon>
+                                <p>Your Make Ready has been successfully processed! .</p>
+                                <p>Check your email for the results.</p>
+                            </div>
+                        </mat-card>
+                    </ng-template>
 
-                    <mat-checkbox
-                      formControlName="repairPlank"
-                      (change)="enableFlooringType($event, 'repairPlank')">Repair Vinyl Plank
-                    </mat-checkbox>
-                    <div
-                      [@slideInOut]="plankRepairState">
 
-                      <div>
-                        <mat-form-field>
-                          <input
-                            matInput
-                            placeholder="How Many Sq. Ft.?"
-                            type="number"
-                            appPositiveNumber
-                            formControlName="repairPlankQty">
-                        </mat-form-field>
-                        <mat-form-field class="full-width">
-                        <textarea
-                          matInput
-                          placeholder="Where? (Which rooms)"
-                          formControlName="repairPlankDescription"></textarea>
-                        </mat-form-field>
-                      </div>
+                    <div fxLayout="row" fxLayoutGap="16px" style="padding-top: 24px">
+                        <button mat-raised-button color="accent" matStepperPrevious>Back</button>
+                        <button mat-raised-button color="accent" (click)="onBackToTableHandler()">Finish</button>
                     </div>
-                  </div>
-                </mat-card>
-                <!-- END OF PLANK REPAIR  -->
-
-              </div>
-            </mat-expansion-panel>
-
-            <div fxLayout="row" fxLayoutGap="16px" style="padding-top: 24px">
-              <button mat-raised-button color="accent" matStepperPrevious>Back</button>
-              <button mat-raised-button color="accent" matStepperNext>Next</button>
-            </div>
-          </div>
-        </form>
-      </mat-step>
-
-      <mat-step [stepControl]="thirdFormGroup" #step3>
-        <form [formGroup]="thirdFormGroup">
-          <ng-template matStepLabel>Bathrooms</ng-template>
-          <div fxLayout="column" fxLayoutGap="32px" fxFlexOffset="16px">
-            <div fxLayoutGap="8px" fxLayout="column" fxLayoutAlign="start start">
-
-              <h4>Bathroom Details</h4>
-              <div fxLayout="column" fxLayoutAlign="start" fxLayoutGap="4px">
-                <h4 class="step-header">Bathtub:</h4>
-                <mat-radio-group formControlName="tubCtrl" fxLayout="column" fxLayoutAlign="space-evenly"
-                                 fxLayoutGap="4px">
-                  <mat-radio-button value="1">Tub Is Good</mat-radio-button>
-                  <mat-radio-button value="2">Resurface Tub</mat-radio-button>
-                  <mat-radio-button value="3">Replace Tub</mat-radio-button>
-                </mat-radio-group>
-              </div>
-              <div fxLayout="column" fxLayoutAlign="start" fxLayoutGap="4px">
-                <h4 class="step-header">Shower:</h4>
-                <div>
-                  <mat-radio-group formControlName="showerTileCtrl" fxLayout="column" fxLayoutAlign="space-evenly"
-                                   fxLayoutGap="4px">
-                    <mat-radio-button value="1">Shower Tile Is Good</mat-radio-button>
-                    <mat-radio-button value="2">Shower Tile Needs Repairs</mat-radio-button>
-                    <mat-radio-button value="3">Complete Shower Tile Replacement/Upgrade</mat-radio-button>
-                  </mat-radio-group>
-                </div>
-              </div>
-              <div fxLayout="column" fxLayoutAlign="start" fxLayoutGap="4px">
-                <h4 class="step-header">Vanity:</h4>
-                <mat-checkbox formControlName="newMirrorCtrl">New Mirror</mat-checkbox>
-                <mat-checkbox formControlName="graniteBathCtrl">Replace with Granite Countertop</mat-checkbox>
-                <mat-checkbox formControlName="resurfaceBathCtrl">Resurface Countertop</mat-checkbox>
-                <mat-checkbox formControlName="newVanityCtrl">New Vanity</mat-checkbox>
-              </div>
-              <div fxLayout="row" fxLayoutGap="16px" style="padding-top: 24px">
-                <button mat-raised-button color="accent" matStepperPrevious>Back</button>
-                <button mat-raised-button color="accent" matStepperNext>Next</button>
-              </div>
-            </div>
-          </div>
-        </form>
-      </mat-step>
-
-      <mat-step [stepControl]="fourthFormGroup" #step4>
-        <form [formGroup]="fourthFormGroup">
-          <ng-template matStepLabel>Kitchen</ng-template>
-          <div fxLayout="column" fxLayoutGap="32px" fxFlexOffset="16px">
-            <div fxLayoutGap="8px" fxLayout="column" fxLayoutAlign="start start">
-
-              <h4>Kitchen Details</h4>
-              <div fxLayout="column" fxLayoutAlign="start" fxLayoutGap="4px">
-                <h4 class="step-header">Countertop:</h4>
-                <mat-radio-group formControlName="ktCounterCtrl" fxLayout="column" fxLayoutAlign="start"
-                                 fxLayoutGap="4px">
-                  <mat-radio-button value="1">Countertop Is Good</mat-radio-button>
-                  <mat-radio-button value="2">Resurface Countertop</mat-radio-button>
-                  <mat-radio-button value="3">Replace with Granite Countertop</mat-radio-button>
-                </mat-radio-group>
-              </div>
-
-
-              <div fxLayoutGap="32px" fxLayout="row wrap" fxLayoutAlign="space-between start" fxFlexOffset="16px">
-                <div fxLayoutGap="8px" fxLayout="column" fxLayoutAlign="start space-evenly">
-                  <h4 class="step-header">Appliances:</h4>
-                  <div fxLayout="column" fxLayoutAlign="start" fxLayoutGap="4px">
-                    <mat-checkbox formControlName="stoveCtrl">Replace Stove</mat-checkbox>
-                    <mat-checkbox formControlName="fridgeCtrl">Replace Fridge</mat-checkbox>
-                    <mat-checkbox formControlName="washingCtrl">Replace Dishwasher</mat-checkbox>
-                    <mat-checkbox formControlName="microwaveCtrl">Replace Existing Microwave</mat-checkbox>
-                  </div>
-                </div>
-                <div fxLayoutGap="8px" fxLayout="column" fxLayoutAlign="start space-evenly">
-                  <h4 class="step-header">Upgrades:</h4>
-                  <div fxLayout="column" fxLayoutAlign="start" fxLayoutGap="4px">
-                    <mat-checkbox formControlName="installMicrowaveCtrl">Install Microwave</mat-checkbox>
-                    <mat-checkbox formControlName="installKitchenSinkCtrl">Replace Kitchen Sink</mat-checkbox>
-                  </div>
-                </div>
-              </div>
-
-
-            </div>
-            <div fxLayout="row" fxLayoutGap="16px" style="padding-top: 24px">
-              <button mat-raised-button color="accent" matStepperPrevious>Back</button>
-              <button mat-raised-button color="accent" matStepperNext (click)="processMrType()">Next</button>
-            </div>
-          </div>
-        </form>
-      </mat-step>
-
-      <mat-step [stepControl]="sixthFormGroup" #step6>
-        <form [formGroup]="sixthFormGroup">
-          <ng-template matStepLabel>Review</ng-template>
-
-          <section class="mat-typography">
-            <div fxLayout="column" fxLayoutGap="8px">
-
-              <h3 matSubheader>Please review your make ready:</h3>
-              <div *ngIf="this.scope">
-                <div class="mat-body-1"><b>Description: &nbsp;</b> {{this.scope.scopeDescription}}</div>
-              </div>
-              <div fxLayout="row wrap" class="mat-body-1">
-                  <b>Rate: &nbsp;</b>
-                  <div *ngIf="this.scope?.mrType==='Light'">
-                    (Light - $65) &nbsp;
-                  </div>
-                  <div *ngIf="this.scope?.mrType==='Medium'">
-                    (Medium - $0.25/sq.ft.) &nbsp;
-                  </div>
-                  <div *ngIf="this.scope?.mrType==='Heavy'">
-                    (Heavy - $0.40/sq.ft.) &nbsp;
-                  </div>
-                  <div *ngIf="this.scope?.isFullTexture">
-                    + (Full Texture, $0.25/sq.ft.)
-                  </div>
-              </div>
-              <div *ngIf="this.scope" fxLayout="row wrap" class="mat-body-1">
-                  Apartment Size = {{this.unitSelected?.size}} sq. ft.
-              </div>
-              <div *ngIf="this.scope" fxLayout="row wrap" class="mat-body-1">
-                  Make Ready Price = {{this.scope?.finalRate | currency}} x {{this.unitSelected?.size}} sq. ft. = {{this.scope?.basePrice | currency}}
-              </div>
-              <div *ngIf="this.scope?.costOfExtras > 0">
-                <b>Extras:</b>
-                <mat-list dense>
-                  <!--<h3 matSubheader>Extras:</h3>-->
-                  <mat-list-item *ngFor="let extra of this.scope?.extras.extrasAsArray">
-                    <mat-icon mat-list-icon>add</mat-icon>
-                    <p matLine>{{extra.description}}: {{extra.totalPrice | currency}}</p>
-                  </mat-list-item>
-                  <h3 mat-subheader>Total of Extras = {{this.scope?.costOfExtras | currency}}</h3>
-                </mat-list>
-              </div>
-              <h3>Contract Total: {{this.scope?.totalPrice | currency}}</h3>
-            </div>
-          </section>
-
-          <mat-divider></mat-divider>
-
-          <div
-            fxLayout="column"
-            fxLayoutGap="16px">
-              <section class="mat-typography">
-                <h4 matSubheader>Please review your Service Agreements:</h4>
-              </section>
-            <mat-card *ngIf="this.scope">
-              <mat-card-header>
-                <mat-card-title>
-                  <section class="mat-typography">
-                  <h3 matSubHeader>Make Ready Service Agreement</h3>
-                  </section>
-                </mat-card-title>
-              </mat-card-header>
-              <mat-card-content>
-                <div
-                fxLayoutGap="4px"
-                fxLayout="column"
-                fxLayoutAlign="start start">
-                    <div
-                      fxLayoutGap="4px"
-                      fxLayout="row"
-                      fxLayoutAlign="start start">
-                      <mat-form-field>
-                        <input
-                          matInput
-                          placeholder="Contractor's Name"
-                          formControlName="contractorCtrl"
-                          appFullnameValidator>
-                      </mat-form-field>
-                      <mat-form-field>
-                        <input
-                          matInput
-                          type="text"
-                          placeholder="Price of Make Ready"
-                          formControlName="priceCtrl"
-                          [textMask]="{mask: currencyMask}"
-                          [(ngModel)]="this.makeReady.contracts[0].price">
-                      </mat-form-field>
-                      <mat-form-field>
-                        <input
-                          matInput
-                          [matDatepicker]="picker"
-                          placeholder="Contract Start Date"
-                          formControlName="startDateCtrl">
-                        <mat-datepicker-toggle
-                          matSuffix [for]="picker">
-                        </mat-datepicker-toggle>
-                        <mat-datepicker
-                          touchUi="true"
-                          #picker>
-                        </mat-datepicker>
-                      </mat-form-field>
-                    </div>
-                    <mat-form-field
-                      class="full-width">
-                      <textarea
-                        matInput
-                        cdkTextareaAutosize
-                        cdkAutosizeMinRows="2"
-                        cdkAutosizeMaxRows="7"
-                        #scopeOfWorkCtrl="cdkTextareaAutosize"
-                        [(ngModel)]="this.contract.scope"
-                        [ngModelOptions]="{standalone: true}">
-                      </textarea>
-                    </mat-form-field>
-              </div>
-              </mat-card-content>
-            </mat-card>
-
-            <mat-card
-              *ngIf="this.scope?.granite">
-              <mat-card-header>
-                <mat-card-title>
-                  <section class="mat-typography">
-                    <h3 matSubHeader>Granite Service Agreement</h3>
-                  </section>
-                </mat-card-title>
-              </mat-card-header>
-
-              <mat-card-content>
-                <div
-                  fxLayoutGap="4px"
-                  fxLayout="column"
-                  fxLayoutAlign="start start">
-                  <div
-                    fxLayout="row">
-                    <div fxLayout="column">
-                      <mat-checkbox
-                        formControlName="granitePrepareCtrl"
-                        (change)="craftGraniteScopes($event, 'granitePrepareCtrl')">
-                        Prepare countertops for granite
-                      </mat-checkbox>
-                      <mat-checkbox
-                        formControlName="granitePickupCtrl"
-                        (change)="craftGraniteScopes($event, 'granitePickupCtrl')">
-                        Pickup granite
-                      </mat-checkbox>
-                    </div>
-                  </div>
-                  <mat-form-field>
-                    <input
-                      matInput
-                      type="number"
-                      (input)="graniteLengthChange($event.target.value)"
-                      [(ngModel)]="this.makeReady.contracts[1].quantity"
-                      appPositiveNumber
-                      placeholder="Granite Length (Linear Feet)"
-                      formControlName="graniteLengthCtrl">
-                  </mat-form-field>
-                  <div
-                    fxLayoutGap="4px"
-                    fxLayout="row wrap"
-                    fxLayoutAlign="start start">
-                    <mat-form-field>
-                        <input
-                          appFullnameValidator
-                          matInput
-                          placeholder="Contractor's Name"
-                          formControlName="graniteContractorNameCtrl">
-                    </mat-form-field>
-                    <mat-form-field>
-                      <span matPrefix>$ &nbsp;</span>
-                      <input
-                        matInput
-                        type="number"
-                        placeholder="Price"
-                        appPositiveNumber
-                        [(ngModel)]="this.makeReady.contracts[1].price"
-                        [ngModelOptions]="{standalone: true}"
-                        >
-                    </mat-form-field>
-                    <mat-form-field>
-                        <input
-                          matInput
-                          [matDatepicker]="graniteDatePicker"
-                          placeholder="Contract Start Date"
-                          formControlName="graniteDatePickerCtrl">
-                        <mat-datepicker-toggle
-                          matSuffix
-                          [for]="graniteDatePicker">
-                        </mat-datepicker-toggle>
-                        <mat-datepicker
-                          touchUi="true"
-                          #graniteDatePicker>
-
-                        </mat-datepicker>
-                    </mat-form-field>
-                  </div>
-                  <mat-form-field
-                    class="full-width">
-                      <textarea
-                        matInput
-                        cdkTextareaAutosize
-                        cdkAutosizeMinRows="2"
-                        cdkAutosizeMaxRows="7"
-                        placeholder="Scope of Work"
-                        #scopeOfWorkCtrl="cdkTextareaAutosize"
-                        [(ngModel)]="this.graniteFinalScope"
-                        [ngModelOptions]="{standalone: true}">
-                      </textarea>
-                  </mat-form-field>
-                </div>
-              </mat-card-content>
-            </mat-card>
-
-            <mat-card
-              *ngIf="this.scope?.showerTile">
-              <mat-card-header>
-                <mat-card-title>
-                  <section class="mat-typography">
-                    <h3 matSubHeader>Shower Tile Service Agreement</h3>
-                  </section>
-                </mat-card-title>
-              </mat-card-header>
-              <mat-card-content>
-                <div
-                fxLayout="column"
-                fxLayoutAlign="start start"
-                fxLayoutGap="8px">
-                <div
-                  fxLayoutGap="4px"
-                  fxLayout="row wrap"
-                  fxLayoutAlign="start start">
-                  <mat-form-field>
-                    <input
-                      matInput
-                      placeholder="Contractor's Name"
-                      appFullnameValidator
-                      formControlName="showerTileContractorNameCtrl">
-                  </mat-form-field>
-                  <mat-form-field>
-                    <span matPrefix>$ &nbsp;</span>
-                    <input
-                      matInput
-                      placeholder="Price"
-                      type="number"
-                      appPositiveNumber
-                      formControlName="showerTilePriceCtrl"
-                      [(ngModel)]="this.makeReady.contracts[2].price">
-                  </mat-form-field>
-                  <mat-form-field>
-                    <input
-                      matInput
-                      [matDatepicker]="showerTileDatePicker"
-                      placeholder="Contract Start Date"
-                      formControlName="showerTileDatePickerCtrl">
-                    <mat-datepicker-toggle
-                      matSuffix
-                      [for]="showerTileDatePicker">
-                    </mat-datepicker-toggle>
-                    <mat-datepicker
-                      touchUi="true"
-                      #showerTileDatePicker>
-                    </mat-datepicker>
-                  </mat-form-field>
-                </div>
-                <!--<mat-form-field
-                  class="full-width">
-                  <textarea
-                    matInput
-                    placeholder="Scope of Work"
-                    formControlName="showerTileScopeCtrl"
-                    [(ngModel)]="this.showerTileScope">
-                  </textarea>
-                </mat-form-field>-->
-                  <mat-form-field
-                    class="full-width">
-                      <textarea
-                        matInput
-                        cdkTextareaAutosize
-                        cdkAutosizeMinRows="2"
-                        cdkAutosizeMaxRows="7"
-                        placeholder="Scope of Work"
-                        #scopeOfWorkCtrl="cdkTextareaAutosize"
-                        [(ngModel)]="this.showerTileScope"
-                        [ngModelOptions]="{standalone: true}">
-                      </textarea>
-                  </mat-form-field>
-              </div>
-              </mat-card-content>
-            </mat-card>
-
-            <mat-card
-              *ngIf="this.scope?.microwave">
-              <mat-card-header>
-                <mat-card-title>
-                  <section class="mat-typography">
-                    <h3 matSubHeader>Microwave Service Agreement</h3>
-                  </section>
-                </mat-card-title>
-              </mat-card-header>
-              <mat-card-content>
-                <div
-                  fxLayout="column"
-                  fxLayoutAlign="start start"
-                  fxLayoutGap="8px">
-                  <mat-checkbox
-                      formControlName="microwaveShelfCtrl"
-                      (change)="microwaveShelfCheck($event)">
-                      Remove cabinet and install shelf for microwave
-                  </mat-checkbox>
-                  <div
-                    fxLayoutGap="4px"
-                    fxLayout="row wrap"
-                    fxLayoutAlign="start start">
-                      <mat-form-field>
-                        <input
-                          appFullnameValidator
-                          matInput
-                          placeholder="Contractor's Name"
-                          formControlName="microwaveContractorNameCtrl">
-                      </mat-form-field>
-                      <mat-form-field>
-                        <span matPrefix>$ &nbsp;</span>
-                        <input
-                          matInput
-                          placeholder="Price"
-                          type="number"
-                          [(ngModel)]="this.makeReady.contracts[3].price"
-                          appPositiveNumber
-                          formControlName="microwavePriceCtrl">
-                      </mat-form-field>
-                      <mat-form-field>
-                        <input
-                          matInput
-                          [matDatepicker]="microwaveDatePicker"
-                          placeholder="Contract Start Date"
-                          formControlName="microwaveDatePickerCtrl">
-                        <mat-datepicker-toggle
-                          matSuffix
-                          [for]="microwaveDatePicker">
-                        </mat-datepicker-toggle>
-                        <mat-datepicker
-                          touchUi="true"
-                          #microwaveDatePicker>
-                        </mat-datepicker>
-                      </mat-form-field>
-                  </div>
-                  <!--<mat-form-field
-                      class="full-width">
-                      <textarea
-                        matInput
-                        placeholder="Scope of Work"
-                        formControlName="microwaveScopeCtrl"
-                        [(ngModel)]="this.microwaveTotalScope">
-                      </textarea>
-                  </mat-form-field>-->
-                  <mat-form-field
-                    class="full-width">
-                      <textarea
-                        matInput
-                        cdkTextareaAutosize
-                        cdkAutosizeMinRows="2"
-                        cdkAutosizeMaxRows="7"
-                        placeholder="Scope of Work"
-                        #scopeOfWorkCtrl="cdkTextareaAutosize"
-                        [(ngModel)]="this.microwaveTotalScope"
-                        [ngModelOptions]="{standalone: true}">
-                      </textarea>
-                  </mat-form-field>
-                </div>
-              </mat-card-content>
-            </mat-card>
-
-            <mat-divider></mat-divider>
-
-            <div *ngIf="this.scope?.flooring.flooringList.length > 0">
-              <mat-card>
-                <mat-list>
-                  <h3 mat-subheader >Please review your flooring:</h3>
-                  <mat-list-item *ngFor="let floor of this.flooring.flooringList">
-                    <mat-icon mat-list-icon>rounded_corner</mat-icon>
-                    {{floor['description']}}: {{floor['qty']}} Sq. Ft.
-                  </mat-list-item>
-                </mat-list>
-              </mat-card>
-            </div>
-
-            <mat-divider></mat-divider>
-
-            <div *ngIf="this.scope?.applianceList.length > 0">
-              <mat-card>
-                <mat-list>
-                  <h3 mat-subheader >Please review your appliances:</h3>
-                  <mat-list-item *ngFor="let appliance of this.scope.applianceList">
-                    <mat-icon mat-list-icon>kitchen</mat-icon>
-                     {{appliance}}
-                  </mat-list-item>
-                </mat-list>
-              </mat-card>
-            </div>
-          </div>
-
-          <div fxLayout="row" fxLayoutGap="16px" style="padding-top: 24px">
-            <button mat-raised-button color="accent" matStepperPrevious>Back</button>
-            <button mat-raised-button color="accent" matStepperNext (click)="onSubmit()">Submit</button>
-          </div>
-        </form>
-      </mat-step>
-
-      <mat-step #stepLast>
-        <form [formGroup]="lastFormGroup">
-          <ng-template matStepLabel>Done</ng-template>
-
-            <mat-card *ngIf="this.processing; else finishedProcessing">
-              <div fxLayout="column" fxLayoutAlign="center center">
-                <mat-spinner></mat-spinner>
-                <h1>Your make ready is processing!</h1>
-                <p>This should take approximately 30 seconds.</p>
-              </div>
-            </mat-card>
-            <ng-template #finishedProcessing>
-              <mat-card>
-                <div fxLayout="column" fxLayoutAlign="center center">
-                  <mat-icon style="font-size: 48px">check</mat-icon>
-                  <p>Your Make Ready has been successfully processed! .</p>
-                  <p>Check your email for the results.</p>
-                </div>
-              </mat-card>
-            </ng-template>
-
-
-          <div fxLayout="row" fxLayoutGap="16px" style="padding-top: 24px">
-            <button mat-raised-button color="accent" matStepperPrevious>Back</button>
-            <button mat-raised-button color="accent" (click)="onBackToTableHandler()">Finish</button>
-          </div>
-        </form>
-      </mat-step>
-    </mat-horizontal-stepper>
-  </mat-card-content>
+                </form>
+            </mat-step>
+        </mat-horizontal-stepper>
+    </mat-card-content>
 </mat-card>

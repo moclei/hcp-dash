@@ -4,19 +4,15 @@
      *ngIf="$mr | async as mr; else loading">
     <div class="checklist-container"
          style="padding-top: 20px;">
-        <div fxLayout="row"
-             fxLayoutAlign="center">
-            <h1 class="mat-h1">Checklist</h1>
-        </div>
         <mat-card>
             <mat-card-content>
-                <div fxLayout="column"
-                     fxLayoutGap="8px">
-                    <div fxLayout="row" fxLayoutAlign="start">
+                <div fxLayout="column">
+                    <div fxLayout="row" fxLayoutAlign="space-between">
                         <button mat-stroked-button
                                 (click)="goBack()">Back to Table</button>
+                        <div></div>
                     </div>
-                    <div class="arrowlist-container" style="padding-top: 20px; padding-bottom: 20px;">
+                    <!--<div class="arrowlist-container" style="padding-top: 4px; padding-bottom: 4px;">
                         <div class="wrapper">
                             <div class="arrow-steps clearfix">
                                 <div class="step" [class.current]="this.firstFormGroup.valid"><span>Requested</span></div>
@@ -25,12 +21,8 @@
                                 <div class="step" [class.current]="this.fourthFormGroup.valid"><span>Started</span></div>
                                 <div class="step" [class.current]="this.fifthFormGroup.valid"><span>Finished</span></div>
                             </div>
-                            <!--<div class="nav clearfix">
-                                <a href="#" class="prev">Previous</a>
-                                <a href="#" class="next pull-right">Next</a>
-                            </div>-->
                         </div>
-                    </div>
+                    </div>-->
                     <div class="moc-material-card"
                          fxLayout="row"
                          fxLayoutGap="16px"
@@ -107,28 +99,33 @@
         </mat-card>
     </div>
     <div class="checklist-container">
-
         <mat-card>
             <mat-card-content>
-
-                <mat-vertical-stepper
+                <div fxLayout="row">
+                    <h1 class="mat-h1">Checklist</h1>
+                </div>
+                <mat-horizontal-stepper
                         [linear]="true"
+                        labelPosition="bottom"
                         class="checklist-stepper"
                         #stepper>
                     <mat-step [stepControl]="firstFormGroup">
+                        <ng-template matStepLabel>Requested<br/>& Submitted</ng-template>
                         <form [formGroup]="firstFormGroup">
-                            <ng-template matStepLabel>Requested & Submitted</ng-template>
+
                             <div fxLayout="column"
-                                 fxLayoutGap="20px"
-                                 style="padding-top: 18px">
-                                <mat-checkbox
-                                        color="accent"
-                                        formControlName="requestedCtrl"
-                                        required
-                                        (change)="onCheckboxChange($event.checked, 'makeReadyRequested')">
-                                    Make Ready Requested?
-                                </mat-checkbox>
-                                <mat-form-field>
+                                 fxLayoutGap="16px">
+                                <div fxLayout="row"
+                                     fxLayoutGap="16px"
+                                     fxLayoutAlign="start center">
+                                    <mat-checkbox
+                                            color="accent"
+                                            formControlName="requestedCtrl"
+                                            required
+                                            (change)="onCheckboxChange($event.checked, 'makeReadyRequested')">
+                                        Make Ready Requested?
+                                    </mat-checkbox>
+                                    <mat-form-field>
                                         <input matInput
                                                [matDatepicker]="picker1"
                                                placeholder="Requested Date"
@@ -143,6 +140,7 @@
                                                 #picker1>
                                         </mat-datepicker>
                                     </mat-form-field>
+                                </div>
                                 <mat-checkbox
                                         color="accent"
                                         formControlName="submittedCtrl"
@@ -151,7 +149,8 @@
                                     Materials Submitted:
                                 </mat-checkbox>
                                 <div>
-                                    <button mat-button
+                                    <button mat-raised-button
+                                            color="accent"
                                             matStepperNext>Next
                                     </button>
                                 </div>
@@ -160,10 +159,9 @@
                     </mat-step>
                     <mat-step [stepControl]="secondFormGroup">
                         <form [formGroup]="secondFormGroup">
-                            <ng-template matStepLabel>Approved & Ordered</ng-template>
+                            <ng-template matStepLabel>Approved<br/>& Ordered</ng-template>
                             <div fxLayout="column"
-                                 fxLayoutGap="20px"
-                                 style="padding-top: 18px">
+                                 fxLayoutGap="16px">
                                 <mat-checkbox
                                         color="accent"
                                         formControlName="approvedCtrl"
@@ -171,31 +169,39 @@
                                         (change)="onCheckboxChange($event.checked, 'makeReadyApproved')">
                                     Make Ready Approved:
                                 </mat-checkbox>
-                                <mat-checkbox
-                                        color="accent"
-                                        formControlName="orderedCtrl"
-                                        required
-                                        (change)="onCheckboxChange($event.checked, 'materialsOrdered')">
-                                    Materials Ordered:
-                                </mat-checkbox>
-                                <mat-form-field>
-                                    <input matInput
-                                           [matDatepicker]="picker2"
-                                           placeholder="Ordered Date"
-                                           (dateInput)="onDateInput('materialsOrderedDate', $event)"
-                                           formControlName="orderedDateCtrl">
-                                    <mat-datepicker-toggle
-                                            matSuffix
-                                            [for]="picker2">
-                                    </mat-datepicker-toggle>
-                                    <mat-datepicker
-                                            touchUi="true"
-                                            #picker2>
-                                    </mat-datepicker>
-                                </mat-form-field>
-                                <div>
-                                    <button mat-button matStepperPrevious>Back</button>
-                                    <button mat-button matStepperNext>Next</button>
+                                <div fxLayout="row"
+                                     fxLayoutGap="16px"
+                                     fxLayoutAlign="start center">
+                                    <mat-checkbox
+                                            color="accent"
+                                            formControlName="orderedCtrl"
+                                            required
+                                            (change)="onCheckboxChange($event.checked, 'materialsOrdered')">
+                                        Materials Ordered:
+                                    </mat-checkbox>
+                                    <mat-form-field>
+                                        <input matInput
+                                               [matDatepicker]="picker2"
+                                               placeholder="Ordered Date"
+                                               (dateInput)="onDateInput('materialsOrderedDate', $event)"
+                                               formControlName="orderedDateCtrl">
+                                        <mat-datepicker-toggle
+                                                matSuffix
+                                                [for]="picker2">
+                                        </mat-datepicker-toggle>
+                                        <mat-datepicker
+                                                touchUi="true"
+                                                #picker2>
+                                        </mat-datepicker>
+                                    </mat-form-field>
+                                </div>
+                                <div fxLayout="row"
+                                     fxLayoutGap="16px"
+                                     fxLayoutAlign="start center">
+                                    <button mat-raised-button matStepperPrevious>Back</button>
+                                    <button mat-raised-button
+                                            color="accent"
+                                            matStepperNext>Next</button>
                                 </div>
                             </div>
                         </form>
@@ -204,51 +210,68 @@
                         <form [formGroup]="thirdFormGroup">
                             <ng-template matStepLabel>Scheduled</ng-template>
                             <div fxLayout="column"
-                                 fxLayoutGap="20px"
-                                 style="padding-top: 18px">
-                                <mat-checkbox
-                                        color="accent"
-                                        formControlName="scheduledCtrl"
-                                        required
-                                        (change)="onCheckboxChange($event.checked, 'contractorScheduled')">
-                                    Contractor Scheduled:
-                                </mat-checkbox>
-                                <mat-form-field>
-                                    <input matInput
-                                           [matDatepicker]="picker3"
-                                           placeholder="Scheduled Date"
-                                           (dateInput)="onDateInput('contractorScheduledDate', $event)"
-                                           formControlName="scheduledDateCtrl">
-                                    <mat-datepicker-toggle
-                                            matSuffix
-                                            [for]="picker3">
-                                    </mat-datepicker-toggle>
-                                    <mat-datepicker
-                                            touchUi="true"
-                                            #picker3>
-                                    </mat-datepicker>
-                                </mat-form-field>
-                                <mat-form-field>
-                                    <input matInput
-                                            placeholder="Contractor's Name"
-                                           (blur)="onNameInput($event)"
-                                            formControlName="contractorNameCtrl"
-                                            appFullnameValidator>
-                                    <mat-hint align="end">First and last name</mat-hint>
-                                </mat-form-field>
-                                <div>
-                                    <button mat-button matStepperPrevious>Back</button>
-                                    <button mat-button matStepperNext>Next</button>
+                                 fxLayoutGap="16px">
+                                <div fxLayout="row"
+                                     fxLayoutGap="16px"
+                                     fxLayoutAlign="start center">
+                                    <mat-checkbox
+                                            color="accent"
+                                            formControlName="scheduledCtrl"
+                                            required
+                                            (change)="onCheckboxChange($event.checked, 'contractorScheduled')">
+                                        Contractor Scheduled:
+                                    </mat-checkbox>
+                                    <mat-form-field>
+                                        <input matInput
+                                               [matDatepicker]="picker3"
+                                               placeholder="Scheduled Date"
+                                               (dateInput)="onDateInput('contractorScheduledDate', $event)"
+                                               formControlName="scheduledDateCtrl">
+                                        <mat-datepicker-toggle
+                                                matSuffix
+                                                [for]="picker3">
+                                        </mat-datepicker-toggle>
+                                        <mat-datepicker
+                                                touchUi="true"
+                                                #picker3>
+                                        </mat-datepicker>
+                                    </mat-form-field>
+                                </div>
+
+                                <div fxLayout="row"
+                                     fxLayoutGap="16px"
+                                     fxLayoutAlign="start center">
+                                    <mat-form-field>
+                                        <mat-select
+                                                formControlName="contractorNameCtrl"
+                                                placeholder="Contractors Name"
+                                                (selectionChange)="onNameInput($event)">
+                                            <mat-option
+                                                    *ngFor="let c of contractors | async" [value]="c.name">
+                                                {{c.name}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <button mat-raised-button
+                                            (click)="newContractorDialog()">New</button>
+                                </div>
+                                <div fxLayout="row"
+                                     fxLayoutGap="16px"
+                                     fxLayoutAlign="start center">
+                                    <button mat-raised-button
+                                            matStepperPrevious>Back</button>
+                                    <button mat-raised-button
+                                            color="accent"
+                                            matStepperNext>Next</button>
                                 </div>
                             </div>
                         </form>
                     </mat-step>
                     <mat-step [stepControl]="fourthFormGroup">
                         <form [formGroup]="fourthFormGroup">
-                            <ng-template matStepLabel>Delivered & Started</ng-template>
+                            <ng-template matStepLabel>Delivered<br/>& Started</ng-template>
                             <div fxLayout="column"
-                                 fxLayoutGap="20px"
-                                 style="padding-top: 18px">
+                                 fxLayoutGap="16px">
                                 <mat-checkbox
                                         color="accent"
                                         formControlName="deliveredCtrl"
@@ -256,63 +279,74 @@
                                         (change)="onCheckboxChange($event.checked, 'materialsDelivered')">
                                     Materials Delivered
                                 </mat-checkbox>
-                                <mat-checkbox
-                                        color="accent"
-                                        formControlName="startedCtrl"
-                                        required
-                                        (change)="onCheckboxChange($event.checked, 'contractorStarted')">
-                                    Contractor Started
-                                </mat-checkbox>
-                                <mat-form-field>
-                                    <input matInput
-                                           [matDatepicker]="picker4"
-                                           placeholder="Started Date"
-                                           (dateInput)="onDateInput('contractorStartedDate', $event)"
-                                           formControlName="startedDateCtrl">
-                                    <mat-datepicker-toggle
-                                            matSuffix
-                                            [for]="picker4">
-                                    </mat-datepicker-toggle>
-                                    <mat-datepicker
-                                            touchUi="true"
-                                            #picker4>
-                                    </mat-datepicker>
-                                </mat-form-field>
-                                <div>
-                                    <button mat-button matStepperPrevious>Back</button>
-                                    <button mat-button matStepperNext>Next</button>
+                                <div fxLayout="row"
+                                     fxLayoutGap="16px"
+                                     fxLayoutAlign="start center">
+                                    <mat-checkbox
+                                            color="accent"
+                                            formControlName="startedCtrl"
+                                            required
+                                            (change)="onCheckboxChange($event.checked, 'contractorStarted')">
+                                        Contractor Started
+                                    </mat-checkbox>
+                                    <mat-form-field>
+                                        <input matInput
+                                               [matDatepicker]="picker4"
+                                               placeholder="Started Date"
+                                               (dateInput)="onDateInput('contractorStartedDate', $event)"
+                                               formControlName="startedDateCtrl">
+                                        <mat-datepicker-toggle
+                                                matSuffix
+                                                [for]="picker4">
+                                        </mat-datepicker-toggle>
+                                        <mat-datepicker
+                                                touchUi="true"
+                                                #picker4>
+                                        </mat-datepicker>
+                                    </mat-form-field>
+                                </div>
+                                <div fxLayout="row"
+                                     fxLayoutGap="16px"
+                                     fxLayoutAlign="start center">
+                                    <button mat-raised-button matStepperPrevious>Back</button>
+                                    <button mat-raised-button
+                                            color="accent"
+                                            matStepperNext>Next</button>
                                 </div>
                             </div>
                         </form>
                     </mat-step>
                     <mat-step [stepControl]="fifthFormGroup">
                         <form [formGroup]="fifthFormGroup">
-                            <ng-template matStepLabel>Finished & Paid</ng-template>
+                            <ng-template matStepLabel>Finished<br/>& Paid</ng-template>
                             <div fxLayout="column"
-                                 fxLayoutGap="20px"
-                                 style="padding-top: 18px">
-                                <mat-checkbox
-                                        color="accent"
-                                        formControlName="finishedCtrl"
-                                        required
-                                        (change)="onCheckboxChange($event.checked, 'contractorFinished')">
-                                    Contractor Finished
-                                </mat-checkbox>
-                                <mat-form-field>
-                                    <input matInput
-                                           [matDatepicker]="picker5"
-                                           placeholder="Finished Date"
-                                           (dateInput)="onDateInput('contractorFinishedDate', $event)"
-                                           formControlName="finishedDateCtrl">
-                                    <mat-datepicker-toggle
-                                            matSuffix
-                                            [for]="picker5">
-                                    </mat-datepicker-toggle>
-                                    <mat-datepicker
-                                            touchUi="true"
-                                            #picker5>
-                                    </mat-datepicker>
-                                </mat-form-field>
+                                 fxLayoutGap="16px">
+                                <div fxLayout="row"
+                                     fxLayoutGap="16px"
+                                     fxLayoutAlign="start center">
+                                    <mat-checkbox
+                                            color="accent"
+                                            formControlName="finishedCtrl"
+                                            required
+                                            (change)="onCheckboxChange($event.checked, 'contractorFinished')">
+                                        Contractor Finished
+                                    </mat-checkbox>
+                                    <mat-form-field>
+                                        <input matInput
+                                               [matDatepicker]="picker5"
+                                               placeholder="Finished Date"
+                                               (dateInput)="onDateInput('contractorFinishedDate', $event)"
+                                               formControlName="finishedDateCtrl">
+                                        <mat-datepicker-toggle
+                                                matSuffix
+                                                [for]="picker5">
+                                        </mat-datepicker-toggle>
+                                        <mat-datepicker
+                                                touchUi="true"
+                                                #picker5>
+                                        </mat-datepicker>
+                                    </mat-form-field>
+                                </div>
                                 <mat-checkbox
                                         color="accent"
                                         formControlName="invoiceSubmittedCtrl"
@@ -327,24 +361,24 @@
                                         (change)="onCheckboxChange($event.checked, 'invoicePaid')">
                                     Invoice Paid
                                 </mat-checkbox>
-                                <div>
-                                    <button mat-button matStepperPrevious>Back</button>
-                                    <button mat-button matStepperNext>Next</button>
+                                <div *ngIf="mr.review">
+                                    <p> Contractor has been reviewed: {{mr.review.reviewComment}}</p>
+                                    <p> Rating: {{mr.review.rating}} / 5</p>
+                                </div>
+                                <div fxLayout="row"
+                                     fxLayoutGap="16px"
+                                     fxLayoutAlign="start center">
+                                    <button mat-raised-button matStepperPrevious>Back</button>
+                                    <button mat-raised-button
+                                            color="accent"
+                                            (click)="reviewDialog(mr)"
+                                            [disabled]="!fifthFormGroup.valid"
+                                            matStepperNext>Complete!</button>
                                 </div>
                             </div>
                         </form>
                     </mat-step>
-                    <mat-step>
-                        <ng-template matStepLabel>Done</ng-template>
-                        You are now done.
-                        <div>
-                            <button mat-stroked-button matStepperPrevious>Back</button>
-                            <button mat-stroked-button
-                                    (click)="goBack()">Back to Table</button>
-                            <!--<button mat-stroked-button (click)="stepper.reset()">Reset</button>-->
-                        </div>
-                    </mat-step>
-                </mat-vertical-stepper>
+                </mat-horizontal-stepper>
             </mat-card-content>
         </mat-card>
     </div>

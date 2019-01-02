@@ -14,6 +14,12 @@
   z-index: 2;
 }
 
+.app-toolbar {
+  /* background: #d42426 url("../assets/images/redchristmas2.jpg");*/
+  background-size: 200px 200px;
+  padding: 32px;
+}
+
 h1.app-name {
   margin-left: 8px;
 }
@@ -36,7 +42,7 @@ h1.app-name {
 .dash-logo{
   max-width: 69px;
   max-height: 69px;
-  padding: 4px;
+  padding: 4px 4px 4px 16px;
   object-fit: contain;
 }
 
@@ -60,6 +66,7 @@ h1.app-name {
   color: white;
   font-size: 1em;
   font-weight: 400;
+  cursor: pointer;
   /*background-color: #00BFA5;*/
   font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
 }

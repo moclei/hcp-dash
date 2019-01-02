@@ -1,7 +1,6 @@
-<mat-card
-                class="bonus-card"
-                *ngIf="selectedBonus as b">
-            <mat-card-content>
+<!--
+            <div class="bonus-card"
+    *ngIf="selectedBonus as b">
                 <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="8px">
                     <div *ngIf="auth.user | async as user;">
                         <div *ngIf="user.isEditor">
@@ -22,7 +21,6 @@
                         <h3 class="mat-h3">{{this.propertySelected}} Bonus Estimate
                             {{this.bonusService.months[this.monthSelected]}}</h3>
                     </div>
-                    <!-- YOUR COLLECTIONS -->
                     <div *ngIf="this.getBonusEstimate(b) > 0; else noBonus">
                         <h4 class="mat-h4">Your bonus will be {{this.cp.transform((this.getBonusEstimate(b)), 'USD', 'symbol', '1.0-0') }}*</h4>
                     </div>
@@ -35,21 +33,32 @@
                     <div fxLayout="row"
                          fxFlexAlign="end"
                          fxLayoutAlign="end center">
+
                         <div id="trapezoid">
+
                             <div id="inner-trapezoid">
                             </div>
                             <div id="glass-water"
-                                 [ngStyle]="{'border-top': (percentCurrentBelow * 160) + 'px solid #6f4e37',
+                                 [ngStyle]="{'border-top': (percentCurrentBelow * 160) + 'px solid #b18b62',
                            'border-left': (24-((160 - (160 * percentCurrentBelow))/6.6)) + 'px solid transparent',
                            'border-right': (24-((160 - (160 * percentCurrentBelow))/6.6)) + 'px solid transparent',
                            'left': ((-22)+((160 - (160 * percentCurrentBelow))/6.6))+'px'}">
                             </div>
                             <div id="glass-foam"
-                                 [ngStyle]="{'border-top': (percentCurrentAbove * 40) + 'px solid navajowhite',
+                                 [ngStyle]="{'border-top': (percentCurrentAbove * 40) + 'px solid #fff8e7',
                         'border-left': (6-((40 - (40 * percentCurrentAbove))/6.6)) + 'px solid transparent',
                         'border-right': (6-((40 - (40 * percentCurrentAbove))/6.6)) + 'px solid transparent',
                         'left': ((-28)+((40 - (40 * percentCurrentAbove))/6.6))+'px'}"></div>
                         </div>
+
+
+
+
+
+
+
+
+
                         <div class="test-box">
                             <div class="tick">
                                 <span [ngStyle]="{top: getHundredPercentHeight(b)}">
@@ -57,17 +66,14 @@
                                     <br/><div style="font-size: 10px;"> Max bonus: {{(b.grossPotential*0.01) | currency:'USD':'symbol':'1.0-0'}}</div>
                                 </span>
                             </div>
-                            <!-- THRESHOLD -->
                             <div class="tick">
                                 <span [ngStyle]="{top: '0em', left: '5px'}">90% ({{(b.grossPotential * (1-b.thresholdPercent)) | currency:'USD':'symbol':'1.0-0' }})
                                   <br/>
                                     <div style="font-size: 10px;">Above this line you make a bonus.</div>
                                 </span>
                             </div>
-                            <!-- YOUR COLLECTIONS -->
                             <div class="tick"
                                  [ngStyle]="{top: (202-this.currentBase) + 'px', left: '-20px', width: '100px'}">
-                                 <!-- [ngStyle]="{top: getCollectedHeight(b)+'px', left: '-20px', width: '100px'}">-->
                             <span [ngStyle]="{left: '105px'}">
                                 <div [ngStyle]="{'bottom': '20px'}">
                               Your Collections: {{b.collectedMTD  | currency:'USD':'symbol':'1.0-0'}}</div>
@@ -90,5 +96,130 @@
                             Please use this as a guideline only.</p>
                     </div>
                 </div>
-            </mat-card-content>
-        </mat-card>
+            </div>
+            -->
+
+<div class="bonus-card"
+     *ngIf="selectedBonus as b">
+
+    <div fxLayout="column"
+         *ngIf="this.waterHeightSet; else loading"
+         fxLayoutAlign="start center"
+         fxLayoutGap="8px">
+        <div *ngIf="auth.user | async as user;">
+            <div *ngIf="user.isEditor">
+                <mat-form-field style="margin: 0em">
+                    <mat-select
+                            placeholder="Select property"
+                            (selectionChange)="onSelectProperty($event.value)">
+                        <mat-option
+                                *ngFor="let property of this.properties"
+                                value={{property.sheetName}}>
+                            {{ property.name }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+        <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="8px">
+            <div fxLayout="column">
+                <div class="moc-material-card">
+                    <div  fxLayout="column" fxLayoutAlign="center center">
+                        <h3 class="mat-h3">{{this.propertySelected}} Bonus Estimate
+                            {{this.bonusService.months[this.monthSelected]}}</h3>
+                        <div *ngIf="this.getBonusEstimate(b) > 0; else noBonus">
+                            <h4 class="mat-h4">Your bonus will be {{this.cp.transform((this.getBonusEstimate(b)), 'USD', 'symbol', '1.0-0') }}*</h4>
+                        </div>
+                        <ng-template #noBonus>
+                            <h4>{{this.cp.transform((this.leftToBonus(b)), 'USD', 'symbol', '1.0-0') }} left until
+                                bonus starts*</h4>
+                        </ng-template>
+                    </div>
+                </div>
+                <div class="moc-material-card moc-card-wide">
+                    <div fxLayout="row" fxLayoutAlign="center center">
+                        <div id="trapezoid">
+                            <!--<svg version="1.1" x="0px" y="0px" width="501px" height="501px" viewBox="0 0 501 501" style="enable-background:new 0 0 501 501;" xml:space="preserve">
+                                    <style type="text/css">
+                                        .steam{stroke:#FFF; fill: none; stroke-width: 2px;}
+                                    </style>
+                                    <g class="steam">
+                                        <path d="M308.5,169c0,0-16.5-17-13-32.5s22-5.5,13.5,6c-7.9,10.6-23.8-6.9-12-21.8c11.5-14.5,10.7-22,10-24.8
+                                        c-5-18.4-18.6-5.8-12.6-1.1c9.4,7.1,15.2-16.5,13.2-24.5"/>
+                                    </g>
+                                </svg>-->
+                            <div id="inner-trapezoid">
+                            </div>
+                            <div id="glass-water"
+                                 [ngStyle]="{'border-top': (percentCurrentBelow * 160) + 'px solid #b18b62',
+                                           'border-left': (24-((160 - (160 * percentCurrentBelow))/6.6)) + 'px solid transparent',
+                                           'border-right': (24-((160 - (160 * percentCurrentBelow))/6.6)) + 'px solid transparent',
+                                           'left': ((-22)+((160 - (160 * percentCurrentBelow))/6.6))+'px'}">
+                            </div>
+                            <div id="glass-foam"
+                                 [ngStyle]="{'border-top': (percentCurrentAbove * 40) + 'px solid #fff8e7',
+                                        'border-left': (6-((40 - (40 * percentCurrentAbove))/6.6)) + 'px solid transparent',
+                                        'border-right': (6-((40 - (40 * percentCurrentAbove))/6.6)) + 'px solid transparent',
+                                        'left': ((-28)+((40 - (40 * percentCurrentAbove))/6.6))+'px'}"></div>
+                        </div>
+                        <div class="test-box">
+                            <div class="tick"></div>
+                            <div class="tick">The Threshold</div>
+                            <div class="tick"
+                                 [ngStyle]="{top: (202-this.currentBase) + 'px', left: '-20px', width: '80px'}">
+                                    <span [ngStyle]="{left: '85px'}">
+                                        <div [ngStyle]="{'bottom': '20px'}">
+                                            Your Collections: {{b.collectedMTD  | currency:'USD':'symbol':'1.0-0'}}</div>
+                                    </span>
+                            </div>
+                            <div class="tick"><span></span></div>
+                            <div class="tick"><span></span></div>
+                            <div class="tick"><span></span></div>
+                            <div class="tick"><span></span></div>
+                            <div class="tick"><span></span></div>
+                            <div class="tick"><span></span></div>
+                            <div class="tick"><span></span></div>
+                            <div class="tick"><span></span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="moc-material-card">
+                <div fxLayout="column" fxLayoutAlign="space-between">
+                    <p>
+                        100% is {{b.grossPotential | currency:'USD':'symbol':'1.0-0'}}
+                    </p>
+                    <p>
+                        If you fill the cup your bonus will be {{(b.grossPotential*0.01) |
+                        currency:'USD':'symbol':'1.0-0'}}*
+                    </p>
+                    <p>
+                        The ---Threshold--- is {{(b.grossPotential * (1-b.thresholdPercent)) |
+                        currency:'USD':'symbol':'1.0-0' }}.
+                        You start making bonus once you get above that line.
+                    </p>
+                    <p style="font-size: 10px;">*Bonus estimates are subject to change.<br>
+                        These are preliminary numbers and must be verified.<br>
+                        Please use this as a guideline only.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <ng-template #loading>
+        <div fxLayout="column"
+             fxLayoutAlign="center center">
+            <mat-spinner></mat-spinner>
+            <p>Loading collections data</p>
+        </div>
+    </ng-template>
+</div>
+
+<!--<svg version="1.1" x="0px" y="0px" width="501px" height="501px" viewBox="0 0 501 501" style="enable-background:new 0 0 501 501;" xml:space="preserve">
+                                    <style type="text/css">
+                                        .steam{stroke:#FFF; fill: none; stroke-width: 2px;}
+                                    </style>
+                                    <g class="steam">
+                                        <path d="M308.5,169c0,0-16.5-17-13-32.5s22-5.5,13.5,6c-7.9,10.6-23.8-6.9-12-21.8c11.5-14.5,10.7-22,10-24.8
+                                        c-5-18.4-18.6-5.8-12.6-1.1c9.4,7.1,15.2-16.5,13.2-24.5"/>
+                                    </g>
+                                </svg>-->
